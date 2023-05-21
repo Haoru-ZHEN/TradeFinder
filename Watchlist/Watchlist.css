@@ -1,0 +1,691 @@
+:root {
+     --hue-color: 250;
+     --scroll-bar-color: hsl(var(--hue-color), 12%, 90%);
+     --scroll-thumb-color: hsl(var(--hue-color), 12%, 80%);
+     --text-color-light: hsl(var(--hue-color), 8%, 65%);
+     --black: #1c0522;
+     --orderColor: #2f2f36;
+     --learnColor: #d2cdd0;
+     --light-brown: #4d4f53;
+     --lighter-brown: #73767c;
+     --lighter-brown2: #b4b4b4;
+     --learnColor2: #f0e8ec;
+     --bgColor: #F5F7F9;
+     --bgColor2: hsl(192, 17%, 94%);
+     --bullColor: rgb(84,202,175);
+     --bullColorOpa: rgb(84,202,175,0.5);
+     --bearColor: rgb(255,110,102);
+     --bearColorOpa: rgb(255,110,102,0.5);
+     --waitColor2: rgb(77,79,83);
+     --waitColor: rgb(115,118,124);
+     --waitColorOpa2: rgba(77,79,83,0.5);
+     --waitColorOpa: rgba(115,118,124,0.5);
+     --grey: #6b7280;
+     --green:#2EBD85;
+     --red:#F6465D;
+     --gray:#9ea1a5;
+     --gold:#ecd04c;
+}
+
+@font-face {
+     font-family: 'TESLA-font';
+     src: url('../TESLA.ttf') format('truetype');
+     font-weight: normal;
+     font-style: normal;
+}
+
+
+* {
+     margin: 0;
+     padding: 0;
+     font-family: 'Gotham', sans-serif;
+     box-sizing: border-box;
+}
+
+
+body {
+     width: 100%;
+     height: 100%;
+     min-height: 100vh;
+     background: var(--bgColor);
+     overflow-x: hidden;
+}/*
+header {
+     position: absolute;
+     top: 0;
+     left: 0;
+     width: 100%;
+     padding: 20px 100px;
+
+     display: flex;
+     justify-content: space-between;
+     align-items: center;
+     z-index: 99;
+}*/
+
+header .logo {
+     color: #000;
+     font-weight: 400;
+     font-size: 1.5em;
+     letter-spacing: 4px;
+     font-family: 'TESLA-font';
+     text-transform: uppercase;
+}
+
+
+.mainHeader {
+
+     width: 100%;
+     padding: 20px;
+     display: flex;
+     flex-direction: row;
+     justify-content: space-between;
+     z-index: 99;
+}
+
+header ul {
+     display: flex;
+     justify-content: center;
+     align-items: center;
+}
+
+header .midUl{
+     position: absolute;
+     left: 38%;
+     height: 100%;
+     display: flex;
+     justify-self: center;
+     align-self: center;
+     text-align: center;
+}
+
+header ul li {
+     list-style: none;
+}
+
+header ul li a {
+     text-decoration: none;
+     padding: 8px 20px;
+     color: var(--black);
+     border-radius: 5px;
+     font-weight: 400;
+     font-size: 14px;
+     transition: background 0.5s ease;
+}
+
+header .menuIcon {
+     color: #000;
+     cursor: pointer;
+}
+
+
+
+.box {
+     position: absolute;
+     top: 18px;
+     left: 38%;
+     width: 80px;
+     height: 32px;
+     background: rgba(84, 125, 89, 0.2);
+     color: #171a20;
+     opacity: 0;
+     border-radius: 5px;
+     transition: all 0.3s ease-in-out;
+     z-index: -1;
+}
+header ul li a:hover .box{
+     opacity: 1;
+     background: #000;
+}
+
+.container{
+     width: 100%;
+     height: 100vh;
+     background-color: var(--bgColor);
+     background-size: cover;
+
+     background-repeat: no-repeat;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+}
+
+.contentDiv{
+     position: absolute;
+     width: 100%;
+     height: 100%;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     justify-content: start;
+     padding-top: 100px;
+}
+
+.contentDiv h2{
+     font-size: 40px;
+     font-weight: 500;
+     margin-bottom: 25px;
+}
+
+.addDiv{
+     background-color: #fff;
+     display: flex;
+     flex-direction: row;
+     padding: 30px 50px;
+     border-radius: 15px;
+}
+/*
+.contentDiv h3{
+     font-size: 18px;
+     font-weight: 300;
+     color: #000;
+     margin-bottom: 420px;
+}*/
+
+.butDiv {
+     width: max-content;
+     display: flex;
+     flex-direction: row;
+     align-items: center;
+     justify-content: center;
+
+     transition: opacity 1s ease;
+}
+
+.butDiv button {
+     width: 100px;
+     padding: 12px;
+     border-radius: 5px;
+     outline-offset: -5px;
+     border: none;
+
+     font-size: 14px;
+     cursor: pointer;
+}
+
+.orderBut {
+     color: white;
+     /*background-color: rgba(47, 48, 55, 0.95);*/
+     background-color: var(--orderColor);
+     opacity: 0.9;
+}
+
+
+.orderBut:focus {
+     outline: 2px solid white;
+}
+
+
+.contentDiv .addDiv input{
+     width: 300px;
+     font-size: 14px;
+     color: #000;
+     font-weight: 400;
+     padding: 15px;
+     border-radius: 10px;
+     border: 2px solid #dcdee2;
+     outline: none;
+     margin-right: 20px;
+     transition: border 0.3s ease-in-out;
+}
+
+#symbolInput{
+     width: 150px;
+}
+
+.contentDiv .addDiv input:focus{
+     border: 2px solid var(--orderColor);
+}
+
+.contentDiv .addDiv input::placeholder{
+     color:#dcdee2;
+}
+
+.listDiv{
+     background-color: #fff;
+     width: max-content;
+     padding: 20px;
+     margin-top: 30px;
+     border-radius: 15px;
+}
+
+.activeTD{
+     border-radius: 100px;
+     background-color: var(--bullColor);
+     color: #fff;
+     padding: 5px 10px;
+}
+
+
+
+.listDiv .headerTable th ,
+.listDiv td{
+     text-align: center;
+     /*background-image: linear-gradient(to right, var(--pink), var(--purple));*/
+     color: var(--lighter-brown2);
+     font-size: 15px;
+     font-weight: 750;
+     width: 110px;
+     margin-bottom: 20px;
+     border-bottom: 1px solid var(--learnColor);
+     padding: 12px;
+     transition: background 3s ease;
+}
+
+
+
+.listDiv .headerTable th{
+     background-color: var(--bgColor);
+     color: var(--black);
+     opacity: 0.7;
+     border-bottom: 1.5px solid var(--learnColor);
+
+}
+/*
+.listDiv .headerTable th:hover{
+     background: linear-gradient(
+            to right, var(--purple), var(--pink));
+     -webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}*/
+
+
+.listDiv table {
+     border-collapse: collapse;
+     border-radius: 20px;
+}
+
+.listDiv td input{
+     width: 300px;
+     padding: 5px 5px;
+     border-radius: 5px;
+     border: 1px solid #ccc;
+}
+
+.listDiv td input::placeholder{
+     color: #ccc;
+}
+
+.listDiv td i{
+     font-size: 20px;
+     cursor: pointer;
+}
+
+.listDiv tr .iconTable{
+     width: 75px;
+}
+
+.listDiv .actionTD{
+     justify-content: center;
+}
+
+.listDiv td .actionContainer{
+     width: max-content;
+     background-color: var(--waitColorOpa);
+     border-radius: 15px;
+     padding: 5px 10px;
+     display: flex;
+     align-items: center;
+     justify-self: center;
+     text-align: center;
+     margin-left: 10px;
+     color: var(--waitColor);
+     cursor: pointer;
+}
+
+
+
+.listDiv td .actionContainer .dotSpan{
+     background-color: var(--waitColor);
+     border-radius: 50px;
+     width: 10px;
+     height: 10px;
+     margin-right: 5px;
+}
+
+.buyAction{
+     background-color: var(--bullColorOpa)!important; 
+     color: var(--bullColor)!important; 
+     margin-left: 13px !important;
+}
+
+.buyActionDot{
+     background-color: var(--bullColor)!important;
+}
+
+.sellAction{
+     background-color: var(--bearColorOpa)!important;
+     color: var(--bearColor)!important;
+     margin-left: 13px !important;
+}
+
+.sellActionDot{
+     background-color: var(--bearColor)!important;
+}
+
+
+
+.titleTable{
+     display: flex;
+     flex-direction: row;
+     justify-content: space-between;
+     margin-bottom: 20px;
+}
+
+.searchDiv i,
+.filterDiv i{
+     float: inline-start;
+     color: #ccc;
+     margin-right: 10px;
+}
+
+.searchDiv,
+.filterDiv{
+     align-self: end;
+     width: min-content;
+     height: min-content;
+     display: flex;
+     background-color: var(--bgColor);
+     padding: 10px 10px;
+     border-radius: 1rem;
+     align-items: center;
+
+}
+
+.searchInput{
+     width: 150px;
+     height: max-content;  
+     outline: none;
+     background: transparent;
+     color: var(--orderColor);
+     padding: 7px;
+     font-size: 15px;
+     font-weight: 300;
+     border: none;
+     transition: width 0.3s ease-in-out;
+}
+
+.searchInput::placeholder{
+     color: #ccc;
+}
+
+.filterDiv{
+     padding: 10px 10px;
+}
+
+.filterDiv ul{
+     display: flex;
+}
+
+.filterDiv ul li {
+     list-style: none;
+     text-decoration: none;
+     padding: 8px 10px;
+     color: var(--black);
+     border-radius: 15px;
+     font-weight: 400;
+     font-size: 14px;
+     margin-right: 10px;
+
+     background-color: transparent;
+     cursor: pointer;
+}
+
+
+.filterDiv ul .activeFilter{
+     background-color: #FFD54F;
+     color: #fff;
+}
+
+.saveDiv{
+     padding: 10px 10px;
+     width: max-content;
+     height: 100%;
+     display: flex;
+     align-content: center;
+     justify-content: center;
+}
+
+.saveDiv i{
+     margin: 0;
+     font-size: 25px;
+     color: #ccc;
+     cursor: pointer;
+}
+
+/*********MOREDIV*********************/
+.moreDiv{
+     position: absolute;
+     top:48%;
+     right:2%;
+     width: 200px;
+     height: max-content;
+     border-radius: 10px;
+     background-color: #fff;
+     padding: 5px 5px 15px 5px;
+     display: none;
+     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.moreDiv ul li{
+     width: 100%;
+     list-style: none;
+     text-decoration: none;
+     padding: 12px;
+     color: #ccc;
+     font-size: 14px;
+     font-weight: 300;
+     border-bottom: 1px solid var(--learnColor);
+     transition: background 0.5s ease;
+     background-color: #fff;
+     cursor: pointer;
+
+}
+
+.moreDiv ul li:hover{
+     background-color: var(--bgColor);
+}
+
+/*********ACTIONDIV*********************/
+.actionDiv{
+     position: absolute;
+     top:48%;
+     left:37%;
+     width: 120px;
+     height: max-content;
+     border-radius: 10px;
+     background-color: #fff;
+     padding: 5px;
+     display: none;
+     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.actionDiv ul{
+     width: 100%;
+}
+
+.actionDiv ul li{
+     width: 100%;
+     list-style: none;
+     text-decoration: none;
+     text-align: center;
+     padding: 8px;
+     color: var(--learnColor);
+     font-size: 15px;
+     font-weight: 500;
+     transition: background 0.5s ease;
+     background-color: var(--bullColorOpa);
+     cursor: pointer;
+     opacity: 1;
+}
+
+.actionDiv ul li:nth-child(1){
+     background-color: var(--bullColorOpa);
+     color: var(--bullColor);
+}
+.actionDiv ul li:nth-child(2){
+     background-color: var(--waitColorOpa);
+     color: var(--waitColor);
+}
+.actionDiv ul li:nth-child(3){
+     background-color: var(--bearColorOpa);
+     color: var(--bearColor);
+}
+
+.actionDiv ul li:hover{
+     opacity: 0.7;
+}
+
+
+/*========== SCROLL BAR ==========*/
+::-webkit-scrollbar {
+     width: 0.6rem;
+     background-color: hsl(var(--hue-color), 12%, 90%);
+     border-radius: 0.5rem;
+}
+
+::-webkit-scrollbar-thumb {
+     background-color: var(--scroll-thumb-color);
+     border-radius: 0.5rem;
+}
+
+::-webkit-scrollbar-thumb:hover {
+     background-color: var(--text-color-light);
+}
+
+
+/*******side bar*******/
+.sideWall {
+     position: absolute;
+     width: 100%;
+     height: 100%;
+     display: flex;
+     flex-direction: row;
+     opacity: 0;
+     z-index: -1;
+}
+
+.blurArea {
+     width: 100%;
+     height: 100%;
+     background-color: transparent;
+     backdrop-filter: blur(3px);
+     transition: backdrop-filter 0.2s ease;
+}
+.sideBar {
+     display: flex;
+     flex-direction: column;
+     height: 100%;
+     width: 20%;
+     position: absolute;
+     right: -320px;
+     background-color: #fff;
+     padding: 30px;
+     transition: all 0.3s ease;
+}
+
+.sideBar header {
+     position: relative;
+     width: 100%;
+     padding: 0px;
+     display: flex;
+     align-items: end;
+     justify-content: end;
+     margin-bottom: 20px;
+}
+
+.sideBar svg {
+     width: 35px;
+     height: 35px;
+     cursor: pointer;
+     border-radius: 5px;
+     transition: background-color 0.3s ease;
+     padding: 5px;
+}
+
+.sideBar svg:hover {
+     background-color: #eee;
+}
+
+.sideBar ul li {
+     list-style: none;
+     margin-bottom: 10px;
+     color: #393c41;
+     transition: background-color 0.3s ease;
+     padding: 5px 15px;
+     border-radius: 5px;
+     cursor: pointer;
+}
+
+.sideBar ul li:hover {
+     background-color: #eee;
+}
+
+.sideBar ul li a{
+     text-decoration: none;
+     color: #393c41;
+}
+
+/************LOADER**********/
+.loaderContainer{
+     position: absolute;
+     background-color: #fff;
+     box-shadow: 0 0 10px #ccc, 0 0 5px #ccc, 0 0 5px #ccc;
+     border-radius: 50px;
+     width: 60px;
+     height: 60px;
+     top: 50%;
+     left: 50%;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     z-index: 20;
+     display: none;
+}
+
+#loader {
+     height: 40px;
+     width: 40px;
+     border: 5px solid #fff;
+     border-top-color: var(--bullColor);
+     
+     border-radius: 50%;
+     animation: spin 1s infinite ease;
+     /*box-shadow: 0 0 30px rgba(#00b3ff,.5);
+     box-shadow: 0 0 10px #2196f3, 0 0 40px #2196f3, 0 0 80px #2196f3;*/
+}
+#loader.fade-out {
+     opacity: 0;
+     transition: opacity 0.5s ease-out;
+}
+
+@keyframes spin {
+     100% {
+          transform: rotate(360deg);
+     }
+}
+
+
+
+/*****responsive screen adjust******/
+
+@media (max-width: 600px) {
+
+     .sideBar {
+          width: 70%;
+     }
+
+     .sideBar header svg {
+          width: 30px;
+          height: 30px;
+     }
+
+     .sideBar ul li {
+          font-size: 12px;
+     }
+}
+
+@media (min-width: 600px) and (max-width: 900px) {
+
+
+}

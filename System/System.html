@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+     <meta http-equiv="Content-Type" content="text/html; charset=windows-1252" />
+     <title>Trading System</title>
+     <link rel="stylesheet" href="System.css" />
+     <link rel="icon" href="../falcon.png" />
+
+     <script src="https://kit.fontawesome.com/736b8c9e75.js" crossorigin="anonymous"></script>
+     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css" />
+     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/solid.css">
+</head>
+
+<body>
+     <header onmouseleave="removeBox()">
+          <h2 class="logo">TradeFinder</h2>
+          <ul class="midUl" onmouseenter="showBox()">
+               <li><a href="../TradeFinder.html" onmouseover="moveBox(event)">Home</a></li>
+               <li><a href="#" onmouseover="moveBox(event)">Portfolio</a></li>
+               <li><a href="../Watchlist/Watchlist.html" onmouseover="moveBox(event)">Watchlist</a></li>
+               <li><a href="#" onmouseover="moveBox(event)">Trading System</a></li>
+          </ul>
+          <div class="box"></div>
+     </header>
+
+     <div class="container">
+          
+          <h2>Trading System</h2>
+          <ul class="optionUl">
+               <li class="activeOption" onclick="systemClick(event,0)">Entry System</li>
+               <li onclick="systemClick(event,1)">Throttle System</li>
+               <li onclick="systemClick(event,2)">Cutloss System</li>
+               <li onclick="systemClick(event,3)">Take Profit System</li>
+          </ul>
+
+          <div class="contentDiv">
+               <div class="entrySys">
+                    <div class="input-box">
+                         <input id="yearInput" type="text" />
+                         <label>Damage cost (%)</label>
+                    </div>
+
+                    <form>
+                         <label>
+                           <input type="checkbox" name="fruits" value="apple"> 临界点
+                         </label>
+                         <label>
+                           <input type="checkbox" name="fruits" value="banana"> 背离现象
+                         </label>
+                         <label>
+                           <input type="checkbox" name="fruits" value="orange"> Follow Trend
+                         </label>
+                       </form>
+                       
+
+                    <input type="range" min="0" max="100">
+               </div>
+               <div class="throttleSys">
+                    <div class="input-box">
+                         <input id="yearInput" type="text" />
+                         <label>Throttle 1st (%)</label>
+                    </div>
+               </div>
+               <div class="cutSys">
+                    <div class="input-box">
+                         <input id="yearInput" type="text" />
+                         <label>Damage cost (%)</label>
+                    </div>
+               </div>
+               <div class="profitSys">
+                    <div class="input-box">
+                         <input id="yearInput" type="text" />
+                         <label>Throttle 1st (%)</label>
+                    </div>
+               </div>
+          </div>
+
+     </div>
+
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.3/js/bootstrap.min.js"></script>
+     <script src="https://www.gstatic.com/firebasejs/9.18.0/firebase-app-compat.js"></script>
+     <script src="https://www.gstatic.com/firebasejs/9.18.0/firebase-database-compat.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+     <script src="System.js"></script>
+</body>
+
+</html>

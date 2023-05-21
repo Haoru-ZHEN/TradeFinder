@@ -1,0 +1,232 @@
+:root {
+     --hue-color: 250;
+     --scroll-bar-color: hsl(var(--hue-color), 12%, 90%);
+     --scroll-thumb-color: hsl(var(--hue-color), 12%, 80%);
+     --text-color-light: hsl(var(--hue-color), 8%, 65%);
+     --black: #1c0522;
+     --orderColor: #2f2f36;
+     --learnColor: #d2cdd0;
+     --light-brown: #4d4f53;
+     --lighter-brown: #73767c;
+     --lighter-brown2: #b4b4b4;
+     --learnColor2: #f0e8ec;
+     --bgColor: #f5f7f9;
+     --bgColor2: hsl(192, 17%, 94%);
+     --bullColor: rgb(84, 202, 175);
+     --bullColorOpa: rgb(84, 202, 175, 0.5);
+     --bearColor: rgb(255, 110, 102);
+     --bearColorOpa: rgb(255, 110, 102, 0.5);
+     --waitColor2: rgb(77, 79, 83);
+     --waitColor: rgb(115, 118, 124);
+     --waitColorOpa2: rgba(77, 79, 83, 0.5);
+     --waitColorOpa: rgba(115, 118, 124, 0.5);
+     --grey: #6b7280;
+     --green: #2ebd85;
+     --red: #f6465d;
+     --gray: #9ea1a5;
+     --gold: #ecd04c;
+}
+
+@font-face {
+     font-family: 'TESLA-font';
+     src: url('../TESLA.ttf') format('truetype');
+     font-weight: normal;
+     font-style: normal;
+}
+
+* {
+     margin: 0;
+     padding: 0;
+     font-family: 'Gotham', sans-serif;
+     box-sizing: border-box;
+}
+
+body {
+     min-height: 100vh;
+     background: var(--bgColor);
+     background-image: url('../bg.jpg');
+     background-position: center;
+     background-attachment: fixed;
+     background-size: cover;
+} /*
+header {
+     position: absolute;
+     top: 0;
+     left: 0;
+     width: 100%;
+     padding: 20px 100px;
+
+     display: flex;
+     justify-content: space-between;
+     align-items: center;
+     z-index: 99;
+}*/
+
+header .logo {
+     color: #fff;
+     font-weight: 400;
+     font-size: 1.5em;
+     letter-spacing: 4px;
+     font-family: 'TESLA-font';
+     text-transform: uppercase;
+}
+
+header {
+     position: absolute;
+     top: 0;
+     left: 0;
+     width: 100%;
+     padding: 20px;
+     display: flex;
+     flex-direction: row;
+     justify-content: space-between;
+     background-color: transparent;
+     z-index: 99;
+     position: fixed;
+}
+
+header ul {
+     display: flex;
+     justify-content: center;
+     align-items: center;
+}
+
+header .midUl {
+     position: absolute;
+     left: 38%;
+     height: 100%;
+     display: flex;
+     justify-self: center;
+     align-self: center;
+     text-align: center;
+}
+
+header ul li {
+     list-style: none;
+}
+
+header ul li a {
+     text-decoration: none;
+     padding: 8px 20px;
+     color: #fff;
+     border-radius: 5px;
+     font-weight: 400;
+     font-size: 14px;
+     transition: background 0.5s ease;
+}
+
+.box {
+     position: absolute;
+     top: 18px;
+     left: 38%;
+     width: 80px;
+     height: 32px;
+     background: rgba(84, 125, 89, 0.2);
+     color: #171a20;
+     opacity: 0;
+     border-radius: 5px;
+     transition: all 0.3s ease-in-out;
+     z-index: -1;
+}
+header ul li a:hover .box {
+     opacity: 1;
+     background: #000;
+}
+
+.container {
+     margin-top: 150px;
+     margin-left: 150px;
+     margin-right: 150px;
+     background-color: #fff;
+     border-radius: 10px;
+     padding: 50px;
+}
+
+.container h2{
+     width: 100%;
+     text-align: center;
+     font-size: 30px;
+     font-weight: 500;
+     margin-bottom: 25px;
+}
+
+.contentDiv{
+     margin-top: 60px;
+}
+
+.container .contentDiv .input-box {
+     position: relative;
+     width: 50%;
+     height: 50px;
+     border-bottom: 3px solid #38d39f;
+     margin: 30px 0;
+}
+
+.container .contentDiv .input-box label {
+     position: absolute;
+     top: 50%;
+     left: 5px;
+     transform: translateY(-50%);
+     font-size: 1em;
+     color: #162938;
+     font-weight: 500;
+     pointer-events: none;
+     transition: 0.5s;
+}
+
+.container .contentDiv .input-box input:focus ~ label,
+.container .contentDiv .input-box input:valid ~ label {
+     top: -5px;
+}
+
+.container .contentDiv .input-box input {
+     width: 100%;
+     height: 100%;
+     background: transparent;
+     border: none;
+     outline: none;
+     font-size: 1em;
+     color: #162938;
+     font-weight: 600;
+     padding: 0 35px 0 5px;
+}
+
+.container .optionUl{
+     width: 100%;
+     display: flex;
+     flex-direction: row;
+}
+
+.container .optionUl li{
+     list-style: none;
+     padding: 10px;
+     cursor: pointer;
+     color: #707072;
+     border-bottom: 1px solid #38d39f;
+     opacity: 0.5;
+     transition: border-bottom 0.3s ease;
+}
+
+.container .optionUl li.activeOption{
+     opacity: 1;
+     border-bottom: 3px solid #38d39f;
+}
+
+.container .optionUl li:hover{
+     opacity: 1;
+
+}
+
+.container .contentDiv .entrySys,
+.container .contentDiv .throttleSys,
+.container .contentDiv .cutSys,
+.container .contentDiv .profitSys{
+     display: flex;
+     flex-direction: column;
+}
+
+.container .contentDiv .throttleSys,
+.container .contentDiv .cutSys,
+.container .contentDiv .profitSys{
+     display: none;
+}

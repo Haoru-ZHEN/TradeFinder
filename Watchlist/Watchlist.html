@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+     <meta http-equiv="Content-Type" content="text/html; charset=windows-1252" />
+     <title>Watchlist</title>
+     <link rel="stylesheet" href="Watchlist.css" />
+     <link rel="icon" href="../falcon.png" />
+
+     <script src="https://kit.fontawesome.com/736b8c9e75.js" crossorigin="anonymous"></script>
+     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css" />
+     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/solid.css">
+</head>
+
+<body>
+     <header class="mainHeader" onmouseleave="removeBox()">
+          <h2 class="logo">TradeFinder</h2>
+          <ul class="midUl" onmouseenter="showBox()">
+               <li><a href="../TradeFinder.html" onmouseover="moveBox(event)">Home</a></li>
+               <li><a href="#" onmouseover="moveBox(event)">Portfolio</a></li>
+               <li><a href="Watchlist.html" onmouseover="moveBox(event)">Watchlist</a></li>
+               <li><a href="../System/System.html" onmouseover="moveBox(event)">Trading System</a></li>
+          </ul>
+          <i id="menuIcon" class="uil uil-bars menuIcon" onclick="openMenu()"></i>
+
+          <div class="box"></div>
+     </header>
+
+     <div class="loaderContainer">
+          <div id="loader" class="loader"></div>
+     </div>
+
+     <div class="sideWall">
+          <div class="blurArea" onclick="closeMenu()">
+
+          </div>
+          <div class="sideBar">
+               <header>
+                    <svg onclick="closeMenu()" class="tds-icon tds-icon-close tds-modal-close-icon"
+                         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                         <path d="M18.53 17.47a.75.75 0 1 1-1.06 1.06L12 13.06l-5.47 5.47a.748.748 0 0 1-1.06 0 .75.75 0 0 1 0-1.06L10.94 12 5.47 6.53a.75.75 0 1 1 1.06-1.06L12 10.94l5.47-5.47a.75.75 0 1 1 1.06 1.06L13.06 12l5.47 5.47z"
+                              fill="#393c41"></path>
+                    </svg>
+               </header>
+               <ul>
+                    <li><a href="TradeFinder.html">Home</a></li>
+                    <li><a href="#">Portfolio</a></li>
+                    <li><a href="Watchlist/Watchlist.html">Watchlist</a></li>
+                    <li><a href="System/System.html">Trading System</a></li>
+               </ul>
+          </div>
+     </div>
+     <div class="container">
+          <div class="contentDiv">
+               <h2>Watchlist</h2>
+               <div class="addDiv">
+                    <input type="text" placeholder="Pair Symbol" id="symbolInput">
+                    <input type="text" placeholder="Describe" id="describeInput">
+                    <div class="butDiv" id="butDiv">
+                         <button class="orderBut" onclick="addPair()">Add</button>
+                    </div>
+               </div>
+
+               <div class="listDiv">
+                    <div class="titleTable">
+                         <div class="searchDiv" id="searchDiv">
+                              <i class="uil uil-search" id="searchIcon"></i>
+                              <input type="text" id="searchInput" class="searchInput" onkeyup="tableSearch()"
+                                   placeholder="Search Symbol" autocomplete="off">
+
+
+                         </div>
+
+                         <div class="filterDiv" id="filterDiv">
+                              <i class="uil uil-filter"></i>
+                              <ul>
+                                   <li class="activeFilter" id="allFilter" onclick="filterAction(1)">All</li>
+                                   <li id="buyFilter" onclick="filterAction(2)">Buy</li>
+                                   <li id="sellFilter" onclick="filterAction(3)">Sell</li>
+                                   <li id="bookmarkFilter" onclick="filterAction(4)">Bookmark</li>
+                              </ul>
+                         </div>
+                         
+                         <div class="saveDiv">
+                              <i class="uil uil-save" id="saveIcon" onclick="saveData()"></i>
+                         </div>
+
+                    </div>
+
+                    <table id="thetable">
+                         <tr class="headerTable">
+                              <th style="display: none;">ID</th>
+                              <th>Pair</th>
+                              <th>Price</th><!--
+                                   <td><span class="activeTD">BUY</span></td>
+                                   <td><span>WAIT</span></td>
+                                   <td><span>SELL</span></td>-->
+                              <th>Action</th>
+                              <th>AI Indicate</th>
+                              <th>Desription</th>
+                              <th class="iconTable"><i class="fa-solid fa-square-poll-vertical"></i></th>
+                              <th class="iconTable"><i class="uis uis-bookmark"></i></th>
+                              <th class="iconTable">-</th> 
+                         </tr><!--
+                         <tr>
+                              <td>TSLA</td>
+                              <td style="display: none;">URL</td>
+                              <td>155</td>
+                              <td class="actionTD"><span class="actionContainer"><span class="dotSpan"></span> Wait</span></td>
+                              <td>Buy</td>
+                              <td><input type="text" placeholder="Memo"></td>
+                              <td class="iconTable"><i class="fa-solid fa-square-poll-vertical" id="chartIcon"></i></td>
+                              <td class="iconTable"><i class="uil uil-bookmark" id="bookmarkIcon"></i></td>
+                              <td class="iconTable"><i class="uil uil-ellipsis-h" id="moreIcon"></i></td>
+                         </tr>-->
+                    </table>
+
+                    <div class="moreDiv" id="moreDiv">
+                         <ul>
+                              <li onclick="moreOption(1)">Open chart in new tab</li>
+                              <li onclick="moreOption(2)">Delete pair</li>
+                              <li onclick="moreOption(3)">Edit details</li>
+                         </ul>
+                    </div>
+                    <div class="actionDiv" id="actionDiv">
+                         <ul>
+                              <li onclick="actionBuy(0)">Buy</li>
+                              <li onclick="actionBuy(1)">Wait</li>
+                              <li onclick="actionBuy(2)">Sell</li>
+                         </ul>
+                    </div>
+               </div>
+          </div>
+
+
+     </div>
+
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.3/js/bootstrap.min.js"></script>
+     <script src="https://www.gstatic.com/firebasejs/9.18.0/firebase-app-compat.js"></script>
+     <script src="https://www.gstatic.com/firebasejs/9.18.0/firebase-database-compat.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+     <script src="Watchlist.js"></script>
+</body>
+
+</html>

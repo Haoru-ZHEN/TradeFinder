@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+     <!--<meta http-equiv="Content-Type" content="text/html; charset=windows-1252" />-->
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>TradeFinder</title>
+     <link rel="stylesheet" href="TradeFinder.css" />
+     <link rel="icon" href="falcon.png" />
+
+     <script src="https://kit.fontawesome.com/736b8c9e75.js" crossorigin="anonymous"></script>
+     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css" />
+</head>
+
+<body>
+     <header class="mainHeader" onmouseleave="removeBox()">
+          <h2 class="logo">TradeFinder</h2>
+          <ul class="midUl" onmouseenter="showBox()">
+               <li><a href="TradeFinder.html" onmouseover="moveBox(event)">Home</a></li>
+               <li><a href="#" onmouseover="moveBox(event)">Portfolio</a></li>
+               <li><a href="Watchlist/Watchlist.html" onmouseover="moveBox(event)">Watchlist</a></li>
+               <li><a href="System/System.html" onmouseover="moveBox(event)">Trading System</a></li>
+          </ul>
+
+          <i id="menuIcon" class="uil uil-bars menuIcon" onclick="openMenu()"></i>
+
+          <div class="box"></div>
+     </header>
+
+     <div class="container">
+          <div class="contentDiv">
+               <h2>TradeFinder</h2>
+               <h3>Find the best trade</h3>
+               <div class="butDiv" id="butDiv">
+                    <button id="loginBut_menu" class="orderBut" onclick="showLogin(0)">Login</button>
+                    <button id="signupBut_menu" class="learnBut" onclick="showLogin(1)">Sign Up</button>
+               </div>
+          </div>
+
+          <div class="sideWall">
+               <div class="blurArea" onclick="closeMenu()">
+
+               </div>
+               <div class="sideBar">
+                    <header>
+                         <svg onclick="closeMenu()" class="tds-icon tds-icon-close tds-modal-close-icon"
+                              viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M18.53 17.47a.75.75 0 1 1-1.06 1.06L12 13.06l-5.47 5.47a.748.748 0 0 1-1.06 0 .75.75 0 0 1 0-1.06L10.94 12 5.47 6.53a.75.75 0 1 1 1.06-1.06L12 10.94l5.47-5.47a.75.75 0 1 1 1.06 1.06L13.06 12l5.47 5.47z"
+                                   fill="#393c41"></path>
+                         </svg>
+                    </header>
+                    <ul>
+                         <li><a href="TradeFinder.html">Home</a></li>
+                         <li><a href="#">Portfolio</a></li>
+                         <li><a href="Watchlist/Watchlist.html">Watchlist</a></li>
+                         <li><a href="System/System.html">Trading System</a></li>
+                    </ul>
+               </div>
+          </div>
+
+
+
+
+          <div class="loginWrapper">
+
+               <div class="contentLogin">
+                    <i class="uil uil-times closeIcon" onclick="closeLogin()"></i>
+                    <h2>Welcome to TradeFinder!</h2>
+                    <h3>Login your account</h3>
+
+                    <span>Email</span>
+                    <input type="text" id="emailInput" placeholder="wayne123@gmail.com" class="inputLogin">
+                    <span>Password</span>
+                    <input type="password" id="pwdInput" placeholder="310f@92v" class="inputLogin">
+                    <button id="loginBut" onclick="login()">Login</button>
+               </div>
+               <div class="contentSignup">
+                    <i class="uil uil-times closeIcon" onclick="closeLogin()"></i>
+                    <h2>Welcome to TradeFinder!</h2>
+                    <h3>Register your account</h3>
+
+                    <span>Email</span>
+                    <input type="text" id="emailInput_signup" placeholder="wayne123@gmail.com" class="inputLogin">
+                    <span>Password</span>
+                    <input type="password" id="pwdInput_signup" placeholder="310f@92v" class="inputLogin">
+                    <span>Referral Code</span>
+                    <input type="text" id="referInput" placeholder="Go get one!" class="inputLogin">
+                    <button id="signupBut" onclick="signup()">Sign Up</button>
+               </div>
+
+          </div>
+
+          <div class="welcomeDiv" onclick="showOption()">
+               <h3 id="welcomeText">Welcome back, 86</h3>
+               <i id="moreIcon" class="uil uil-angle-down"></i>
+          </div>
+
+          <div class="moreDiv" id="moreDiv">
+               <ul>
+                    <li onclick="moreOption(1)">Log out</li>
+               </ul>
+          </div>
+
+     </div>
+
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+     <script src="https://www.gstatic.com/firebasejs/9.18.0/firebase-app-compat.js"></script>
+     <script src="https://www.gstatic.com/firebasejs/9.18.0/firebase-database-compat.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+     <script src="TradeFinder.js"></script>
+</body>
+
+</html>
