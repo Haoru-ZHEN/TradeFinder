@@ -224,7 +224,7 @@ header ul li a:hover .box {
      background-color: #fff;
      z-index: 10;
      display: none;
-     padding: 50px 50px;
+     padding: 20px 50px 50px 50px;
      opacity: 0;
      transition: opacity 0.3s ease-in-out;
      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
@@ -242,11 +242,14 @@ header ul li a:hover .box {
 
 .loginWrapper .contentLogin .closeIcon,
 .loginWrapper .contentSignup .closeIcon {
-     position: absolute;
+
      font-size: 30px;
-     color: var(--orderColor);
+     color: var(--orderColor);/*
+     position: absolute;
      right: 26%;
-     top: 23%;
+     top: 23%;*/
+     align-self: end;
+     justify-content: end;
      transition: transform 0.2s ease;
      cursor: pointer;
 }
@@ -489,7 +492,7 @@ header ul li a:hover .box {
 
      .loginWrapper {
           width: 80%;
-          padding: 20px;
+          padding: 20px 20px 20px 20px;
      }
 
      .loginWrapper h2 {
@@ -498,6 +501,7 @@ header ul li a:hover .box {
 
      .loginWrapper h3 {
           font-size: 12px;
+          margin-bottom: 30px;
      }
 
      .loginWrapper span {
@@ -567,6 +571,7 @@ header ul li a:hover .box {
 
      .loginWrapper h3 {
           font-size: 12px;
+          margin-bottom: 30px;
      }
 
      .loginWrapper span {

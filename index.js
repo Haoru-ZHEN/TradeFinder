@@ -252,7 +252,7 @@ function openMenu(){
           sideBar.style.width = '20%'
           sideBar.style.padding = '30px'
      }
-     
+
      mainHeader.style.zIndex = 0;
      sideWall.style.opacity = 1
      //sideBar.style.right = '0'
@@ -280,7 +280,7 @@ function closeMenu(){
 
 
      sideBar.addEventListener("transitionend", function() {
-          if (sideBar.style.width == '0') {
+          if (sideBar.style.width === '0px') {
                sideWall.style.opacity = 0
                sideWall.style.zIndex = -1;
           }
