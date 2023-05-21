@@ -374,6 +374,7 @@ header ul li a:hover .box {
      flex-direction: row;
      opacity: 0;
      z-index: -1;
+     overflow: hidden;
 }
 
 .blurArea {
@@ -387,12 +388,14 @@ header ul li a:hover .box {
      display: flex;
      flex-direction: column;
      height: 100%;
-     width: 20%;
-     position: absolute;
-     right: -320px;
+     width: 0;
+     /*position: absolute;
+     right: -320px;*/
      background-color: #fff;
      padding: 30px;
      transition: all 0.3s ease;
+     overflow: hidden;
+     white-space: nowrap;
 }
 
 .sideBar header {
@@ -466,9 +469,8 @@ header ul li a:hover .box {
      .welcomeDiv h3 {
           font-size: 10px;
      }
-
      .sideBar {
-          width: 70%;
+          padding: 10px;
      }
 
      .sideBar header svg {
@@ -543,18 +545,16 @@ header ul li a:hover .box {
      header .midUl {
           opacity: 0;
      }
-
-     
-
-     .sideBar {
-          width: 40%;
-     }
-
      
      .butDiv button {
           padding: 12px 70px;
           font-size: 12px;
      }
+
+     .sideBar {
+          padding: 20px;
+     }
+
 
      .loginWrapper {
           width: 80%;

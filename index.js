@@ -238,12 +238,26 @@ function openMenu(){
      const sideBar = document.querySelector('.sideBar');
      const sideWall = document.querySelector('.sideWall');
      const blurArea = document.querySelector('.blurArea');
-
+     var screenWidth = window.innerWidth;
      const mainHeader =document.querySelector('.mainHeader');
 
+     if(screenWidth <= 600){
+          sideBar.style.width = '90%'
+          sideBar.style.padding = '10px'
+          console.log('mobile')
+     }else if(screenWidth <= 900){
+          sideBar.style.width = '40%'
+          sideBar.style.padding = '20px'
+     }else{
+          sideBar.style.width = '20%'
+          sideBar.style.padding = '30px'
+     }
+     
      mainHeader.style.zIndex = 0;
      sideWall.style.opacity = 1
-     sideBar.style.right = '0'
+     //sideBar.style.right = '0'
+     
+
      sideWall.style.zIndex = 1;
      blurArea.style.backdropFilter = "blur(3px)";
 
@@ -259,12 +273,14 @@ function closeMenu(){
 
      mainHeader.style.zIndex = 99;
 
-     sideBar.style.right = '-320px'
+     sideBar.style.width = '0'
+     sideBar.style.padding = '0'
+
      blurArea.style.backdropFilter = "blur(0px)";
 
 
      sideBar.addEventListener("transitionend", function() {
-          if (sideBar.style.right=== '-320px') {
+          if (sideBar.style.width == '0') {
                sideWall.style.opacity = 0
                sideWall.style.zIndex = -1;
           }
