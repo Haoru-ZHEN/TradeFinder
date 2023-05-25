@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-     <meta http-equiv="Content-Type" content="text/html; charset=windows-1252" />
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <title>Watchlist</title>
      <link rel="stylesheet" href="Watchlist.css" />
      <link rel="icon" href="../falcon.png" />
@@ -16,7 +16,7 @@
      <header class="mainHeader" onmouseleave="removeBox()">
           <h2 class="logo">TradeFinder</h2>
           <ul class="midUl" onmouseenter="showBox()">
-               <li><a href="../index.html" onmouseover="moveBox(event)">Home</a></li>
+               <li><a href="../" onmouseover="moveBox(event)">Home</a></li>
                <li><a href="#" onmouseover="moveBox(event)">Portfolio</a></li>
                <li><a href="Watchlist.html" onmouseover="moveBox(event)">Watchlist</a></li>
                <li><a href="../System/System.html" onmouseover="moveBox(event)">Trading System</a></li>
@@ -36,20 +36,21 @@
           </div>
           <div class="sideBar">
                <header>
-                    <svg onclick="closeMenu()" class="tds-icon tds-icon-close tds-modal-close-icon"
-                         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <svg onclick="closeMenu()" class="tds-icon tds-icon-close tds-modal-close-icon" viewBox="0 0 24 24"
+                         xmlns="http://www.w3.org/2000/svg">
                          <path d="M18.53 17.47a.75.75 0 1 1-1.06 1.06L12 13.06l-5.47 5.47a.748.748 0 0 1-1.06 0 .75.75 0 0 1 0-1.06L10.94 12 5.47 6.53a.75.75 0 1 1 1.06-1.06L12 10.94l5.47-5.47a.75.75 0 1 1 1.06 1.06L13.06 12l5.47 5.47z"
                               fill="#393c41"></path>
                     </svg>
                </header>
                <ul>
-                    <li><a href="TradeFinder.html">Home</a></li>
+                    <li><a href="../">Home</a></li>
                     <li><a href="#">Portfolio</a></li>
-                    <li><a href="Watchlist/Watchlist.html">Watchlist</a></li>
-                    <li><a href="System/System.html">Trading System</a></li>
+                    <li><a href="Watchlist.html">Watchlist</a></li>
+                    <li><a href="../System/System.html">Trading System</a></li>
                </ul>
           </div>
      </div>
+
      <div class="container">
           <div class="contentDiv">
                <h2>Watchlist</h2>
@@ -62,13 +63,25 @@
                </div>
 
                <div class="listDiv">
+                    <div class="categoryDiv" onclick="showCatDiv()">
+                         <h3 id="currentListText">My Watchlist</h3>
+                         <i id="moreIcon" class="uil uil-angle-down"></i>
+                    </div>
+
+                    <div class="showCatDiv" id="showCatDiv">
+                         <ul id="listUl">
+                              <li class="activeCat">My Watchlist <i class="uil uil-check"></i></li>
+                              <li class="createLi" onclick="showNewListDiv()"><i class="uil uil-folder-plus"></i>Create
+                                   new list</li>
+                         </ul>
+                    </div>
+
                     <div class="titleTable">
+
                          <div class="searchDiv" id="searchDiv">
                               <i class="uil uil-search" id="searchIcon"></i>
                               <input type="text" id="searchInput" class="searchInput" onkeyup="tableSearch()"
                                    placeholder="Search Symbol" autocomplete="off">
-
-
                          </div>
 
                          <div class="filterDiv" id="filterDiv">
@@ -80,7 +93,7 @@
                                    <li id="bookmarkFilter" onclick="filterAction(4)">Bookmark</li>
                               </ul>
                          </div>
-                         
+
                          <div class="saveDiv">
                               <i class="uil uil-save" id="saveIcon" onclick="saveData()"></i>
                          </div>
@@ -98,9 +111,9 @@
                               <th>Action</th>
                               <th>AI Indicate</th>
                               <th>Desription</th>
-                              <th class="iconTable"><i class="fa-solid fa-square-poll-vertical"></i></th>
+                              <th class="iconTable" style="display: none;"><i class="fa-solid fa-square-poll-vertical"></i></th>
                               <th class="iconTable"><i class="uis uis-bookmark"></i></th>
-                              <th class="iconTable">-</th> 
+                              <th class="iconTable">-</th>
                          </tr><!--
                          <tr>
                               <td>TSLA</td>
@@ -132,8 +145,67 @@
                </div>
           </div>
 
-
      </div>
+     <div class="newListContainer">
+          <div class="newListDiv">
+               <svg onclick="showNewListDiv()" class="tds-icon tds-icon-close tds-modal-close-icon" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path d="M18.53 17.47a.75.75 0 1 1-1.06 1.06L12 13.06l-5.47 5.47a.748.748 0 0 1-1.06 0 .75.75 0 0 1 0-1.06L10.94 12 5.47 6.53a.75.75 0 1 1 1.06-1.06L12 10.94l5.47-5.47a.75.75 0 1 1 1.06 1.06L13.06 12l5.47 5.47z"
+                         fill="#393c41"></path>
+               </svg>
+               <div>
+                    <h3>Name your new list</h3>
+                    <input type="text" placeholder="New list name" id="newListInput">
+                    <button class="orderBut" onclick="createList()">Create</button>
+               </div>
+          </div>
+     </div>
+    
+     <div class="detailContainer">
+          <div class="detailDiv">
+               <div class="titleDetailDiv">
+                    <h2>Edit Details</h2>
+                    <svg onclick="closeDetailDiv()" class="tds-icon tds-icon-close tds-modal-close-icon" viewBox="0 0 24 24"
+                         xmlns="http://www.w3.org/2000/svg">
+                         <path d="M18.53 17.47a.75.75 0 1 1-1.06 1.06L12 13.06l-5.47 5.47a.748.748 0 0 1-1.06 0 .75.75 0 0 1 0-1.06L10.94 12 5.47 6.53a.75.75 0 1 1 1.06-1.06L12 10.94l5.47-5.47a.75.75 0 1 1 1.06 1.06L13.06 12l5.47 5.47z"
+                              fill="#393c41"></path>
+                    </svg>
+               </div>
+     
+               <ul class="detectUl">
+                    <li class="activeDetectLi" onclick="detectClick(event,0)">Manual Detect</li>
+                    <li onclick="detectClick(event,1)">GPT Detect</li>
+               </ul>
+               <div class="gridContainer">
+                    <div id="symbolGridItem">
+                         <label>Symbol</label>
+                         <input type="text" class="detailInput" autocomplete="off" id="symbolDetailInput">
+                    </div>
+                    <div>
+                         <label>Price API</label>
+                         <input type="text" class="detailInput" autocomplete="off" id="priceDetailInput">
+                    </div>
+     
+                    <div>
+                         <label>Support Price</label>
+                         <input type="text" class="detailInput" autocomplete="off" id="supportDetailInput">
+                    </div>
+     
+                    <div>
+                         <label>Resistance Price</label>
+                         <input type="text" class="detailInput" autocomplete="off" id="resistanceDetailInput">
+                    </div>
+     
+                    <div id="fileGridItem" style="display: none;">
+                         <label>File Uploaded</label>
+                         <input type="file" class="detailInput" autocomplete="off" id="fileDetailInput">
+                    </div>
+     
+               </div>
+               <button onclick="updateDetailData()">Save</button>
+          </div>
+     </div>
+     
 
      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>

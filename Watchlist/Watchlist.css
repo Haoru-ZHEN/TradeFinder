@@ -10,21 +10,21 @@
      --lighter-brown: #73767c;
      --lighter-brown2: #b4b4b4;
      --learnColor2: #f0e8ec;
-     --bgColor: #F5F7F9;
+     --bgColor: #f5f7f9;
      --bgColor2: hsl(192, 17%, 94%);
-     --bullColor: rgb(84,202,175);
-     --bullColorOpa: rgb(84,202,175,0.5);
-     --bearColor: rgb(255,110,102);
-     --bearColorOpa: rgb(255,110,102,0.5);
-     --waitColor2: rgb(77,79,83);
-     --waitColor: rgb(115,118,124);
-     --waitColorOpa2: rgba(77,79,83,0.5);
-     --waitColorOpa: rgba(115,118,124,0.5);
+     --bullColor: rgb(84, 202, 175);
+     --bullColorOpa: rgb(84, 202, 175, 0.5);
+     --bearColor: rgb(255, 110, 102);
+     --bearColorOpa: rgb(255, 110, 102, 0.5);
+     --waitColor2: rgb(77, 79, 83);
+     --waitColor: rgb(115, 118, 124);
+     --waitColorOpa2: rgba(77, 79, 83, 0.5);
+     --waitColorOpa: rgba(115, 118, 124, 0.5);
      --grey: #6b7280;
-     --green:#2EBD85;
-     --red:#F6465D;
-     --gray:#9ea1a5;
-     --gold:#ecd04c;
+     --green: #2ebd85;
+     --red: #f6465d;
+     --gray: #9ea1a5;
+     --gold: #ecd04c;
 }
 
 @font-face {
@@ -34,7 +34,6 @@
      font-style: normal;
 }
 
-
 * {
      margin: 0;
      padding: 0;
@@ -42,14 +41,13 @@
      box-sizing: border-box;
 }
 
-
 body {
      width: 100%;
      height: 100%;
      min-height: 100vh;
      background: var(--bgColor);
      overflow-x: hidden;
-}/*
+} /*
 header {
      position: absolute;
      top: 0;
@@ -72,9 +70,10 @@ header .logo {
      text-transform: uppercase;
 }
 
-
 .mainHeader {
-
+     position: absolute;
+     top: 0;
+     left: 0;
      width: 100%;
      padding: 20px;
      display: flex;
@@ -89,7 +88,7 @@ header ul {
      align-items: center;
 }
 
-header .midUl{
+header .midUl {
      position: absolute;
      left: 38%;
      height: 100%;
@@ -118,8 +117,6 @@ header .menuIcon {
      cursor: pointer;
 }
 
-
-
 .box {
      position: absolute;
      top: 18px;
@@ -133,12 +130,12 @@ header .menuIcon {
      transition: all 0.3s ease-in-out;
      z-index: -1;
 }
-header ul li a:hover .box{
+header ul li a:hover .box {
      opacity: 1;
      background: #000;
 }
 
-.container{
+.container {
      width: 100%;
      height: 100vh;
      background-color: var(--bgColor);
@@ -150,8 +147,7 @@ header ul li a:hover .box{
      justify-content: center;
 }
 
-.contentDiv{
-     position: absolute;
+.contentDiv {
      width: 100%;
      height: 100%;
      display: flex;
@@ -161,18 +157,19 @@ header ul li a:hover .box{
      padding-top: 100px;
 }
 
-.contentDiv h2{
+.contentDiv h2 {
      font-size: 40px;
      font-weight: 500;
      margin-bottom: 25px;
 }
 
-.addDiv{
+.addDiv {
      background-color: #fff;
      display: flex;
      flex-direction: row;
      padding: 30px 50px;
      border-radius: 15px;
+     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 /*
 .contentDiv h3{
@@ -210,13 +207,11 @@ header ul li a:hover .box{
      opacity: 0.9;
 }
 
-
 .orderBut:focus {
      outline: 2px solid white;
 }
 
-
-.contentDiv .addDiv input{
+.contentDiv .addDiv input {
      width: 300px;
      font-size: 14px;
      color: #000;
@@ -229,42 +224,106 @@ header ul li a:hover .box{
      transition: border 0.3s ease-in-out;
 }
 
-#symbolInput{
+#symbolInput {
      width: 150px;
 }
 
-.contentDiv .addDiv input:focus{
+.contentDiv .addDiv input:focus {
      border: 2px solid var(--orderColor);
 }
 
-.contentDiv .addDiv input::placeholder{
-     color:#dcdee2;
+.contentDiv .addDiv input::placeholder {
+     color: #dcdee2;
 }
 
-.listDiv{
+.listDiv {
      background-color: #fff;
      width: max-content;
      padding: 20px;
      margin-top: 30px;
      border-radius: 15px;
+     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.activeTD{
+.listDiv .categoryDiv {
+     display: flex;
+     flex-direction: row;
+     align-items: center;
+     margin-bottom: 20px;
+     color: #393c41;
+     cursor: pointer;
+}
+
+.listDiv .categoryDiv h3 {
+     font-size: 18px;
+}
+
+.listDiv .categoryDiv i {
+     font-size: 25px;
+}
+
+.listDiv .showCatDiv {
+     position: absolute;
+     transform: translateY(-15px);
+     background-color: #fff;
+     box-shadow: 2px 2px 10px 2px #0000001a;
+     z-index: -1;
+     opacity: 0;
+     transition: opacity 0.2s ease;
+}
+
+.listDiv .showCatDiv ul li {
+     width: 200px;
+     list-style: none;
+     font-weight: 300;
+     font-size: 15px;
+     cursor: pointer;
+     padding: 10px 20px;
+     color: #393c41;
+     transition: background-color 0.3s ease;
+     justify-content: space-between;
+     display: flex;
+     flex-direction: row;
+}
+
+.listDiv .showCatDiv i {
+     color: #0092e4;
+}
+
+.listDiv .showCatDiv li.createLi {
+     align-items: center;
+     justify-content: center;
+     font-weight: 400;
+}
+
+.listDiv .showCatDiv li.createLi i {
+     font-size: 20px;
+     margin-right: 5px;
+     opacity: 0.6;
+}
+
+.listDiv .showCatDiv ul li.activeCat {
+     font-weight: 400;
+}
+
+.listDiv .showCatDiv ul li:hover {
+     background-color: #eee;
+}
+
+.activeTD {
      border-radius: 100px;
      background-color: var(--bullColor);
      color: #fff;
      padding: 5px 10px;
 }
 
-
-
-.listDiv .headerTable th ,
-.listDiv td{
+.listDiv .headerTable th,
+.listDiv td {
      text-align: center;
      /*background-image: linear-gradient(to right, var(--pink), var(--purple));*/
      color: var(--lighter-brown2);
      font-size: 15px;
-     font-weight: 750;
+     font-weight: 550;
      width: 110px;
      margin-bottom: 20px;
      border-bottom: 1px solid var(--learnColor);
@@ -272,14 +331,11 @@ header ul li a:hover .box{
      transition: background 3s ease;
 }
 
-
-
-.listDiv .headerTable th{
+.listDiv .headerTable th {
      background-color: var(--bgColor);
      color: var(--black);
      opacity: 0.7;
      border-bottom: 1.5px solid var(--learnColor);
-
 }
 /*
 .listDiv .headerTable th:hover{
@@ -289,37 +345,36 @@ header ul li a:hover .box{
 	-webkit-text-fill-color: transparent;
 }*/
 
-
 .listDiv table {
      border-collapse: collapse;
      border-radius: 20px;
 }
 
-.listDiv td input{
+.listDiv td input {
      width: 300px;
      padding: 5px 5px;
      border-radius: 5px;
      border: 1px solid #ccc;
 }
 
-.listDiv td input::placeholder{
+.listDiv td input::placeholder {
      color: #ccc;
 }
 
-.listDiv td i{
+.listDiv td i {
      font-size: 20px;
      cursor: pointer;
 }
 
-.listDiv tr .iconTable{
+.listDiv tr .iconTable {
      width: 75px;
 }
 
-.listDiv .actionTD{
+.listDiv .actionTD {
      justify-content: center;
 }
 
-.listDiv td .actionContainer{
+.listDiv td .actionContainer {
      width: max-content;
      background-color: var(--waitColorOpa);
      border-radius: 15px;
@@ -333,9 +388,7 @@ header ul li a:hover .box{
      cursor: pointer;
 }
 
-
-
-.listDiv td .actionContainer .dotSpan{
+.listDiv td .actionContainer .dotSpan {
      background-color: var(--waitColor);
      border-radius: 50px;
      width: 10px;
@@ -343,29 +396,52 @@ header ul li a:hover .box{
      margin-right: 5px;
 }
 
-.buyAction{
-     background-color: var(--bullColorOpa)!important; 
-     color: var(--bullColor)!important; 
+.buyAction {
+     background-color: var(--bullColorOpa) !important;
+     color: var(--bullColor) !important;
      margin-left: 13px !important;
 }
 
-.buyActionDot{
-     background-color: var(--bullColor)!important;
+.buyActionDot {
+     background-color: var(--bullColor) !important;
 }
 
-.sellAction{
-     background-color: var(--bearColorOpa)!important;
-     color: var(--bearColor)!important;
+.sellAction {
+     background-color: var(--bearColorOpa) !important;
+     color: var(--bearColor) !important;
      margin-left: 13px !important;
 }
 
-.sellActionDot{
-     background-color: var(--bearColor)!important;
+.sellActionDot {
+     background-color: var(--bearColor) !important;
 }
 
+.listDiv td.aiContainer {
+     /*background: linear-gradient(to right, #c6ffdd, #fbd786, #f7797d);*/
+     background: linear-gradient(to right, #ec4899, #8b5cf6);
+     background-size: 400%;
+     -webkit-background-clip: text;
+     -webkit-text-fill-color: transparent;
+     animation: gradientAnimate 10s linear infinite;
+}
 
+@keyframes gradientAnimate {
+     0% {
+          /*background: linear-gradient(to right, #ec4899, #8b5cf6);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;*/
+          background-position: 0%;
 
-.titleTable{
+     }
+     100% {
+          /*background: linear-gradient(to right, #8b5cf6, #ec4899);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;*/
+          background-position: 400%;
+     }
+}
+
+.titleTable {
      display: flex;
      flex-direction: row;
      justify-content: space-between;
@@ -373,14 +449,14 @@ header ul li a:hover .box{
 }
 
 .searchDiv i,
-.filterDiv i{
+.filterDiv i {
      float: inline-start;
      color: #ccc;
      margin-right: 10px;
 }
 
 .searchDiv,
-.filterDiv{
+.filterDiv {
      align-self: end;
      width: min-content;
      height: min-content;
@@ -389,12 +465,11 @@ header ul li a:hover .box{
      padding: 10px 10px;
      border-radius: 1rem;
      align-items: center;
-
 }
 
-.searchInput{
+.searchInput {
      width: 150px;
-     height: max-content;  
+     height: max-content;
      outline: none;
      background: transparent;
      color: var(--orderColor);
@@ -405,15 +480,15 @@ header ul li a:hover .box{
      transition: width 0.3s ease-in-out;
 }
 
-.searchInput::placeholder{
+.searchInput::placeholder {
      color: #ccc;
 }
 
-.filterDiv{
+.filterDiv {
      padding: 10px 10px;
 }
 
-.filterDiv ul{
+.filterDiv ul {
      display: flex;
 }
 
@@ -431,43 +506,63 @@ header ul li a:hover .box{
      cursor: pointer;
 }
 
-
-.filterDiv ul .activeFilter{
-     background-color: #FFD54F;
+.filterDiv ul .activeFilter {
+     background-color: #ffd54f;
      color: #fff;
 }
 
-.saveDiv{
+.saveDiv {
      padding: 10px 10px;
      width: max-content;
      height: 100%;
      display: flex;
      align-content: center;
      justify-content: center;
+     transition: box-shadow 0.3s ease;
+     border-radius: 50px;
 }
 
-.saveDiv i{
+.saveDiv i {
      margin: 0;
      font-size: 25px;
      color: #ccc;
      cursor: pointer;
 }
 
+.saveDiv:hover {
+     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
 /*********MOREDIV*********************/
-.moreDiv{
+.moreDiv {
      position: absolute;
-     top:48%;
-     right:2%;
+     top: 48%;
+     right: 5%;
      width: 200px;
      height: max-content;
      border-radius: 10px;
      background-color: #fff;
      padding: 5px 5px 15px 5px;
      display: none;
-     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
-.moreDiv ul li{
+.moreDiv::before {
+     width: 0px;
+     height: 0px;
+     border-left: 10px solid transparent;
+     border-right: 10px solid transparent;
+     border-bottom: 10px solid #fff;
+     transform: rotate(270deg);
+     border-radius: 5px;
+     position: absolute;
+     left: -14px;
+     top: 20px;
+     content: "";
+     display: block;
+}
+
+.moreDiv ul li {
      width: 100%;
      list-style: none;
      text-decoration: none;
@@ -475,22 +570,21 @@ header ul li a:hover .box{
      color: #ccc;
      font-size: 14px;
      font-weight: 300;
-     border-bottom: 1px solid var(--learnColor);
+     border-bottom: 0px solid var(--learnColor);
      transition: background 0.5s ease;
      background-color: #fff;
      cursor: pointer;
-
 }
 
-.moreDiv ul li:hover{
+.moreDiv ul li:hover {
      background-color: var(--bgColor);
 }
 
 /*********ACTIONDIV*********************/
-.actionDiv{
+.actionDiv {
      position: absolute;
-     top:48%;
-     left:37%;
+     top: 48%;
+     left: 37%;
      width: 120px;
      height: max-content;
      border-radius: 10px;
@@ -500,11 +594,11 @@ header ul li a:hover .box{
      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.actionDiv ul{
+.actionDiv ul {
      width: 100%;
 }
 
-.actionDiv ul li{
+.actionDiv ul li {
      width: 100%;
      list-style: none;
      text-decoration: none;
@@ -519,23 +613,22 @@ header ul li a:hover .box{
      opacity: 1;
 }
 
-.actionDiv ul li:nth-child(1){
+.actionDiv ul li:nth-child(1) {
      background-color: var(--bullColorOpa);
      color: var(--bullColor);
 }
-.actionDiv ul li:nth-child(2){
+.actionDiv ul li:nth-child(2) {
      background-color: var(--waitColorOpa);
      color: var(--waitColor);
 }
-.actionDiv ul li:nth-child(3){
+.actionDiv ul li:nth-child(3) {
      background-color: var(--bearColorOpa);
      color: var(--bearColor);
 }
 
-.actionDiv ul li:hover{
+.actionDiv ul li:hover {
      opacity: 0.7;
 }
-
 
 /*========== SCROLL BAR ==========*/
 ::-webkit-scrollbar {
@@ -552,7 +645,6 @@ header ul li a:hover .box{
 ::-webkit-scrollbar-thumb:hover {
      background-color: var(--text-color-light);
 }
-
 
 /*******side bar*******/
 .sideWall {
@@ -576,12 +668,14 @@ header ul li a:hover .box{
      display: flex;
      flex-direction: column;
      height: 100%;
-     width: 20%;
-     position: absolute;
-     right: -320px;
+     width: 0;
+     /*position: absolute;
+     right: -320px;*/
      background-color: #fff;
      padding: 30px;
      transition: all 0.3s ease;
+     overflow: hidden;
+     white-space: nowrap;
 }
 
 .sideBar header {
@@ -621,13 +715,248 @@ header ul li a:hover .box{
      background-color: #eee;
 }
 
-.sideBar ul li a{
+.sideBar ul li a {
      text-decoration: none;
      color: #393c41;
 }
 
+/************new list div**********/
+.newListContainer{
+     position: absolute;
+     top: 0;
+     width: 100%;
+     height: 100%;
+     background-color: rgba(115, 118, 124, 0.3);
+     backdrop-filter: blur(1px);
+     display: none;
+     align-items: center;
+     justify-content: center;
+}
+.newListDiv {
+     /*
+     position: absolute;
+     top: 40%;
+     left: 35%;*/
+     background-color: #fff;
+     box-shadow: 2px 2px 10px 2px #0000001a;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     justify-content: center;
+     border-radius: 20px;
+     padding: 10px;
+}
+
+.newListDiv h3 {
+     font-size: 18px;
+     font-weight: 400;
+     color: #393c41;
+     margin-bottom: 25px;
+}
+
+.newListDiv div {
+     padding: 20px 50px 50px 50px;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     justify-content: center;
+}
+
+.newListDiv svg {
+     width: 35px;
+     height: 35px;
+     cursor: pointer;
+     border-radius: 5px;
+     transition: background-color 0.3s ease;
+     padding: 5px;
+     align-self: end;
+}
+
+.newListDiv svg:hover {
+     background-color: #eee;
+}
+
+.newListDiv input {
+     width: 300px;
+     font-size: 12px;
+     color: #000;
+     font-weight: 400;
+     padding: 12px;
+     border-radius: 5px;
+     border: 2px solid #dcdee2;
+     outline: none;
+     transition: border 0.3s ease-in-out;
+     margin-bottom: 25px;
+}
+
+.newListDiv input:focus {
+     border: 2px solid var(--orderColor);
+}
+
+.newListDiv input::placeholder {
+     color: #dcdee2;
+}
+
+.newListDiv button {
+     width: 60%;
+     padding: 12px;
+     border-radius: 5px;
+     outline-offset: -5px;
+     border: none;
+
+     font-size: 14px;
+     cursor: pointer;
+}
+
+/************detail div**********/
+.detailContainer{
+     position: absolute;
+     top: 0;
+     width: 100%;
+     height: 100%;
+     background-color: rgba(115, 118, 124, 0.3);
+     backdrop-filter: blur(1px);
+     display: none;
+     align-items: center;
+     justify-content: center;
+}
+.detailDiv {
+     /*position: absolute;
+     top: 25%;
+     left: 35%;*/
+     background-color: #fff;
+     box-shadow: 2px 2px 10px 2px #0000001a;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     justify-content: center;
+     border-radius: 20px;
+     padding: 20px;
+}
+
+.detailDiv .gridContainer {
+     display: grid;
+     grid-template-columns: 1fr 1fr;
+     margin-top: 20px;
+     grid-gap: 20px;
+}
+
+.detailDiv .titleDetailDiv {
+     width: 100%;
+     display: flex;
+     flex-direction: row;
+     align-items: center;
+     justify-content: space-between;
+}
+
+.detailDiv .titleDetailDiv h2 {
+     font-size: 18px;
+     font-weight: 400;
+     color: #393c41;
+}
+
+.detailDiv svg {
+     width: 35px;
+     height: 35px;
+     cursor: pointer;
+     border-radius: 5px;
+     transition: background-color 0.3s ease;
+     padding: 5px;
+     align-self: end;
+}
+
+.detailDiv svg:hover {
+     background-color: #eee;
+}
+
+.detailDiv .detectUl {
+     width: 100%;
+     display: flex;
+     flex-direction: row;
+     background-color: #eee;
+     border-radius: 5px;
+     padding: 4px;
+     margin-top: 30px;
+}
+
+.detailDiv .detectUl li {
+     width: 50%;
+     text-align: center;
+     list-style: none;
+     font-size: 12px;
+     padding: 10px;
+     background-color: transparent;
+     margin-right: 5px;
+     border-radius: 3px;
+     color: #5c5e62;
+     font-weight: 350;
+     cursor: pointer;
+     transition: background-color 0.3s ease;
+}
+
+.detailDiv .detectUl li.activeDetectLi {
+     background-color: #fff;
+     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+     color: #171a20;
+}
+
+.detailDiv .detectUl li:nth-child(2) {
+     margin-right: 0px;
+}
+
+.detailDiv .gridContainer div {
+     display: flex;
+     flex-direction: column;
+     margin-bottom: 20px;
+}
+
+.detailDiv label {
+     font-weight: 500;
+     font-size: 14px;
+     color: #5c5e62;
+     margin-bottom: 10px;
+}
+
+.detailDiv input {
+     max-width: 230px;
+     width: 230px;
+     background: #f4f4f4;
+     border-radius: 4px;
+     outline: none;
+     border: 1px solid #f4f4f4;
+     padding: 10px;
+     font-weight: 500;
+     font-size: 15px;
+     color: #5c5e62;
+     transition: border 0.3s ease;
+}
+
+.detailDiv input:focus {
+     border: 1px solid #bababa;
+}
+
+.detailDiv button {
+     color: #fff;
+     padding: 10px 70px;
+     border-radius: 5px;
+     outline-offset: -5px;
+     border: none;
+     background-color: #3e6ae1;
+     font-size: 14px;
+     cursor: pointer;
+     transition: background-color 0.3s ease;
+}
+
+.detailDiv button:hover {
+     background-color: #2c4999;
+}
+
+.detailDiv button:focus {
+     outline: 2px solid white;
+}
+
 /************LOADER**********/
-.loaderContainer{
+.loaderContainer {
      position: absolute;
      background-color: #fff;
      box-shadow: 0 0 10px #ccc, 0 0 5px #ccc, 0 0 5px #ccc;
@@ -648,7 +977,7 @@ header ul li a:hover .box{
      width: 40px;
      border: 5px solid #fff;
      border-top-color: var(--bullColor);
-     
+
      border-radius: 50%;
      animation: spin 1s infinite ease;
      /*box-shadow: 0 0 30px rgba(#00b3ff,.5);
@@ -665,11 +994,12 @@ header ul li a:hover .box{
      }
 }
 
-
-
 /*****responsive screen adjust******/
 
 @media (max-width: 600px) {
+     header .logo {
+          font-size: 12px;
+     }
 
      .sideBar {
           width: 70%;
@@ -683,9 +1013,50 @@ header ul li a:hover .box{
      .sideBar ul li {
           font-size: 12px;
      }
+
+     .addDiv {
+          padding: 10px 20px;
+     }
+
+     .butDiv button {
+          width: 75px;
+          padding: 12px;
+          font-size: 14px;
+     }
+
+     .contentDiv .addDiv input {
+          width: 140px;
+          font-size: 12px;
+          padding: 15px;
+          margin-right: 10px;
+     }
+
+     #symbolInput {
+          width: 100px;
+     }
+
+     .listDiv {
+          background-color: #fff;
+          width: max-content;
+          padding: 10px;
+          margin-top: 30px;
+          border-radius: 15px;
+     }
+
+     .listDiv .headerTable th,
+     .listDiv td {
+          font-size: 12px;
+          margin-bottom: 10px;
+          padding: 8px;
+     }
+
+     .listDiv td input {
+          width: 120px;
+          padding: 5px 5px;
+          border-radius: 5px;
+          border: 1px solid #ccc;
+     }
 }
 
 @media (min-width: 600px) and (max-width: 900px) {
-
-
 }

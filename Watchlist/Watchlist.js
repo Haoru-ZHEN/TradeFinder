@@ -55,8 +55,19 @@ var actionDivIsShow = false;
 var currentActionDiv = 'TSLA';
 var selectIndex = 1;
 var changeMade = false;
+//var isLoop_API = false;
+var thisPair_price = 0;
 
-function addnewRow(PAIRNAME, DESCRIPTION, ACTION = 'Buy', BOOKMARK = false, ID) {
+function addnewRow(
+     PAIRNAME,
+     DESCRIPTION,
+     ACTION = 'Buy',
+     BOOKMARK = false,
+     ID,
+     PRICE_API = '',
+     SUPPORT = 0,
+     RESISTANCE = 0
+) {
      var newRow = document.createElement('tr');
 
      var newCell0 = document.createElement('td');
@@ -67,7 +78,17 @@ function addnewRow(PAIRNAME, DESCRIPTION, ACTION = 'Buy', BOOKMARK = false, ID) 
      newCell1.textContent = PAIRNAME;
 
      var newCell2 = document.createElement('td');
-     newCell2.textContent = 170;
+     var newCell4 = document.createElement('td');
+     newCell4.classList.add('aiContainer');
+
+     //newCell2.textContent = '170';
+     if (PRICE_API == '') {
+          newCell2.textContent = '-';
+          newCell4.textContent = '-';
+     } else {
+          getPrice_API(newCell2, PRICE_API, SUPPORT, RESISTANCE, newCell4);
+          //isLoop_API = false;
+     }
 
      var newCell3 = document.createElement('td');
      newCell3.className = 'actionTD'; /*
@@ -85,9 +106,9 @@ function addnewRow(PAIRNAME, DESCRIPTION, ACTION = 'Buy', BOOKMARK = false, ID) 
      var spanElement = returnActionElement(ACTION);
      newCell3.appendChild(spanElement);
 
-     var newCell4 = document.createElement('td');
-     newCell4.textContent = 'wait';
-     newCell4.classList.add('item');
+     //var newCell4 = document.createElement('td');
+     //newCell4.textContent = manualDetect(SUPPORT,RESISTANCE,thisPair_price);
+     //newCell4.classList.add('item');
 
      var newCell5 = document.createElement('td');
      var input = document.createElement('input');
@@ -101,6 +122,7 @@ function addnewRow(PAIRNAME, DESCRIPTION, ACTION = 'Buy', BOOKMARK = false, ID) 
      var icon = document.createElement('i');
      icon.setAttribute('class', 'fa-solid fa-square-poll-vertical');
      newCell6.classList.add('iconTable');
+     newCell6.style.display = 'none';
      newCell6.appendChild(icon);
 
      var newCell7 = document.createElement('td');
@@ -136,6 +158,104 @@ function addnewRow(PAIRNAME, DESCRIPTION, ACTION = 'Buy', BOOKMARK = false, ID) 
      giveFunction();
 }
 
+function getPrice_API(theelement, URL_GET, SUPPORT, RESISTANCE, theelement2) {
+     console.log(URL_GET);
+     var ourRequest = new XMLHttpRequest();
+
+     ourRequest.open('GET', URL_GET, true);
+     ourRequest.onload = function () {
+          if (ourRequest.status >= 200 && ourRequest.status < 300) {
+               var responseJSON = JSON.parse(ourRequest.responseText);
+               //console.log(ourRequest.responseText);
+               thisPair_price = responseJSON.price;
+               //console.log('PRICING');
+               setTextGo(theelement, responseJSON.price);
+
+               var detectResult = manualDetect(SUPPORT, RESISTANCE, thisPair_price);
+               setAITextGo(theelement2, detectResult);
+          } else {
+               // First request failed, send the second request
+               /*if (!isLoop_API) {
+                    sendSecondRequest(theelement, URL_GET, SUPPORT, RESISTANCE, theelement2);
+               }*/
+               sendSecondRequest(theelement, URL_GET, SUPPORT, RESISTANCE, theelement2);
+
+               theelement.textContent = '-';
+               theelement2.textContent = '-';
+          }
+     };
+     ourRequest.onerror = function () {
+          // First request failed, send the second request
+          sendSecondRequest(theelement, URL_GET, SUPPORT, RESISTANCE, theelement2);
+          theelement.textContent = 'Failed';
+          theelement2.textContent = 'Failed';
+     };
+     ourRequest.send();
+}
+
+function sendSecondRequest(theelement, URL_GET, SUPPORT, RESISTANCE, theelement2) {
+     const xhr = new XMLHttpRequest();
+     xhr.addEventListener('readystatechange', function () {
+          if (this.readyState === XMLHttpRequest.DONE) {
+               if (this.status >= 200 && this.status < 300) {
+                    var responseJSON = JSON.parse(this.responseText);
+                    //console.log(responseJSON.price);
+                    thisPair_price = responseJSON.price;
+                    setTextGo(theelement, responseJSON.price);
+
+                    var detectResult = manualDetect(SUPPORT, RESISTANCE, thisPair_price);
+                    setAITextGo(theelement2, detectResult);
+               } else {
+                    // Second request also failed
+                    console.error('Both requests failedtt');
+                    theelement.textContent = 'Failed';
+                    theelement2.textContent = 'Failed';
+                    //isLoop_API = true;
+               }
+          }
+     });
+     xhr.onerror = function () {
+          // First request failed, send the second request
+          theelement.textContent = 'Failed';
+          theelement2.textContent = 'Failed';
+     };
+     xhr.open('GET', URL_GET);
+     xhr.setRequestHeader('X-RapidAPI-Key', 'b700c0ed85mshcba7325dba0217bp1fe50ejsn769d68549977');
+     xhr.setRequestHeader('X-RapidAPI-Host', 'twelve-data1.p.rapidapi.com');
+     xhr.send();
+}
+
+function setTextGo(theelement, result) {
+     if (parseFloat(result) >= 1) {
+          theelement.textContent = parseFloat(result).toFixed(2);
+     } else {
+          theelement.textContent = result;
+     }
+}
+
+function setAITextGo(theelement, result) {
+     console.log('RESULT' + result);
+     theelement.textContent = result;
+}
+
+function manualDetect(SUPPORT_PRICE, RESISTANCE_PRICE, CURRENT_PRICE) {
+     1815, 200, 150;
+
+     if (
+          parseFloat(CURRENT_PRICE) < parseFloat(SUPPORT_PRICE) * 1.02 &&
+          parseFloat(CURRENT_PRICE) > parseFloat(SUPPORT_PRICE) * 0.98
+     ) {
+          return 'Buy';
+     } else if (
+          parseFloat(CURRENT_PRICE) < parseFloat(RESISTANCE_PRICE) * 1.02 &&
+          parseFloat(CURRENT_PRICE) > parseFloat(RESISTANCE_PRICE) * 0.98
+     ) {
+          return 'Sell';
+     } else {
+          return 'Wait';
+     }
+}
+
 function addPair() {
      if (validate()) {
           addnewRow(symbolInput.value, describeInput.value);
@@ -146,31 +266,18 @@ function addPair() {
 function giveFunction() {
      //add function to the trash icon cell for every row
      var index;
+     console.log(currentMoreDiv)
 
      //console.log(thetable.rows[0].cells.length);
 
      for (var i = 1; i < thetable.rows.length; i++) {
           thetable.rows[i].cells[8].onclick = function () {
-               var rowOffsetTop = this.parentElement.offsetTop;
+               //var rowOffsetTop = this.parentElement.offsetTop;
                var topPosition = this.parentElement.getBoundingClientRect().top;
-               //var c = confirm('Delete this row?');
-               /*
-               if (c === true) {
-                    loadingBar.style.display = 'inline';
-                    index = this.parentElement.rowIndex;
-                    console.log('delete index' + index);
-                    var thispair = tablee.rows[index].cells[1].textContent;
 
-                    //tablee.deleteRow(index);
-                    while (table.rows.length > 1) {
-                         table.deleteRow(table.rows.length - 1);
-                    }
-                    numRow = table.rows.length;
-                    deleteFirebase(thispair);
-               }*/
-               //console.log(rowOffsetTop);
-               //console.log(topPosition);
                index = this.parentElement.rowIndex;
+               console.log(moreDivIsShow)
+               console.log(currentMoreDiv)
 
                if (
                     currentMoreDiv == thetable.rows[index].cells[1].textContent &&
@@ -494,6 +601,7 @@ function filterProcess(thekey) {
      }
 }
 
+const detailDiv = document.querySelector('.detailContainer');
 function moreOption(options) {
      switch (options) {
           case 1:
@@ -519,16 +627,19 @@ function moreOption(options) {
                }
                break;
           case 3:
-               console.log('de');
+               loadDetailData();
+               detailDiv.style.display = 'flex';
+               moreDiv.style.display = 'none';
+               moreDivIsShow = false;
                break;
      }
 }
 
 function deleteFirebase(_DELETEID) {
      const dbref = firebase.database().ref();
-     const thelist = dbref.child('WatchList').child(idFinder);
+     const thelist = dbref.child('WatchList').child(idFinder).child(currentList);
      var nodeRef = thelist.child(_DELETEID);
-     console.log(_DELETEID);
+     //console.log(_DELETEID);
 
      // Call the remove() method on the reference to delete the node
      nodeRef
@@ -545,9 +656,111 @@ function deleteFirebase(_DELETEID) {
           });
 }
 
+// *************DETAIL DIV'S FUNCTION
+var detectSelect = '0';
+function closeDetailDiv() {
+     detailDiv.style.display = 'none';
+}
+
+function detectClick(event, type) {
+     const detectUl = document.querySelector('.detectUl');
+     const gridContainer = document.querySelector('.gridContainer');
+     const gridItemAll = gridContainer.querySelectorAll('div');
+
+     var detectLi = detectUl.querySelectorAll('li');
+     const clickedLi = event.currentTarget;
+
+     switch (type) {
+          case 0:
+               gridItemAll.forEach((div) => {
+                    if (div.id == 'fileGridItem') {
+                         div.style.display = 'none';
+                    } else {
+                         div.style.display = 'flex';
+                    }
+               });
+               detectSelect = '0';
+               break;
+          case 1:
+               gridItemAll.forEach((div) => {
+                    if (div.id == 'symbolGridItem' || div.id == 'fileGridItem') {
+                         div.style.display = 'flex';
+                    } else {
+                         div.style.display = 'none';
+                    }
+               });
+               detectSelect = '1';
+               break;
+     }
+
+     detectLi.forEach((li) => {
+          li.classList.remove('activeDetectLi');
+     });
+
+     clickedLi.classList.add('activeDetectLi');
+}
+
+function loadDetailData() {
+     var loadID = thetable.rows[selectIndex].cells[0].textContent;
+     const dbref = firebase.database().ref();
+     const thelist = dbref.child('WatchList').child(idFinder).child(currentList).child(loadID);
+     loader.style.display = 'flex';
+
+     thelist.once('value', function (snapshot) {
+          tthedata = snapshot.val();
+
+          const symbolDetailInput = document.getElementById('symbolDetailInput');
+          const priceDetailInput = document.getElementById('priceDetailInput');
+          const supportDetailInput = document.getElementById('supportDetailInput');
+          const resistanceDetailInput = document.getElementById('resistanceDetailInput');
+          const fileDetailInput = document.getElementById('fileDetailInput');
+
+          symbolDetailInput.value = tthedata['SYMBOL'] || '';
+          priceDetailInput.value = tthedata['PRICE_API'] || '';
+          supportDetailInput.value = tthedata['SUPPORT'] || '';
+          resistanceDetailInput.value = tthedata['RESISTANCE'] || '';
+          fileDetailInput.value = tthedata['FILE_API'] || '';
+
+          loader.style.display = 'none';
+     });
+}
+
+function updateDetailData() {
+     var loadID = thetable.rows[selectIndex].cells[0].textContent;
+     const dbref = firebase.database().ref();
+     const thelist = dbref.child('WatchList').child(idFinder).child(currentList).child(loadID);
+     const symbolDetailInput = document.getElementById('symbolDetailInput');
+     const priceDetailInput = document.getElementById('priceDetailInput');
+     const supportDetailInput = document.getElementById('supportDetailInput');
+     const resistanceDetailInput = document.getElementById('resistanceDetailInput');
+     const fileDetailInput = document.getElementById('fileDetailInput');
+
+     var updateData = {
+          SYMBOL: symbolDetailInput.value,
+          PRICE_API: priceDetailInput.value,
+          SUPPORT: supportDetailInput.value,
+          RESISTANCE: resistanceDetailInput.value,
+          FILE_API: fileDetailInput.value,
+          DETECT_SELECT: detectSelect,
+     };
+
+     thelist
+          .update(updateData)
+          .then(() => {
+               console.log('Update successful');
+               alert('Update successful');
+               // Additional code or actions upon successful update
+          })
+          .catch((error) => {
+               console.error('Update failed:', error);
+               // Additional error handling or actions
+          });
+}
+
+//**********DATA GET
 function loadData() {
      const dbref = firebase.database().ref();
-     const thelist = dbref.child('WatchList').child(idFinder);
+     const thelist = dbref.child('WatchList').child(idFinder).child(currentList);
      loader.style.display = 'flex';
      thelist.once('value', function (snapshot) {
           //snapshot contain many bundles
@@ -562,8 +775,15 @@ function loadData() {
                var DESCRIP = thedata['DESCRIP'];
                var BOOKMARK = thedata['BOOKMARK'];
                var idKey = thedata['idkey'];
+               var PRICE_URL = thedata['PRICE_API'] || '';
+               var SUPPORT = thedata['SUPPORT'] || '';
+               var RESISTANCE = thedata['RESISTANCE'] || '';
 
-               addnewRow(SYMBOL, DESCRIP, ACTION, BOOKMARK, idKey);
+               if(currentMoreDiv == 'TSLA'){
+                    currentMoreDiv = SYMBOL
+               }
+
+               addnewRow(SYMBOL, DESCRIP, ACTION, BOOKMARK, idKey, PRICE_URL, SUPPORT, RESISTANCE);
           });
           loader.style.display = 'none';
           //giveFunction();
@@ -574,7 +794,7 @@ function loadData() {
 
 function addData(_SYMBOL, _DESCRIPTION) {
      const dbref = firebase.database().ref();
-     const thelist = dbref.child('WatchList').child(idFinder);
+     const thelist = dbref.child('WatchList').child(idFinder).child(currentList);
 
      const newData = {
           SYMBOL: _SYMBOL,
@@ -606,7 +826,7 @@ function addData(_SYMBOL, _DESCRIPTION) {
 
 function updateData() {
      const dbref = firebase.database().ref();
-     const thelist = dbref.child('WatchList').child(idFinder);
+     const thelist = dbref.child('WatchList').child(idFinder).child(currentList);
      var updateList = saveAll();
 
      for (var i = 0; i < updateList.length; i++) {
@@ -624,20 +844,33 @@ function updateData() {
           };
 
           console.log(updateData);
-          thelist.child(updateList[i][0].toString()).set(updateData);
+          thelist.child(updateList[i][0].toString()).update(updateData);
      }
 }
 
+/***MENU FUNCTION */
 function openMenu() {
      const sideBar = document.querySelector('.sideBar');
      const sideWall = document.querySelector('.sideWall');
      const blurArea = document.querySelector('.blurArea');
-
+     var screenWidth = window.innerWidth;
      const mainHeader = document.querySelector('.mainHeader');
+
+     if (screenWidth <= 600) {
+          sideBar.style.width = '90%';
+          sideBar.style.padding = '10px';
+     } else if (screenWidth <= 900) {
+          sideBar.style.width = '40%';
+          sideBar.style.padding = '20px';
+     } else {
+          sideBar.style.width = '20%';
+          sideBar.style.padding = '30px';
+     }
 
      mainHeader.style.zIndex = 0;
      sideWall.style.opacity = 1;
-     sideBar.style.right = '0';
+     //sideBar.style.right = '0'
+
      sideWall.style.zIndex = 1;
      blurArea.style.backdropFilter = 'blur(3px)';
 }
@@ -651,13 +884,15 @@ function closeMenu() {
 
      mainHeader.style.zIndex = 99;
 
-     sideBar.style.right = '-320px';
+     sideBar.style.width = '0';
+     sideBar.style.padding = '0';
+
      blurArea.style.backdropFilter = 'blur(0px)';
 
      sideBar.addEventListener(
           'transitionend',
           function () {
-               if (sideBar.style.right === '-320px') {
+               if (sideBar.style.width === '0px') {
                     sideWall.style.opacity = 0;
                     sideWall.style.zIndex = -1;
                }
@@ -669,15 +904,149 @@ function closeMenu() {
 function mobileSetting() {
      const midUl = document.querySelector('.midUl');
      var screenWidth = window.innerWidth;
+     console.log(screenWidth);
 
      if (screenWidth >= 900) {
           midUl.style.display = 'flex';
-          console.log('dwd');
-
+          //console.log('dwd');
      } else {
           midUl.style.display = 'none';
-          console.log('dwd');
+          //console.log('dwd mobile');
      }
+}
+
+/****create new list */
+function showCatDiv() {
+     const categoryDiv = document.getElementById('showCatDiv');
+
+     if (categoryDiv.style.opacity == 0) {
+          categoryDiv.style.opacity = 1;
+          categoryDiv.style.zIndex = 10;
+     } else {
+          categoryDiv.style.opacity = 0;
+          categoryDiv.addEventListener(
+               'transitionend',
+               function () {
+                    if (categoryDiv.style.opacity == 0) {
+                         categoryDiv.style.zIndex = -1;
+                    }
+               },
+               { once: true }
+          );
+     }
+}
+
+var currentList = 'My Watchlist';
+function refreshList() {
+     const listUl = document.getElementById('listUl');
+     const dbref = firebase.database().ref();
+     const thelist = dbref.child('WatchList').child(idFinder);
+     while (listUl.firstChild) {
+          listUl.removeChild(listUl.firstChild);
+     }
+
+     thelist.once('value', function (snapshot) {
+          //snapshot contain many bundles
+
+          snapshot.forEach(function (data) {
+               //data is the bundle
+               thedata = data.val(); //thedata is the data of the bundle
+               var id = data.key; //key is thee key of bundle
+
+               console.log(id); /*
+               var newLi = document.createElement('li');
+               var textNode = document.createTextNode(id);
+
+               var icon = document.createElement('i');
+               newLi.setAttribute('class', 'uil uil-check');
+               icon.style.display = 'none';
+
+               newLi.appendChild(textNode);
+               newLi.appendChild(icon);*/
+               var liElement = document.createElement('li');
+               liElement.setAttribute('onclick', 'checkActiveList(event)');
+               var iElement = document.createElement('i');
+               iElement.setAttribute('class', 'uil uil-check');
+
+               if (id == currentList) {
+                    liElement.setAttribute('class', 'activeCat');
+               } else {
+                    iElement.style.display = 'none';
+               }
+
+               var textNode = document.createTextNode(id);
+               liElement.appendChild(textNode);
+               liElement.appendChild(iElement);
+               listUl.appendChild(liElement);
+
+               //listUl.appendChild(newLi);
+          });
+
+          //add createNewList Li
+          var liElement = document.createElement('li');
+          liElement.setAttribute('class', 'createLi');
+          liElement.setAttribute('onclick', 'showNewListDiv()');
+          var iElement = document.createElement('i');
+          iElement.setAttribute('class', 'uil uil-folder-plus');
+          var textNode = document.createTextNode('Create new list');
+          liElement.appendChild(iElement);
+          liElement.appendChild(textNode);
+          listUl.appendChild(liElement);
+
+          //checkActiveList();
+     });
+}
+
+function checkActiveList(event) {
+     const listUl = document.getElementById('listUl');
+     var listLi = listUl.querySelectorAll('li');
+     const clickedLi = event.currentTarget;
+     const currentListText = document.getElementById('currentListText');
+
+     currentList = clickedLi.textContent;
+     currentListText.textContent = currentList;
+
+     listLi.forEach((li) => {
+          var IconLi = li.querySelector('i');
+
+          if (li.textContent == currentList) {
+               li.classList.add('activeCat');
+               IconLi.style.display = 'inline';
+          } else {
+               li.classList.remove('activeCat');
+               IconLi.style.display = 'none';
+          }
+     });
+
+     showCatDiv();
+     while (thetable.rows.length > 1) {
+          thetable.deleteRow(thetable.rows.length - 1);
+     }
+     loadData();
+}
+
+function showNewListDiv() {
+     const newListDiv = document.querySelector('.newListContainer');
+
+     if (newListDiv.style.display == 'none' || newListDiv.style.display == '') {
+          newListDiv.style.display = 'flex';
+          showCatDiv();
+     } else {
+          newListDiv.style.display = 'none';
+     }
+}
+
+function createList() {
+     const newListInput = document.getElementById('newListInput');
+     const currentListText = document.getElementById('currentListText');
+
+     currentList = newListInput.value;
+     currentListText.textContent = currentList;
+     showNewListDiv();
+     while (thetable.rows.length > 1) {
+          thetable.deleteRow(thetable.rows.length - 1);
+     }
+     loadData();
 }
 
 var idFinder_get = localStorage.getItem('Finder');
@@ -686,6 +1055,7 @@ let idFinder = idFinder_get.replace(/"/g, '');
 loadData();
 setInterval(enableSave, 1000);
 mobileSetting();
+refreshList();
 
 //test@mail.com
 //123
