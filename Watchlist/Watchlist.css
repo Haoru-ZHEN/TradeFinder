@@ -47,6 +47,7 @@ body {
      min-height: 100vh;
      background: var(--bgColor);
      overflow-x: hidden;
+     overflow-y: hidden;
 } /*
 header {
      position: absolute;
@@ -154,7 +155,7 @@ header ul li a:hover .box {
      flex-direction: column;
      align-items: center;
      justify-content: start;
-     padding-top: 100px;
+     padding-top: 80px;
 }
 
 .contentDiv h2 {
@@ -167,7 +168,7 @@ header ul li a:hover .box {
      background-color: #fff;
      display: flex;
      flex-direction: row;
-     padding: 30px 50px;
+     padding: 25px 40px;
      border-radius: 15px;
      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
@@ -344,6 +345,11 @@ header ul li a:hover .box {
      -webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
 }*/
+
+.listDiv .tableDiv{
+     max-height: 250px;
+     overflow-y: auto;
+}
 
 .listDiv table {
      border-collapse: collapse;
@@ -567,7 +573,7 @@ header ul li a:hover .box {
      list-style: none;
      text-decoration: none;
      padding: 12px;
-     color: #ccc;
+     color: #868686;
      font-size: 14px;
      font-weight: 300;
      border-bottom: 0px solid var(--learnColor);
@@ -577,7 +583,7 @@ header ul li a:hover .box {
 }
 
 .moreDiv ul li:hover {
-     background-color: var(--bgColor);
+     background-color: #eee;
 }
 
 /*********ACTIONDIV*********************/
@@ -731,6 +737,7 @@ header ul li a:hover .box {
      display: none;
      align-items: center;
      justify-content: center;
+     cursor: pointer;
 }
 .newListDiv {
      /*
@@ -744,7 +751,9 @@ header ul li a:hover .box {
      align-items: center;
      justify-content: center;
      border-radius: 20px;
-     padding: 10px;
+     padding: 10px;     
+     cursor: auto;
+
 }
 
 .newListDiv h3 {
@@ -819,6 +828,7 @@ header ul li a:hover .box {
      display: none;
      align-items: center;
      justify-content: center;
+     cursor: pointer;
 }
 .detailDiv {
      /*position: absolute;
@@ -832,6 +842,8 @@ header ul li a:hover .box {
      justify-content: center;
      border-radius: 20px;
      padding: 20px;
+     cursor: auto;
+
 }
 
 .detailDiv .gridContainer {

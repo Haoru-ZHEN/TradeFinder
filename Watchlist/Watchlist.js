@@ -266,18 +266,18 @@ function addPair() {
 function giveFunction() {
      //add function to the trash icon cell for every row
      var index;
-     console.log(currentMoreDiv)
+     console.log(currentMoreDiv);
 
      //console.log(thetable.rows[0].cells.length);
 
-     for (var i = 1; i < thetable.rows.length; i++) {
+     for (var i = 0; i < thetable.rows.length; i++) {
           thetable.rows[i].cells[8].onclick = function () {
                //var rowOffsetTop = this.parentElement.offsetTop;
                var topPosition = this.parentElement.getBoundingClientRect().top;
 
                index = this.parentElement.rowIndex;
-               console.log(moreDivIsShow)
-               console.log(currentMoreDiv)
+               console.log(moreDivIsShow);
+               console.log(currentMoreDiv);
 
                if (
                     currentMoreDiv == thetable.rows[index].cells[1].textContent &&
@@ -483,7 +483,7 @@ function saveAll() {
      var totalDataList = [];
      tr = thetable.getElementsByTagName('tr');
 
-     for (var i = 1; i < tr.length; i++) {
+     for (var i = 0; i < tr.length; i++) {
           let dataList = [];
           td0 = tr[i].getElementsByTagName('td')[0];
           td1 = tr[i].getElementsByTagName('td')[1];
@@ -515,7 +515,7 @@ function tableSearch() {
      filter = searchInput.value.toUpperCase();
      tr = thetable.getElementsByTagName('tr');
 
-     for (var i = 1; i < tr.length; i++) {
+     for (var i = 0; i < tr.length; i++) {
           td = tr[i].getElementsByTagName('td')[1];
           //console.log(td);
 
@@ -619,7 +619,7 @@ function moreOption(options) {
                     //tablee.deleteRow(index);
 
                     //delete all rows--
-                    while (thetable.rows.length > 1) {
+                    while (thetable.rows.length > 0) {
                          thetable.deleteRow(thetable.rows.length - 1);
                     }
 
@@ -634,6 +634,29 @@ function moreOption(options) {
                break;
      }
 }
+
+
+var newListContainer = document.querySelector('.newListContainer');
+var newListDiv = document.querySelector('.newListDiv');
+newListContainer.addEventListener('click', function (event) {
+
+     var target = event.target;
+
+     if (!newListDiv.contains(target)) {
+          newListContainer.style.display = 'none';
+     }
+});
+
+var detailContainer = document.querySelector('.detailContainer');
+var detailDiver = document.querySelector('.detailDiv');
+detailContainer.addEventListener('click', function (event) {
+
+     var target = event.target;
+
+     if (!detailDiver.contains(target)) {
+          detailContainer.style.display = 'none';
+     }
+});
 
 function deleteFirebase(_DELETEID) {
      const dbref = firebase.database().ref();
@@ -779,8 +802,8 @@ function loadData() {
                var SUPPORT = thedata['SUPPORT'] || '';
                var RESISTANCE = thedata['RESISTANCE'] || '';
 
-               if(currentMoreDiv == 'TSLA'){
-                    currentMoreDiv = SYMBOL
+               if (currentMoreDiv == 'TSLA') {
+                    currentMoreDiv = SYMBOL;
                }
 
                addnewRow(SYMBOL, DESCRIP, ACTION, BOOKMARK, idKey, PRICE_URL, SUPPORT, RESISTANCE);
@@ -1019,7 +1042,7 @@ function checkActiveList(event) {
      });
 
      showCatDiv();
-     while (thetable.rows.length > 1) {
+     while (thetable.rows.length > 0) {
           thetable.deleteRow(thetable.rows.length - 1);
      }
      loadData();
@@ -1043,7 +1066,7 @@ function createList() {
      currentList = newListInput.value;
      currentListText.textContent = currentList;
      showNewListDiv();
-     while (thetable.rows.length > 1) {
+     while (thetable.rows.length > 0) {
           thetable.deleteRow(thetable.rows.length - 1);
      }
      loadData();

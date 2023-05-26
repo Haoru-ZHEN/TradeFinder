@@ -192,35 +192,53 @@ function checkFinder() {
           menuIcon.style.display = 'none';
           loginBut_menu.style.display = 'inline';
           signupBut_menu.style.display = 'inline';
-
      } else {
           const emailFinder_get = localStorage.getItem('Finder_mail');
           let emailFinder = emailFinder_get.replace(/"/g, '');
 
-
-          if(screenWidth >= 900){
+          if (screenWidth >= 900) {
                midUl.style.display = 'flex';
-          }else{
+          } else {
                midUl.style.display = 'none';
           }
           welcomeText.style.display = 'inline';
           moreIcon.style.display = 'inline';
           welcomeText.textContent = 'Welcome back, ' + emailFinder;
           menuIcon.style.display = 'inline';
-          
+
           loginBut_menu.style.display = 'none';
           signupBut_menu.style.display = 'none';
-
      }
 }
 
 function showOption() {
      const moreDiv = document.getElementById('moreDiv');
 
-     if (moreDiv.style.opacity == 0) {
-          moreDiv.style.opacity = '1';
+     if (moreDiv.style.opacity == '0' || moreDiv.style.opacity == '') {
+          moreDiv.style.opacity = 1;
+          moreDiv.style.display = 'flex';
+          
+/*
+          moreDiv.addEventListener(
+               'transitionend',
+               function () {
+                    if (moreDiv.style.display == 'flex') {
+                         moreDiv.style.opacity = 1;
+                    }
+               },
+               { once: true }
+          );*/
      } else {
-          moreDiv.style.opacity = '0';
+          moreDiv.style.opacity = 0;
+          moreDiv.addEventListener(
+               'transitionend',
+               function () {
+                    if (moreDiv.style.opacity == 0) {
+                         moreDiv.style.display = 'none';
+                    }
+               },
+               { once: true }
+          );
      }
 }
 
@@ -234,62 +252,60 @@ function moreOption(choice) {
      }
 }
 
-function openMenu(){
+function openMenu() {
      const sideBar = document.querySelector('.sideBar');
      const sideWall = document.querySelector('.sideWall');
      const blurArea = document.querySelector('.blurArea');
      var screenWidth = window.innerWidth;
-     const mainHeader =document.querySelector('.mainHeader');
+     const mainHeader = document.querySelector('.mainHeader');
 
-     if(screenWidth <= 600){
-          sideBar.style.width = '90%'
-          sideBar.style.padding = '10px'
-          console.log('mobile')
-     }else if(screenWidth <= 900){
-          sideBar.style.width = '40%'
-          sideBar.style.padding = '20px'
-     }else{
-          sideBar.style.width = '20%'
-          sideBar.style.padding = '30px'
+     if (screenWidth <= 600) {
+          sideBar.style.width = '90%';
+          sideBar.style.padding = '10px';
+          console.log('mobile');
+     } else if (screenWidth <= 900) {
+          sideBar.style.width = '40%';
+          sideBar.style.padding = '20px';
+     } else {
+          sideBar.style.width = '20%';
+          sideBar.style.padding = '30px';
      }
 
      mainHeader.style.zIndex = 0;
-     sideWall.style.opacity = 1
+     sideWall.style.opacity = 1;
      //sideBar.style.right = '0'
-     
 
      sideWall.style.zIndex = 1;
-     blurArea.style.backdropFilter = "blur(3px)";
+     blurArea.style.backdropFilter = 'blur(3px)';
 
      closeLogin();
 }
 
-function closeMenu(){
+function closeMenu() {
      const sideBar = document.querySelector('.sideBar');
      const sideWall = document.querySelector('.sideWall');
      const blurArea = document.querySelector('.blurArea');
 
-     const mainHeader =document.querySelector('.mainHeader');
+     const mainHeader = document.querySelector('.mainHeader');
 
      mainHeader.style.zIndex = 99;
 
-     sideBar.style.width = '0'
-     sideBar.style.padding = '0'
+     sideBar.style.width = '0';
+     sideBar.style.padding = '0';
 
-     blurArea.style.backdropFilter = "blur(0px)";
+     blurArea.style.backdropFilter = 'blur(0px)';
 
-
-     sideBar.addEventListener("transitionend", function() {
-          if (sideBar.style.width === '0px') {
-               sideWall.style.opacity = 0
-               sideWall.style.zIndex = -1;
-          }
-        }, { once: true });
-
-
+     sideBar.addEventListener(
+          'transitionend',
+          function () {
+               if (sideBar.style.width === '0px') {
+                    sideWall.style.opacity = 0;
+                    sideWall.style.zIndex = -1;
+               }
+          },
+          { once: true }
+     );
 }
-
-
 
 //admin@gmail.com
 //123

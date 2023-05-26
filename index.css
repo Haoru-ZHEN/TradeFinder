@@ -344,6 +344,7 @@ header ul li a:hover .box {
      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
      transition: opacity 0.1s ease;
      opacity: 0;
+     display: none;
 }
 
 .moreDiv ul {
@@ -355,7 +356,7 @@ header ul li a:hover .box {
      list-style: none;
      text-decoration: none;
      text-align: center;
-     color: #ccc;
+     color: #868686;
      font-size: 12px;
      font-weight: 300;
      padding: 10px;
@@ -366,7 +367,7 @@ header ul li a:hover .box {
 }
 
 .moreDiv ul li:hover {
-     background-color: var(--bgColor);
+     background-color: #eee;
 }
 /*******side bar*******/
 .sideWall {

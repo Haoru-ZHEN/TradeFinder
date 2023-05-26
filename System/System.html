@@ -13,7 +13,7 @@
 </head>
 
 <body>
-     <header onmouseleave="removeBox()">
+     <header class="mainHeader" onmouseleave="removeBox()">
           <h2 class="logo">TradeFinder</h2>
           <ul class="midUl" onmouseenter="showBox()">
                <li><a href="../index.html" onmouseover="moveBox(event)">Home</a></li>
@@ -21,6 +21,8 @@
                <li><a href="../Watchlist/Watchlist.html" onmouseover="moveBox(event)">Watchlist</a></li>
                <li><a href="#" onmouseover="moveBox(event)">Trading System</a></li>
           </ul>
+          <i id="menuIcon" class="uil uil-bars menuIcon" onclick="openMenu()"></i>
+
           <div class="box"></div>
      </header>
 
@@ -28,11 +30,13 @@
           
           <h2>Trading System</h2>
           <ul class="optionUl">
-               <li class="activeOption" onclick="systemClick(event,0)">Entry System</li>
+               <div class="optionBox"></div>
+               <li onclick="systemClick(event,0)">Entry System</li>
                <li onclick="systemClick(event,1)">Throttle System</li>
                <li onclick="systemClick(event,2)">Cutloss System</li>
                <li onclick="systemClick(event,3)">Take Profit System</li>
           </ul>
+
 
           <div class="contentDiv">
                <div class="entrySys">
@@ -77,6 +81,28 @@
           </div>
 
      </div>
+
+     <div class="sideWall">
+          <div class="blurArea" onclick="closeMenu()">
+
+          </div>
+          <div class="sideBar">
+               <header>
+                    <svg onclick="closeMenu()" class="tds-icon tds-icon-close tds-modal-close-icon" viewBox="0 0 24 24"
+                         xmlns="http://www.w3.org/2000/svg">
+                         <path d="M18.53 17.47a.75.75 0 1 1-1.06 1.06L12 13.06l-5.47 5.47a.748.748 0 0 1-1.06 0 .75.75 0 0 1 0-1.06L10.94 12 5.47 6.53a.75.75 0 1 1 1.06-1.06L12 10.94l5.47-5.47a.75.75 0 1 1 1.06 1.06L13.06 12l5.47 5.47z"
+                              fill="#393c41"></path>
+                    </svg>
+               </header>
+               <ul>
+                    <li><a href="../">Home</a></li>
+                    <li><a href="#">Portfolio</a></li>
+                    <li><a href="Watchlist.html">Watchlist</a></li>
+                    <li><a href="../System/System.html">Trading System</a></li>
+               </ul>
+          </div>
+     </div>
+
 
      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
