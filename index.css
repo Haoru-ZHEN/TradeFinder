@@ -9,6 +9,8 @@
      --light-brown: #4d4f53;
      --lighter-brown: #73767c;
      --learnColor2: #f0e8ec;
+     --bullColor: rgb(84, 202, 175);
+     --bearColor: rgb(255, 110, 102);
 }
 
 @font-face {
@@ -318,6 +320,7 @@ header ul li a:hover .box {
 }
 
 /****welcome div*****/
+/*
 .welcomeDiv {
      position: absolute;
      right: 10px;
@@ -360,7 +363,6 @@ header ul li a:hover .box {
      font-size: 12px;
      font-weight: 300;
      padding: 10px;
-     /*border-bottom: 1px solid var(--learnColor);*/
      transition: background 0.5s ease;
      background-color: #fff;
      cursor: pointer;
@@ -368,7 +370,130 @@ header ul li a:hover .box {
 
 .moreDiv ul li:hover {
      background-color: #eee;
+}*/
+
+/************TOAST MESSAGE**********/
+.toastDiv ul{
+     position: fixed;
+     top: 60px;
+     right: 20px;
 }
+
+.toastDiv ul:where(.toast, .column){
+     display: flex;
+     
+     align-items: center;
+}
+
+.toastDiv .toast{
+     position: relative;
+     overflow: hidden;
+     width: 400px;
+     list-style: none;
+     border-radius: 4px;
+     padding: 16px 17px;
+     margin-bottom: 10px;
+     background-color: #fff;
+     justify-content: space-between;
+     display: flex;
+     flex-direction: row;
+     align-items: center;
+     animation: show_toast 0.3s ease forwards;
+}
+
+@keyframes show_toast{
+     0%{
+          transform: translateX(100%);
+     }
+     40%{
+          transform: translateX(-5%);
+     }
+     80%{
+          transform: translateX(0%);
+     }
+     100%{
+          transform: translateX(-10px);
+     }
+}
+
+.toast::before{
+     position: absolute;
+     content: "";
+     height: 3px;
+     width: 100%;
+     bottom: 0px;
+     left: 0px;
+     background-color: red;
+     animation: progress 2s linear forwards;
+}
+
+@keyframes progress{
+     100%{
+          width: 0%;
+     }
+}
+
+.toast .column{
+     display: flex;
+     flex-direction: row;
+}
+
+.toast.success::before{
+     background-color: var(--bullColor);
+}
+
+.toast.success .column span{
+     color: var(--bullColor);
+}
+
+.toast.error::before{
+     background-color: var(--bearColor);
+}
+
+.toast.error .column span{
+     color: var(--bearColor);
+}
+
+.toast .column i,
+.toast .column span{
+     font-size: 20px;
+}
+
+.toast .column h3{
+     font-size: 16px;
+     margin-left: 12px;
+}
+
+.toast i:last-child{
+     color: #aeb0d7;
+     cursor: pointer;
+}
+
+.toast i:last-child:hover{
+     color: #000;
+}
+
+.toastDiv .toast.hide{
+     animation: hide_toast 0.3s ease forwards;
+
+}
+
+@keyframes hide_toast{
+     0%{
+          transform: translateX(-10px);
+     }
+     40%{
+          transform: translateX(0%);
+     }
+     80%{
+          transform: translateX(-5%);
+     }
+     100%{
+          transform: translateX(calc(100% + 20px));
+     }
+}
+
+
 /*******side bar*******/
 .sideWall {
      position: absolute;
@@ -442,6 +567,32 @@ header ul li a:hover .box {
 .sideBar ul li a{
      text-decoration: none;
      color: #393c41;
+}
+
+.sideBar .logoutside{
+     height: 100%;
+     display: flex;
+     flex-direction: column;
+     justify-content: flex-end;
+}
+
+.sideBar h3{
+     width: 100%;
+     font-size: 16px;
+     font-weight: 400;
+     padding: 5px 15px;
+     color: #393c41;
+     margin-top: 10px;
+     border-radius: 5px;
+     transition: background-color 0.3s ease;
+}
+
+.sideBar .logoutside h3:nth-child(1){
+     cursor:pointer;
+}
+
+.sideBar .logoutside h3:nth-child(1):hover {
+     background-color: #eee;
 }
 
 /*****responsive screen adjust******/

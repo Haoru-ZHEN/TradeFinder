@@ -258,16 +258,15 @@ function manualDetect(SUPPORT_PRICE, RESISTANCE_PRICE, CURRENT_PRICE) {
 
 function addPair() {
      if (validate()) {
+          addnewRow(symbolInput.value, describeInput.value);
           addData(symbolInput.value, describeInput.value);
-          symbolInput.value = '';
-          describeInput.value = '';
      }
 }
 
 function giveFunction() {
      //add function to the trash icon cell for every row
      var index;
-     //console.log(currentMoreDiv);
+     console.log(currentMoreDiv);
 
      //console.log(thetable.rows[0].cells.length);
 
@@ -277,8 +276,8 @@ function giveFunction() {
                var topPosition = this.parentElement.getBoundingClientRect().top;
 
                index = this.parentElement.rowIndex;
-
-               console.log(index);
+               console.log(moreDivIsShow);
+               console.log(currentMoreDiv);
 
                if (
                     currentMoreDiv == thetable.rows[index].cells[1].textContent &&
@@ -447,8 +446,7 @@ function actionBuy(actionType) {
 function validate() {
      let withoutSpaces = symbolInput.value.replace(/\s/g, '');
      if (withoutSpaces == '') {
-          //alert("Pair name shouldn't be empty");
-          showToast('error', "Pair name shouldn't be empty");
+          alert("Pair name shouldn't be empty");
           return false;
      } else {
           return true;
@@ -461,39 +459,19 @@ function descriptionChange() {
 
 const saveIcon = document.getElementById('saveIcon');
 
-var checkSaveBeforeLeave = function (e) {
-     //cancel event
-     e.preventDefault();
-     // Chrome requires returnValue to be set
-     e.returnValue = '';
-
-     // Show a confirmation dialog
-     var confirmationMessage = 'Leave site? Your changes may not be saved.';
-     var confirmationMessage =
-          'Are you sure you want to leave this page?\n\n' +
-          'Title: Leave site? \n' +
-          'Subtitle: Your changes may not be saved';
-     (e || window.event).returnValue = confirmationMessage; // Gecko + IE
-     return confirmationMessage; // Webkit, Safari, Chrome etc.
-};
-
 function enableSave() {
      if (changeMade) {
           saveIcon.style.color = 'var(--gold)';
-          window.addEventListener('beforeunload', checkSaveBeforeLeave);
      } else {
           if (saveIcon.style.color != 'var(--green)') {
                saveIcon.style.color = '#ccc';
           }
-          window.removeEventListener('beforeunload', checkSaveBeforeLeave);
      }
 }
 
 function saveData() {
      if (saveIcon.style.color != 'var(--gold)') {
-          //alert('No change have made yet');
-          showToast('error', 'No change have made yet');
-
+          alert('No change have made yet');
           return;
      }
      saveIcon.style.color = 'var(--green)';
@@ -634,7 +612,7 @@ function moreOption(options) {
                if (c === true) {
                     //index = this.parentElement.rowIndex;
                     //console.log('delete index' + index);
-                    console.log(selectIndex);
+
                     var deleteID = thetable.rows[selectIndex].cells[0].textContent;
 
                     //delete selected row--
@@ -657,9 +635,11 @@ function moreOption(options) {
      }
 }
 
+
 var newListContainer = document.querySelector('.newListContainer');
 var newListDiv = document.querySelector('.newListDiv');
 newListContainer.addEventListener('click', function (event) {
+
      var target = event.target;
 
      if (!newListDiv.contains(target)) {
@@ -670,6 +650,7 @@ newListContainer.addEventListener('click', function (event) {
 var detailContainer = document.querySelector('.detailContainer');
 var detailDiver = document.querySelector('.detailDiv');
 detailContainer.addEventListener('click', function (event) {
+
      var target = event.target;
 
      if (!detailDiver.contains(target)) {
@@ -678,10 +659,6 @@ detailContainer.addEventListener('click', function (event) {
 });
 
 function deleteFirebase(_DELETEID) {
-     console.log(idFinder);
-     console.log(currentList);
-     console.log(_DELETEID);
-
      const dbref = firebase.database().ref();
      const thelist = dbref.child('WatchList').child(idFinder).child(currentList);
      var nodeRef = thelist.child(_DELETEID);
@@ -696,11 +673,9 @@ function deleteFirebase(_DELETEID) {
                moreDivIsShow = false;
                selectIndex = 1;
                loadData();
-               showToast('success', 'Delete successful');
           })
           .catch((error) => {
                console.error('Error deleting node:', error);
-               showToast('error', 'Failed to delete');
           });
 }
 
@@ -795,40 +770,14 @@ function updateDetailData() {
      thelist
           .update(updateData)
           .then(() => {
-               //console.log('Update successful');
-               //alert('Update successful');
-               showToast('success', 'Update successful');
+               console.log('Update successful');
+               alert('Update successful');
                // Additional code or actions upon successful update
           })
           .catch((error) => {
                console.error('Update failed:', error);
-               showToast('error', 'Failed to update');
-
                // Additional error handling or actions
           });
-}
-
-/***fullscreen*** */
-function fullscreen(){
-     const addDiv = document.querySelector('.addDiv');
-     const listDiv = document.querySelector('.listDiv');
-     const expandIcon = document.getElementById('expandIcon');
-     const tableDiv = document.querySelector('.tableDiv');
-
-     if(expandIcon.className == 'fa-solid fa-compress'){
-          expandIcon.className = 'fa-solid fa-expand'
-          addDiv.style.display = 'flex'
-          listDiv.style.marginTop = '30px'
-          tableDiv.style.maxHeight = '250px'
-
-
-     }else{
-          expandIcon.className = 'fa-solid fa-compress'
-          addDiv.style.display = 'none'
-          listDiv.style.marginTop = '0px'
-          tableDiv.style.maxHeight = '370px'
-     }
-
 }
 
 //**********DATA GET
@@ -886,9 +835,6 @@ function addData(_SYMBOL, _DESCRIPTION) {
 
                // Set the push key value in the new object
                newData.idkey = pushKey;
-               addnewRow(_SYMBOL, _DESCRIPTION, 'Buy', false, (ID = pushKey));
-
-               showToast('success', 'Add successful');
 
                // Update the new child with the new object
                return newChildRef.set(newData);
@@ -897,7 +843,6 @@ function addData(_SYMBOL, _DESCRIPTION) {
                //alert('Register successfully');
           })
           .catch((error) => {
-               showToast('error', 'Failed to add data');
                console.error(error);
           });
 }
@@ -1127,39 +1072,6 @@ function createList() {
      loadData();
 }
 
-/*****toast****** */
-const toastUl = document.getElementById('toastUl');
-const toastDetails = {
-     success: {
-          icon: 'uim uim-check-circle',
-          text: 'Action successful',
-     },
-     error: {
-          icon: 'uim uim-exclamation-triangle',
-          text: 'Error occurred',
-     },
-};
-
-function removeToast(toast) {
-     toast.classList.add('hide');
-     if (toast.timeoutId) clearTimeout(toast.timeoutId);
-     setTimeout(() => toast.remove(), 500);
-}
-function showToast(whichtoast, thetext) {
-     const { icon, text } = toastDetails[whichtoast];
-     const toast = document.createElement('li');
-     toast.className = `toast ${whichtoast}`;
-     toast.innerHTML = `<div class="column">
-                              <i class="${icon}"></i>
-                              <h3>${thetext}</h3>
-                         </div>
-                         <i class="uil uil-times" onclick="removeToast(this.parentElement)"></i>`;
-
-     toastUl.appendChild(toast);
-
-     toast.timeoutId = setTimeout(() => removeToast(toast), 4000);
-}
-
 var idFinder_get = localStorage.getItem('Finder');
 let idFinder = idFinder_get.replace(/"/g, '');
 
@@ -1167,22 +1079,6 @@ loadData();
 setInterval(enableSave, 1000);
 mobileSetting();
 refreshList();
-
-/*
-window.addEventListener('beforeunload', function (e) {
-     // Cancel the event
-     e.preventDefault();
-     // Chrome requires returnValue to be set
-     e.returnValue = '';
-
-     // Show a confirmation dialog
-     var confirmationMessage = 'Leave site? Your changes may not be saved.';
-     var confirmationMessage = 'Are you sure you want to leave this page?\n\n' +
-                            'Title: Leave site? \n' +
-                            'Subtitle: Your changes may not be saved';
-     (e || window.event).returnValue = confirmationMessage; // Gecko + IE
-     return confirmationMessage; // Webkit, Safari, Chrome etc.
-   });*/
 
 //test@mail.com
 //123

@@ -9,7 +9,7 @@
 
      <script src="https://kit.fontawesome.com/736b8c9e75.js" crossorigin="anonymous"></script>
      <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css" />
-     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/solid.css"/>
+     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/solid.css">
 </head>
 
 <body>
@@ -17,7 +17,7 @@
           <h2 class="logo">TradeFinder</h2>
           <ul class="midUl" onmouseenter="showBox()">
                <li><a href="../" onmouseover="moveBox(event)">Home</a></li>
-               <li><a href="#" onmouseover="moveBox(event)" onclick="showToast('error')">Portfolio</a></li>
+               <li><a href="#" onmouseover="moveBox(event)">Portfolio</a></li>
                <li><a href="Watchlist.html" onmouseover="moveBox(event)">Watchlist</a></li>
                <li><a href="../System/System.html" onmouseover="moveBox(event)">Trading System</a></li>
                <li><a href="../Rule/Rule.html" onmouseover="moveBox(event)">Rules</a></li>
@@ -65,14 +65,10 @@
                </div>
 
                <div class="listDiv">
-                    <div class="titleListDiv">
-                         <div class="categoryDiv" onclick="showCatDiv()">
-                              <h3 id="currentListText">My Watchlist</h3>
-                              <i id="moreIcon" class="uil uil-angle-down"></i>
-                         </div>
-                         <i id="expandIcon" onclick="fullscreen()" class="fa-solid fa-expand"></i>
+                    <div class="categoryDiv" onclick="showCatDiv()">
+                         <h3 id="currentListText">My Watchlist</h3>
+                         <i id="moreIcon" class="uil uil-angle-down"></i>
                     </div>
-                    
 
                     <div class="showCatDiv" id="showCatDiv">
                          <ul id="listUl">
@@ -115,8 +111,7 @@
                                    <th>Action</th>
                                    <th>AI Indicate</th>
                                    <th style="width: 325px;">Desription</th>
-                                   <th class="iconTable" style="display: none;"><i
-                                             class="fa-solid fa-square-poll-vertical"></i></th>
+                                   <th class="iconTable" style="display: none;"><i class="fa-solid fa-square-poll-vertical"></i></th>
                                    <th class="iconTable"><i class="uis uis-bookmark"></i></th>
                                    <th class="iconTable">-</th>
                               </tr>
@@ -151,7 +146,7 @@
                               </tr>-->
                          </table>
                     </div>
-
+                    
 
                     <div class="moreDiv" id="moreDiv">
                          <ul>
@@ -185,38 +180,18 @@
                </div>
           </div>
      </div>
-
-     <div class="toastDiv">
-          <ul id="toastUl">
-               <!--
-               <li class="toast success">
-                    <div class="column">
-                         <i class="uim uim-check-circle"></i>
-                         <h3>Action successful</h3>
-                    </div>
-                    <i class="uil uil-times"></i>
-               </li>
-               <li class="toast error">
-                    <div class="column">
-                         <i class="uim uim-exclamation-triangle"></i>
-                         <h3>Error occured</h3>
-                    </div>
-                    <i class="uil uil-times"></i>
-               </li>-->
-          </ul>
-     </div>
-
+    
      <div class="detailContainer">
           <div class="detailDiv">
                <div class="titleDetailDiv">
                     <h2>Edit Details</h2>
-                    <svg onclick="closeDetailDiv()" class="tds-icon tds-icon-close tds-modal-close-icon"
-                         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <svg onclick="closeDetailDiv()" class="tds-icon tds-icon-close tds-modal-close-icon" viewBox="0 0 24 24"
+                         xmlns="http://www.w3.org/2000/svg">
                          <path d="M18.53 17.47a.75.75 0 1 1-1.06 1.06L12 13.06l-5.47 5.47a.748.748 0 0 1-1.06 0 .75.75 0 0 1 0-1.06L10.94 12 5.47 6.53a.75.75 0 1 1 1.06-1.06L12 10.94l5.47-5.47a.75.75 0 1 1 1.06 1.06L13.06 12l5.47 5.47z"
                               fill="#393c41"></path>
                     </svg>
                </div>
-
+     
                <ul class="detectUl">
                     <li class="activeDetectLi" onclick="detectClick(event,0)">Manual Detect</li>
                     <li onclick="detectClick(event,1)">GPT Detect</li>
@@ -230,27 +205,27 @@
                          <label>Price API</label>
                          <input type="text" class="detailInput" autocomplete="off" id="priceDetailInput">
                     </div>
-
+     
                     <div>
                          <label>Support Price</label>
                          <input type="text" class="detailInput" autocomplete="off" id="supportDetailInput">
                     </div>
-
+     
                     <div>
                          <label>Resistance Price</label>
                          <input type="text" class="detailInput" autocomplete="off" id="resistanceDetailInput">
                     </div>
-
+     
                     <div id="fileGridItem" style="display: none;">
                          <label>File Uploaded</label>
                          <input type="file" class="detailInput" autocomplete="off" id="fileDetailInput">
                     </div>
-
+     
                </div>
                <button onclick="updateDetailData()">Save</button>
           </div>
      </div>
-
+     
 
      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
@@ -258,7 +233,6 @@
      <script src="https://www.gstatic.com/firebasejs/9.18.0/firebase-app-compat.js"></script>
      <script src="https://www.gstatic.com/firebasejs/9.18.0/firebase-database-compat.js"></script>
      <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
-     <script src="https://unicons.iconscout.com/release/v4.0.8/script/monochrome/bundle.js"></script>
      <script src="Watchlist.js"></script>
 </body>
 

@@ -86,7 +86,8 @@ function signup() {
      if (referInput.value === 'allin') {
           register(emailInput_signup.value, pwdInput_signup.value, referInput.value);
      } else {
-          alert('Invalid referral code');
+          showToast('error', 'Invalid referral code');
+          //alert('Invalid referral code');
      }
 }
 
@@ -114,27 +115,19 @@ function register(EMAIL, PASSWORD, REFERCODE) {
                return newChildRef.set(newUser);
           })
           .then(() => {
-               alert('Register successfully');
+               //alert('Register successfully');
+               showToast('success', 'Registration successful');
           })
           .catch((error) => {
                console.error(error);
+               showToast('error', 'Failed to register');
           });
-
-     /*
-     thelist.push({
-          email: EMAIL,
-          password: encryptPwd(PASSWORD),
-          referral: REFERCODE,
-     });
-
-     alert('Register successfully');*/
 }
 
 function authenticate(email_enter, pwd_enter) {
      const dbref = firebase.database().ref();
      const thelist = dbref.child('UserList');
      var isLogin = false;
-     //console.log(encryptPwd("始祖の巨人"));
 
      thelist.once('value', function (snapshot) {
           thedata = snapshot.val();
@@ -149,9 +142,8 @@ function authenticate(email_enter, pwd_enter) {
 
                if (email_enter == emailGet && pwd_enter == decryptPwd(passwordGet, '6JX3r930=')) {
                     isLogin = true;
-                    alert('Success login');
-                    welcomeText.style.display = 'inline';
-                    welcomeText.textContent = 'Welcome back, ' + email_enter;
+                    showToast('success', 'Login successful');
+                    welcomeText.innerHTML = 'Welcome back,<br>' + email_enter;
                     localStorage.setItem('Finder', JSON.stringify(thekey));
                     localStorage.setItem('Finder_mail', JSON.stringify(emailGet));
                     checkFinder();
@@ -161,7 +153,8 @@ function authenticate(email_enter, pwd_enter) {
           });
 
           if (!isLogin) {
-               alert('Invalid user or password');
+               //alert('Invalid user or password');
+               showToast('success', 'Invalid user or password');
           }
      });
 }
@@ -183,12 +176,10 @@ function checkFinder() {
      const midUl = document.querySelector('.midUl');
      const menuIcon = document.getElementById('menuIcon');
      var screenWidth = window.innerWidth;
-     console.log(idFinder);
+     console.log(screenWidth);
 
      if (idFinder == null) {
           midUl.style.display = 'none';
-          moreIcon.style.display = 'none';
-          welcomeText.style.display = 'none';
           menuIcon.style.display = 'none';
           loginBut_menu.style.display = 'inline';
           signupBut_menu.style.display = 'inline';
@@ -201,33 +192,23 @@ function checkFinder() {
           } else {
                midUl.style.display = 'none';
           }
-          welcomeText.style.display = 'inline';
-          moreIcon.style.display = 'inline';
-          welcomeText.textContent = 'Welcome back, ' + emailFinder;
+
+          welcomeText.innerHTML = 'Welcome back,<br>' + emailFinder;
           menuIcon.style.display = 'inline';
 
           loginBut_menu.style.display = 'none';
           signupBut_menu.style.display = 'none';
      }
 }
-
+/*
 function showOption() {
      const moreDiv = document.getElementById('moreDiv');
 
      if (moreDiv.style.opacity == '0' || moreDiv.style.opacity == '') {
           moreDiv.style.opacity = 1;
           moreDiv.style.display = 'flex';
+
           
-/*
-          moreDiv.addEventListener(
-               'transitionend',
-               function () {
-                    if (moreDiv.style.display == 'flex') {
-                         moreDiv.style.opacity = 1;
-                    }
-               },
-               { once: true }
-          );*/
      } else {
           moreDiv.style.opacity = 0;
           moreDiv.addEventListener(
@@ -250,6 +231,14 @@ function moreOption(choice) {
                checkFinder();
                break;
      }
+}*/
+
+function logout() {
+     //moreDiv.style.opacity = '0';
+     localStorage.clear();
+     showToast("success","Log out successful");
+     closeMenu();
+     checkFinder();
 }
 
 function openMenu() {
@@ -305,6 +294,39 @@ function closeMenu() {
           },
           { once: true }
      );
+}
+
+/*****toast****** */
+const toastUl = document.getElementById('toastUl');
+const toastDetails = {
+     success: {
+          icon: 'uim uim-check-circle',
+          text: 'Action successful',
+     },
+     error: {
+          icon: 'uim uim-exclamation-triangle',
+          text: 'Error occurred',
+     },
+};
+
+function removeToast(toast) {
+     toast.classList.add('hide');
+     if (toast.timeoutId) clearTimeout(toast.timeoutId);
+     setTimeout(() => toast.remove(), 500);
+}
+function showToast(whichtoast, thetext) {
+     const { icon, text } = toastDetails[whichtoast];
+     const toast = document.createElement('li');
+     toast.className = `toast ${whichtoast}`;
+     toast.innerHTML = `<div class="column">
+                              <i class="${icon}"></i>
+                              <h3>${thetext}</h3>
+                         </div>
+                         <i class="uil uil-times" onclick="removeToast(this.parentElement)"></i>`;
+
+     toastUl.appendChild(toast);
+
+     toast.timeoutId = setTimeout(() => removeToast(toast), 2000);
 }
 
 //admin@gmail.com

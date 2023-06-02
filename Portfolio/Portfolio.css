@@ -246,22 +246,6 @@ header ul li a:hover .box {
      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.listDiv .titleListDiv {
-     display: flex;
-     flex-direction: row;
-     justify-content: space-between;
-}
-
-.listDiv .titleListDiv i {
-     font-size: 20px;
-     cursor: pointer;
-     transition: transform 0.3s ease;
-}
-
-.listDiv .titleListDiv i:hover{
-     transform: scale(1.1);
-}
-
 .listDiv .categoryDiv {
      display: flex;
      flex-direction: row;
@@ -362,10 +346,9 @@ header ul li a:hover .box {
 	-webkit-text-fill-color: transparent;
 }*/
 
-.listDiv .tableDiv {
+.listDiv .tableDiv{
      max-height: 250px;
      overflow-y: auto;
-     transition: max-height 0.3s ease;
 }
 
 .listDiv table {
@@ -454,6 +437,7 @@ header ul li a:hover .box {
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;*/
           background-position: 0%;
+
      }
      100% {
           /*background: linear-gradient(to right, #8b5cf6, #ec4899);
@@ -580,7 +564,7 @@ header ul li a:hover .box {
      position: absolute;
      left: -14px;
      top: 20px;
-     content: '';
+     content: "";
      display: block;
 }
 
@@ -743,7 +727,7 @@ header ul li a:hover .box {
 }
 
 /************new list div**********/
-.newListContainer {
+.newListContainer{
      position: absolute;
      top: 0;
      width: 100%;
@@ -767,8 +751,9 @@ header ul li a:hover .box {
      align-items: center;
      justify-content: center;
      border-radius: 20px;
-     padding: 10px;
+     padding: 10px;     
      cursor: auto;
+
 }
 
 .newListDiv h3 {
@@ -833,7 +818,7 @@ header ul li a:hover .box {
 }
 
 /************detail div**********/
-.detailContainer {
+.detailContainer{
      position: absolute;
      top: 0;
      width: 100%;
@@ -858,6 +843,7 @@ header ul li a:hover .box {
      border-radius: 20px;
      padding: 20px;
      cursor: auto;
+
 }
 
 .detailDiv .gridContainer {
@@ -979,126 +965,6 @@ header ul li a:hover .box {
 
 .detailDiv button:focus {
      outline: 2px solid white;
-}
-
-/************TOAST MESSAGE**********/
-.toastDiv ul {
-     position: fixed;
-     top: 60px;
-     right: 20px;
-}
-
-.toastDiv ul:where(.toast, .column) {
-     display: flex;
-
-     align-items: center;
-}
-
-.toastDiv .toast {
-     position: relative;
-     overflow: hidden;
-     width: 400px;
-     list-style: none;
-     border-radius: 4px;
-     padding: 16px 17px;
-     margin-bottom: 10px;
-     background-color: #fff;
-     justify-content: space-between;
-     display: flex;
-     flex-direction: row;
-     align-items: center;
-     animation: show_toast 0.3s ease forwards;
-}
-
-@keyframes show_toast {
-     0% {
-          transform: translateX(100%);
-     }
-     40% {
-          transform: translateX(-5%);
-     }
-     80% {
-          transform: translateX(0%);
-     }
-     100% {
-          transform: translateX(-10px);
-     }
-}
-
-.toast::before {
-     position: absolute;
-     content: '';
-     height: 3px;
-     width: 100%;
-     bottom: 0px;
-     left: 0px;
-     background-color: red;
-     animation: progress 4s linear forwards;
-}
-
-@keyframes progress {
-     100% {
-          width: 0%;
-     }
-}
-
-.toast .column {
-     display: flex;
-     flex-direction: row;
-}
-
-.toast.success::before {
-     background-color: var(--bullColor);
-}
-
-.toast.success .column span {
-     color: var(--bullColor);
-}
-
-.toast.error::before {
-     background-color: var(--bearColor);
-}
-
-.toast.error .column span {
-     color: var(--bearColor);
-}
-
-.toast .column i,
-.toast .column span {
-     font-size: 20px;
-}
-
-.toast .column h3 {
-     font-size: 16px;
-     margin-left: 12px;
-}
-
-.toast i:last-child {
-     color: #aeb0d7;
-     cursor: pointer;
-}
-
-.toast i:last-child:hover {
-     color: #000;
-}
-
-.toastDiv .toast.hide {
-     animation: hide_toast 0.3s ease forwards;
-}
-
-@keyframes hide_toast {
-     0% {
-          transform: translateX(-10px);
-     }
-     40% {
-          transform: translateX(0%);
-     }
-     80% {
-          transform: translateX(-5%);
-     }
-     100% {
-          transform: translateX(calc(100% + 20px));
-     }
 }
 
 /************LOADER**********/
