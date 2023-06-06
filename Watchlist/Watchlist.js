@@ -809,26 +809,23 @@ function updateDetailData() {
 }
 
 /***fullscreen*** */
-function fullscreen(){
+function fullscreen() {
      const addDiv = document.querySelector('.addDiv');
      const listDiv = document.querySelector('.listDiv');
      const expandIcon = document.getElementById('expandIcon');
      const tableDiv = document.querySelector('.tableDiv');
 
-     if(expandIcon.className == 'fa-solid fa-compress'){
-          expandIcon.className = 'fa-solid fa-expand'
-          addDiv.style.display = 'flex'
-          listDiv.style.marginTop = '30px'
-          tableDiv.style.maxHeight = '250px'
-
-
-     }else{
-          expandIcon.className = 'fa-solid fa-compress'
-          addDiv.style.display = 'none'
-          listDiv.style.marginTop = '0px'
-          tableDiv.style.maxHeight = '370px'
+     if (expandIcon.className == 'fa-solid fa-compress') {
+          expandIcon.className = 'fa-solid fa-expand';
+          addDiv.style.display = 'flex';
+          listDiv.style.marginTop = '30px';
+          tableDiv.style.maxHeight = '250px';
+     } else {
+          expandIcon.className = 'fa-solid fa-compress';
+          addDiv.style.display = 'none';
+          listDiv.style.marginTop = '0px';
+          tableDiv.style.maxHeight = '370px';
      }
-
 }
 
 //**********DATA GET
@@ -859,6 +856,7 @@ function loadData() {
 
                addnewRow(SYMBOL, DESCRIP, ACTION, BOOKMARK, idKey, PRICE_URL, SUPPORT, RESISTANCE);
           });
+          mobileSetting();
           loader.style.display = 'none';
           //giveFunction();
           //loadingBar.style.display = 'none';
@@ -981,6 +979,7 @@ function closeMenu() {
 
 function mobileSetting() {
      const midUl = document.querySelector('.midUl');
+     const theHeadtable = document.getElementById('theHeadtable');
      var screenWidth = window.innerWidth;
      console.log(screenWidth);
 
@@ -990,6 +989,22 @@ function mobileSetting() {
      } else {
           midUl.style.display = 'none';
           //console.log('dwd mobile');
+
+          var columnIndex = 3; // Index of the column to hide (zero-based)
+          var rows = thetable.rows;
+          for (var i = 0; i < rows.length; i++) {
+               var cells = rows[i].cells;
+               cells[2].style.display = 'none';
+
+               cells[4].style.display = 'none';
+               cells[8].style.display = 'none';
+
+          }
+
+          theHeadtable.rows[0].cells[8].style.display = 'none';
+          theHeadtable.rows[0].cells[5].style.width = '120px';
+          theHeadtable.rows[0].cells[4].style.display = 'none';
+          theHeadtable.rows[0].cells[2].style.display = 'none';
      }
 }
 
