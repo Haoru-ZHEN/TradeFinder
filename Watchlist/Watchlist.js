@@ -678,9 +678,6 @@ detailContainer.addEventListener('click', function (event) {
 });
 
 function deleteFirebase(_DELETEID) {
-     console.log(idFinder);
-     console.log(currentList);
-     console.log(_DELETEID);
 
      const dbref = firebase.database().ref();
      const thelist = dbref.child('WatchList').child(idFinder).child(currentList);
@@ -985,10 +982,8 @@ function mobileSetting() {
 
      if (screenWidth >= 900) {
           midUl.style.display = 'flex';
-          //console.log('dwd');
      } else {
           midUl.style.display = 'none';
-          //console.log('dwd mobile');
 
           var columnIndex = 3; // Index of the column to hide (zero-based)
           var rows = thetable.rows;
@@ -1005,6 +1000,10 @@ function mobileSetting() {
           theHeadtable.rows[0].cells[5].style.width = '120px';
           theHeadtable.rows[0].cells[4].style.display = 'none';
           theHeadtable.rows[0].cells[2].style.display = 'none';
+          console.log(',mobile')
+          if(screenWidth >=650){
+               theHeadtable.rows[0].cells[5].style.width = '230px';
+          }
      }
 }
 
@@ -1183,21 +1182,6 @@ setInterval(enableSave, 1000);
 mobileSetting();
 refreshList();
 
-/*
-window.addEventListener('beforeunload', function (e) {
-     // Cancel the event
-     e.preventDefault();
-     // Chrome requires returnValue to be set
-     e.returnValue = '';
-
-     // Show a confirmation dialog
-     var confirmationMessage = 'Leave site? Your changes may not be saved.';
-     var confirmationMessage = 'Are you sure you want to leave this page?\n\n' +
-                            'Title: Leave site? \n' +
-                            'Subtitle: Your changes may not be saved';
-     (e || window.event).returnValue = confirmationMessage; // Gecko + IE
-     return confirmationMessage; // Webkit, Safari, Chrome etc.
-   });*/
 
 //test@mail.com
 //123

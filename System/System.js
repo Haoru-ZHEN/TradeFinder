@@ -1,4 +1,3 @@
-
 const firebaseConfig = {
      apiKey: 'AIzaSyBOEl_rUKbkYLZFcuggbacGjpA6GKRx3TA',
      authDomain: 'tradefinder-d8892.firebaseapp.com',
@@ -123,14 +122,13 @@ function longshortClick(event, option) {
      var link = event.target;
      var linkRect = link.getBoundingClientRect();
 
-     
      lsBox.style.width = linkRect.width + 'px';
      lsBox.style.height = linkRect.height + 'px';
      //var linkCenterX = linkRect.left + linkRect.width / 2;
      //var boxX = linkCenterX - linkRect.width / 2;
 
      longshortLi.forEach((li) => {
-          li.style.color = '#5c5e62'
+          li.style.color = '#5c5e62';
      });
 
      lsBox.style.transform = 'translateX(' + (linkRect.left - 203) + 'px)';
@@ -138,13 +136,13 @@ function longshortClick(event, option) {
      switch (option) {
           case 0:
                longorshort = 'long';
-               lsBox.style.backgroundColor = 'rgb(84, 202, 175)'
-               link.style.color = '#fff'
+               lsBox.style.backgroundColor = 'rgb(84, 202, 175)';
+               link.style.color = '#fff';
                break;
           case 1:
                longorshort = 'short';
-               link.style.color = '#fff'
-               lsBox.style.backgroundColor = 'rgb(255, 110, 102)'
+               link.style.color = '#fff';
+               lsBox.style.backgroundColor = 'rgb(255, 110, 102)';
                break;
      }
 }
@@ -205,17 +203,15 @@ function closeMenu() {
 function mobileSetting() {
      const midUl = document.querySelector('.midUl');
      var screenWidth = window.innerWidth;
-     console.log(screenWidth);
 
      if (screenWidth >= 900) {
           midUl.style.display = 'flex';
-          //console.log('dwd');
      } else {
           midUl.style.display = 'none';
-          //console.log('dwd mobile');
      }
 }
 
+var resultCondition = '0,0,0,0';
 function checkStrength() {
      var form = document.querySelector('.conditionForm');
      var formgroup = form.querySelectorAll('div');
@@ -226,12 +222,34 @@ function checkStrength() {
      var checkboxes = form.querySelectorAll('input[type="checkbox"]');
 
      // Count the number of checked checkboxes
+     var con1 = '0';
+     var con2 = '0';
+     var con3 = '0';
+     var con4 = '0';
+
      var checkedCount = 0;
      for (var i = 0; i < checkboxes.length; i++) {
           if (checkboxes[i].checked) {
                checkedCount++;
+
+               switch (i) {
+                    case 0:
+                         con1 = '1';
+                         break;
+                    case 1:
+                         con2 = '1';
+                         break;
+                    case 2:
+                         con3 = '1';
+                         break;
+                    case 3:
+                         con4 = '1';
+                         break;
+               }
           }
      }
+
+     resultCondition = con1 + ',' + con2 + ',' + con3 + ',' + con4;
 
      spanFront.style.borderTopRightRadius = '0px';
      spanFront.style.borderBottomRightRadius = '0px';
@@ -290,19 +308,109 @@ function calculateEntry() {
      amountInput.value = amount.toFixed(2);
 }
 
-/****add data to portfolio */
-function addData(){
-     const dbref = firebase.database().ref();
-     const thelist = dbref.child('Portfolio').child(idFinder).child(currentList);
+function calculateCutloss() {
+     const entryInput_cutloss = document.getElementById('entryInput_cutloss');
+     const cutpriceInput_cutloss = document.getElementById('cutpriceInput_cutloss');
+     const cutpercentInput_cutloss = document.getElementById('cutpercentInput_cutloss');
+     const damagepercentInput_cutloss = document.getElementById('damagepercentInput_cutloss');
+     const damageamountInput_cutloss = document.getElementById('damageamountInput_cutloss');
 
-     const newData = {
-          SYMBOL: _SYMBOL,
-          LONGSHORT: 'Buy',
-          ENTRY_PRICE: _DESCRIPTION,
-          BOOKMARK: false,
-          idkey: null,
+     const initialInput = document.getElementById('initialInput');
+     const amountInput = document.getElementById('amountInput');
+
+
+     var cutlossPercent = 0;
+     if (longorshort == 'long') {
+          cutlossPercent = (parseFloat(entryInput_cutloss.value) - parseFloat(cutpriceInput_cutloss.value)) /parseFloat(entryInput_cutloss.value)*100;
+     } else {
+          cutlossPercent = (parseFloat(cutpriceInput_cutloss.value) - parseFloat(entryInput_cutloss.value)) /parseFloat(entryInput_cutloss.value)*100;
+     }
+
+     cutpercentInput_cutloss.value = cutlossPercent.toFixed(2);
+
+     var damageAmount = (cutlossPercent/100) *parseFloat(amountInput.value); 
+     var damagePercent =( damageAmount /parseFloat(initialInput.value)) *100;
+
+     damageamountInput_cutloss.value = damageAmount.toFixed(2);
+     damagepercentInput_cutloss.value = damagePercent.toFixed(2);
+}
+
+/****add data to portfolio */
+function addData() {
+     const dbref = firebase.database().ref();
+     const thelist = dbref.child('Portfolio').child(idFinder);
+     var newKey = thelist.push().key;
+     console.log(newKey);
+
+     const entrySys = {
+          SYMBOL: pairInput.value || '-',
+          LONGSHORT: longorshort,
+          ENTRY_PRICE: parseFloat(entrypriceInput.value) || '-',
+          data1: 'replace',
+          IDKEY: newKey,
+          ENTRY_MARGIN: parseFloat(marginInput.value) || '-',
+          DAMAGE_COST: parseFloat(damageInput.value) || '-',
+          LEVERAGE: parseFloat(leverageInput.value) || '-',
+          ENTRY_AMOUNT: parseFloat(amountInput.value) || '-',
+          ENTRY_CONDITION: resultCondition,
      };
 
+     const throttleSys = {
+          target_position: totalPositionInput_throttle.value || '-',
+          ENTRY_MARGIN: parseFloat(percentInput1_throttle.value),
+          DAMAGE_COST: parseFloat(amountInput1_throttle.value),
+          LEVERAGE: parseFloat(priceInput1_throttle.value),
+          ENTRY_AMOUNT: parseFloat(avgInput1_throttle.value),
+     };
+
+     const cutlossSys = {
+          //target_position: entryInput_cutloss.value,
+          CUTLOSS_PRICE: parseFloat(cutpriceInput_cutloss.value),
+          //DAMAGE_COST: parseFloat(cutpercentInput_cutloss.value),
+          //LEVERAGE: parseFloat(damagepercentInput_cutloss.value),
+          //ENTRY_AMOUNT: parseFloat(damageamountInput_cutloss.value)
+     };
+
+     const profitSys = {
+          //target_position: entryInput_cutloss.value,
+          CUTLOSS_PRICE: parseFloat(cutpriceInput_cutloss.value),
+          //DAMAGE_COST: parseFloat(cutpercentInput_cutloss.value),
+          //LEVERAGE: parseFloat(damagepercentInput_cutloss.value),
+          //ENTRY_AMOUNT: parseFloat(damageamountInput_cutloss.value)
+     };
+
+     var newData2 = {
+          EntrySys: {
+               data1: 'Value 1 for section 1',
+               data2: 'Value 2 for section 1',
+               ...entrySys,
+          },
+          throttleSys: {
+               data1: 'Value 1 for section 1',
+          },
+          cutlossSys: {
+               data1: 'Value 1 for section 3',
+               data2: 'Value 2 for section 3',
+          },
+          profitSys: {
+               data1: 'Value 1 for section 4',
+               data2: 'Value 2 for section 4',
+          },
+     };
+
+     //newData2.EntrySys = entrySys;
+     thelist
+          .child(newKey)
+          .set(newData2)
+          .then(() => {
+               showToast('success', 'Add successful');
+          })
+          .catch((error) => {
+               showToast('error', 'Failed to add data');
+               console.error(error);
+          });
+
+     /*
      thelist
           .push()
           .then((newChildRef) => {
@@ -318,33 +426,69 @@ function addData(){
                // Update the new child with the new object
                return newChildRef.set(newData);
           })
-          .then(() => {
-               //alert('Register successfully');
-          })
           .catch((error) => {
                showToast('error', 'Failed to add data');
                console.error(error);
-          });
+          });*/
 }
 
 function addPair() {
      if (validate()) {
-          addData(symbolInput.value, describeInput.value);
-          symbolInput.value = '';
-          describeInput.value = '';
+          addData();
+          pairInput.value = '';
+          entrypriceInput.value = '';
      }
 }
 
-
 function validate() {
-     let withoutSpaces = symbolInput.value.replace(/\s/g, '');
-     if (withoutSpaces == '') {
+     let withoutSpaces = pairInput.value.replace(/\s/g, '');
+     if (withoutSpaces == '' || entrypriceInput == '') {
           //alert("Pair name shouldn't be empty");
-          showToast('error', "Pair name shouldn't be empty");
+          showToast('error', "Symbol and entry price shouldn't be empty");
           return false;
      } else {
           return true;
      }
 }
+
+function addPortfolio() {
+     addData();
+}
+
+// TOAST FUNCTION
+const toastUl = document.getElementById('toastUl');
+const toastDetails = {
+     success: {
+          icon: 'uim uim-check-circle',
+          text: 'Action successful',
+     },
+     error: {
+          icon: 'uim uim-exclamation-triangle',
+          text: 'Error occurred',
+     },
+};
+
+function removeToast(toast) {
+     toast.classList.add('hide');
+     if (toast.timeoutId) clearTimeout(toast.timeoutId);
+     setTimeout(() => toast.remove(), 500);
+}
+function showToast(whichtoast, thetext) {
+     const { icon, text } = toastDetails[whichtoast];
+     const toast = document.createElement('li');
+     toast.className = `toast ${whichtoast}`;
+     toast.innerHTML = `<div class="column">
+                              <i class="${icon}"></i>
+                              <h3>${thetext}</h3>
+                         </div>
+                         <i class="uil uil-times" onclick="removeToast(this.parentElement)"></i>`;
+
+     toastUl.appendChild(toast);
+
+     toast.timeoutId = setTimeout(() => removeToast(toast), 4000);
+}
+
 //main
+var idFinder_get = localStorage.getItem('Finder');
+let idFinder = idFinder_get.replace(/"/g, '');
 mobileSetting();

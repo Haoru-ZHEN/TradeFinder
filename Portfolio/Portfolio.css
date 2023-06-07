@@ -322,13 +322,11 @@ header ul li a:hover .box {
 .listDiv td {
      text-align: center;
      /*background-image: linear-gradient(to right, var(--pink), var(--purple));*/
-     color: var(--lighter-brown2);
+     color: var(--lighter-brown);
      font-size: 15px;
-     font-weight: 550;
-     width: 110px;
-     margin-bottom: 20px;
-     border-bottom: 1px solid var(--learnColor);
-     padding: 12px;
+     font-weight: 300;
+     width: max-content;
+     padding: 15px 20px;
      transition: background 3s ease;
 }
 
@@ -336,8 +334,13 @@ header ul li a:hover .box {
      background-color: var(--bgColor);
      color: var(--black);
      opacity: 0.7;
+     font-weight: 450;
      border-bottom: 1.5px solid var(--learnColor);
 }
+
+table tr:nth-child(even) {
+     background-color: #f8f6ff;
+   }
 /*
 .listDiv .headerTable th:hover{
      background: linear-gradient(
