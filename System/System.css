@@ -372,7 +372,8 @@ header ul li a:hover .box {
 
 .container .contentDiv .throttleSys,
 .container .contentDiv .cutSys,
-.container .contentDiv .profitSys {
+.container .contentDiv .profitSys,
+.container .contentDiv .damageCostSys {
      display: none;
 }
 
@@ -387,8 +388,9 @@ header ul li a:hover .box {
 .entrySys .div1 .input-box,
 .throttleSys .input-box,
 .cutSys .cutDiv1 .input-box,
-.profitSys .profitdiv1 .input-box{
-     margin-top: 30px !important;
+.profitSys .profitdiv1 .input-box,
+.damageCostSys .costDiv .input-box{
+     margin-top: 25px !important;
      margin-right: 38px !important; 
 }
 
@@ -585,9 +587,13 @@ header ul li a:hover .box {
 .throttleSys h3{
      font-size: 18px;
      font-weight: 400;
-     margin-bottom: 10px;
-     margin-top: 20px;
+     margin-bottom: 0px;
+     margin-top: 30px;
 }
+
+.throttleSys .input-box{
+     margin-top: 10px;
+} 
 
 .profitSys .profitdiv1 .conditionDiv{
      margin-left: 0px;
@@ -606,13 +612,16 @@ header ul li a:hover .box {
 }
 
 .addDiv .addIconDiv{
-     height: min-content;
-     width: min-content;
+     height: 45px;
+     width: 45px;
      cursor: pointer;
-     border-radius: 100px;
+     border-radius: 80%;
      padding: 10px;
      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
      transition: box-shadow 0.3s ease;
+     display: flex;
+     align-items: center;
+     justify-content: center;
 }
 
 .addDiv .addIconDiv:hover{
@@ -623,6 +632,16 @@ header ul li a:hover .box {
      /*width: 20px;
      max-height: 20px;*/
      font-size: 20px;
+}
+
+.damageCostSys{
+     display: flex;
+     flex-direction: column;
+}
+
+.damageCostSys .costDiv{
+     display: flex;
+     flex-direction: row;
 }
 
 

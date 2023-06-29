@@ -625,7 +625,7 @@ header ul li a:hover .box {
      border-radius: 5px;
      position: absolute;
      left: 10px;
-     top: -9px;
+     top: -8px;
      content: '';
      display: block;
 }
@@ -709,7 +709,7 @@ header ul li a:hover .box {
      right: -320px;*/
      background-color: #fff;
      padding: 30px;
-     transition: all 0.3s ease;
+     transition: width 0.3s ease;
      overflow: hidden;
      white-space: nowrap;
 }

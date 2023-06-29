@@ -919,6 +919,8 @@ function updateData() {
           console.log(updateData);
           thelist.child(updateList[i][0].toString()).update(updateData);
      }
+
+     showToast('success','Save successful');
 }
 
 /***MENU FUNCTION */

@@ -54,6 +54,8 @@ function systemClick(event, option) {
      const throttleSys = document.querySelector('.throttleSys');
      const cutSys = document.querySelector('.cutSys');
      const profitSys = document.querySelector('.profitSys');
+     const damageCostSys = document.querySelector('.damageCostSys');
+
      /*   
      optionBox.style.width = linkRect.width + 'px';
      optionBox.style.height = linkRect.height + 'px';
@@ -68,6 +70,7 @@ function systemClick(event, option) {
                throttleSys.style.display = 'none';
                cutSys.style.display = 'none';
                profitSys.style.display = 'none';
+               damageCostSys.style.display = 'none';
 
                break;
           case 1:
@@ -75,6 +78,7 @@ function systemClick(event, option) {
                throttleSys.style.display = 'flex';
                cutSys.style.display = 'none';
                profitSys.style.display = 'none';
+               damageCostSys.style.display = 'none';
 
                break;
           case 2:
@@ -82,6 +86,7 @@ function systemClick(event, option) {
                throttleSys.style.display = 'none';
                cutSys.style.display = 'flex';
                profitSys.style.display = 'none';
+               damageCostSys.style.display = 'none';
 
                break;
           case 3:
@@ -89,6 +94,15 @@ function systemClick(event, option) {
                throttleSys.style.display = 'none';
                cutSys.style.display = 'none';
                profitSys.style.display = 'flex';
+               damageCostSys.style.display = 'none';
+
+               break;
+          case 4:
+               entrySys.style.display = 'none';
+               throttleSys.style.display = 'none';
+               cutSys.style.display = 'none';
+               profitSys.style.display = 'none';
+               damageCostSys.style.display = 'flex';
                break;
      }
      /*
@@ -306,6 +320,41 @@ function calculateEntry() {
 
      var amount = margin * leverageInput.value;
      amountInput.value = amount.toFixed(2);
+
+     calculateCutloss();
+}
+
+function twoFunction(event) {
+     connectEntryPrice(event);
+     calculateEntry();
+}
+
+function twoFunction2(event) {
+     connectEntryPrice(event);
+     calculateCutloss();
+}
+
+function twoFunction_percent(event) {
+     connectEntryPercent(event);
+     calculateEntry();
+}
+
+function connectEntryPrice(event) {
+     const entryInput_cutloss = document.getElementById('entryInput_cutloss');
+     const entryInput_entry = document.getElementById('entrypriceInput');
+     const clickedLi = event.currentTarget;
+
+     if (clickedLi.id == 'entrypriceInput') {
+          entryInput_cutloss.value = entryInput_entry.value;
+     } else {
+          entryInput_entry.value = entryInput_cutloss.value;
+     }
+}
+
+function connectEntryPercent(event) {
+     const damageInput_entry = document.getElementById('damageInput');
+     const entryPercentInput_throttle = document.getElementById('entryPInput_throttle');
+     entryPercentInput_throttle.value = damageInput_entry.value;
 }
 
 function calculateCutloss() {
@@ -318,21 +367,78 @@ function calculateCutloss() {
      const initialInput = document.getElementById('initialInput');
      const amountInput = document.getElementById('amountInput');
 
-
      var cutlossPercent = 0;
      if (longorshort == 'long') {
-          cutlossPercent = (parseFloat(entryInput_cutloss.value) - parseFloat(cutpriceInput_cutloss.value)) /parseFloat(entryInput_cutloss.value)*100;
+          cutlossPercent =
+               ((parseFloat(entryInput_cutloss.value) - parseFloat(cutpriceInput_cutloss.value)) /
+                    parseFloat(entryInput_cutloss.value)) *
+               100;
      } else {
-          cutlossPercent = (parseFloat(cutpriceInput_cutloss.value) - parseFloat(entryInput_cutloss.value)) /parseFloat(entryInput_cutloss.value)*100;
+          cutlossPercent =
+               ((parseFloat(cutpriceInput_cutloss.value) - parseFloat(entryInput_cutloss.value)) /
+                    parseFloat(entryInput_cutloss.value)) *
+               100;
      }
 
      cutpercentInput_cutloss.value = cutlossPercent.toFixed(2);
 
-     var damageAmount = (cutlossPercent/100) *parseFloat(amountInput.value); 
-     var damagePercent =( damageAmount /parseFloat(initialInput.value)) *100;
+     var damageAmount = (cutlossPercent / 100) * parseFloat(amountInput.value);
+     var damagePercent = (damageAmount / parseFloat(initialInput.value)) * 100;
 
      damageamountInput_cutloss.value = damageAmount.toFixed(2);
      damagepercentInput_cutloss.value = damagePercent.toFixed(2);
+}
+
+function calculateThrottle() {
+     //entry
+     const amountInput = document.getElementById('amountInput'); //amount / price = unit
+     const entrypriceInput = document.getElementById('entrypriceInput');
+     const initialInput = document.getElementById('initialInput');
+     const leverageInput = document.getElementById('leverageInput');
+
+     var existUnit = parseFloat(amountInput.value) / parseFloat(entrypriceInput.value);
+
+     //throttle
+     const percentInput1_throttle = document.getElementById('percentInput1_throttle');
+     const amountInput1_throttle = document.getElementById('amountInput1_throttle');
+     const priceInput1_throttle = document.getElementById('priceInput1_throttle');
+     const avgInput1_throttle = document.getElementById('avgInput1_throttle');
+
+     var throttleUnit =
+          parseFloat(amountInput1_throttle.value) / parseFloat(priceInput1_throttle.value);
+
+     var averagePrice =
+          (parseFloat(amountInput.value) + parseFloat(amountInput1_throttle.value)) /
+          (existUnit + throttleUnit);
+     avgInput1_throttle.value = averagePrice.toFixed(2);
+
+     amountInput1_throttle.value =
+          parseFloat(initialInput.value) *
+          (parseFloat(percentInput1_throttle.value) / 100) *
+          parseFloat(leverageInput.value);
+}
+
+function calculateDamageCost() {
+     const cutlossInput_damage = document.getElementById('cutlossInput_damage');
+     const maxlossInput_damage = document.getElementById('maxlossInput_damage');
+     const leverageInput_damage = document.getElementById('leverageInput_damage');
+     const damageCostPInput_damage = document.getElementById('damageCostPInput_damage');
+     const damageCostAInput_damage = document.getElementById('damageCostAInput_damage');
+     const initialInput = document.getElementById('initialInput');
+
+     if (initialInput.value == '') {
+          showToast('error', 'Initial Input is empty');
+     }
+
+     var damageCOST_Calculated =
+          parseFloat(maxlossInput_damage.value) /
+          parseFloat(leverageInput_damage.value) /
+          (parseFloat(cutlossInput_damage.value) / 100);
+     damageCostAInput_damage.value = damageCOST_Calculated.toFixed(1);
+     damageCostPInput_damage.value = (
+          (parseFloat(damageCostAInput_damage.value) / parseFloat(initialInput.value)) *
+          100
+     ).toFixed(2);
 }
 
 /****add data to portfolio */
@@ -381,18 +487,15 @@ function addData() {
 
      var newData2 = {
           EntrySys: {
-               data1: 'Value 1 for section 1',
-               data2: 'Value 2 for section 1',
                ...entrySys,
           },
-          throttleSys: {
-               data1: 'Value 1 for section 1',
+          ThrottleSys: {
+               ...throttleSys,
           },
-          cutlossSys: {
-               data1: 'Value 1 for section 3',
-               data2: 'Value 2 for section 3',
+          CutlossSys: {
+               ...cutlossSys,
           },
-          profitSys: {
+          ProfitSys: {
                data1: 'Value 1 for section 4',
                data2: 'Value 2 for section 4',
           },
@@ -453,6 +556,40 @@ function validate() {
 
 function addPortfolio() {
      addData();
+}
+
+function addThrottleDiv() {
+     var count = document.querySelectorAll('.throttlediv1').length;
+     console.log(count);
+
+     if (count < 5) {
+          const throttleSys = document.querySelector('.throttleSys');
+          const throttleH3 = document.createElement('h3');
+          throttleH3.textContent = '2. Throttle';
+
+          const throttleDiv = document.createElement('div');
+          throttleDiv.className = 'throttlediv1';
+          throttleDiv.innerHTML = `<div class="input-box">
+                    <label for="percentInput2_throttle">Throttle (%)</label>
+                    <input id="percentInput2_throttle" required autocomplete="off" />
+               </div>
+               <div class="input-box">
+                    <label for="amountInput2_throttle">Throttle Amount</label>
+                    <input id="amountInput2_throttle" required autocomplete="off" />
+               </div>
+               <div class="input-box">
+                    <label for="priceInput2_throttle">Throttle Price</label>
+                    <input id="priceInput2_throttle" required autocomplete="off" />
+               </div>
+               <div class="input-box">
+                    <label for="avgInput2_throttle">Average Price</label>
+                    <input id="avgInput2_throttle" required autocomplete="off" />
+               </div>`;
+          throttleSys.appendChild(throttleH3);
+          throttleSys.appendChild(throttleDiv);
+     } else {
+          showToast('error', 'Too much throttle');
+     }
 }
 
 // TOAST FUNCTION
