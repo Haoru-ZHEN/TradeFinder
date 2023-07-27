@@ -173,6 +173,8 @@ header ul li a:hover .box {
      color: #5c5e62;
      font-weight: 500;
      transition: 0.5s;
+     width: max-content;
+     display: block;
 }
 /*
 .container .contentDiv .input-box input:focus ~ label,
@@ -181,7 +183,7 @@ header ul li a:hover .box {
      top: -5px;
 }*/
 
-.container .contentDiv .input-box.disableInput input{
+.container .contentDiv .input-box.disableInput input {
      background-color: #bababa;
 }
 /*
@@ -211,7 +213,6 @@ header ul li a:hover .box {
      color: #5c5e62;
      transition: border 0.3s ease;
      margin-top: 10px;
-
 }
 
 .container .contentDiv .input-box input:focus {
@@ -254,7 +255,7 @@ header ul li a:hover .box {
      margin-top: 30px;
 }
 
-.longshortUl{
+.longshortUl {
      width: 30%;
      display: flex;
      flex-direction: row;
@@ -388,10 +389,10 @@ header ul li a:hover .box {
 .entrySys .div1 .input-box,
 .throttleSys .input-box,
 .cutSys .cutDiv1 .input-box,
-.profitSys .profitdiv1 .input-box,
-.damageCostSys .costDiv .input-box{
+.profitSys .profitdiv .input-box,
+.damageCostSys .costDiv .input-box {
      margin-top: 25px !important;
-     margin-right: 38px !important; 
+     margin-right: 38px !important;
 }
 
 .entrySys i {
@@ -403,7 +404,7 @@ header ul li a:hover .box {
 .container .conditionForm .titleDiv h2,
 .conditionDiv .titleDiv h2 {
      width: max-content;
-     font-size: 14px;
+     font-size: 16px;
      color: #5c5e62;
      font-weight: 500;
      margin-right: 10px;
@@ -471,7 +472,7 @@ header ul li a:hover .box {
 }
 
 .form-group label {
-     font-size: 14px;
+     font-size: 13px;
      position: relative;
      cursor: pointer;
      color: #5c5e62;
@@ -558,60 +559,113 @@ header ul li a:hover .box {
      background-color: #2c4999;
 }
 
-.profitSys .profitdiv1{
-     display: flex;
-     flex-direction: row ;
+.profitSys .profitContainer {
+     display: grid;
+     grid-template-columns: 1fr 1fr 1fr;
+     margin-top: 30px;
+     row-gap: 30px;
 }
 
-.profitSys .conditionDiv{
+.profitSys .profitdiv {
+     display: flex;
+     flex-direction: column;
+     background-color: #fff;
+     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+     border-radius: 10px;
+     width: max-content;
+     padding: 20px;
+}
+
+.profitSys .profitdiv .titleDiv {
+     display: flex;
+     flex-direction: row;
+     justify-content: space-between;
+     align-items: center;
+}
+
+.profitSys .profitdiv .titleDiv i {
+     cursor: pointer;
+     font-size: 20px;
+}
+
+.profitSys .profitdiv .titleDiv i:hover {
+     color: #3e6ae1;
+}
+
+.profitSys .conditionDiv {
      display: flex;
      flex-direction: column;
      margin-left: 25px;
 }
 
-.profitSys .profitdiv1 .conditionForm{
-     margin-left: 20px;
+.profitSys .profitdiv .conditionForm {
      display: flex;
-     flex-direction: row;
+     flex-direction: column;
 }
 
-.profitSys .conditionDiv .conditionForm .form-group{
+.profitSys .conditionDiv .conditionForm .form-group {
      margin-right: 20px;
 }
 
-.throttleSys .throttlediv1{
-     display: flex;
-     flex-direction: row;
-}
-
-.throttleSys h3{
-     font-size: 18px;
-     font-weight: 400;
-     margin-bottom: 0px;
+.throttleSys .throttleContainer {
+     display: grid;
+     grid-template-columns: 1fr 1fr 1fr;
      margin-top: 30px;
+     row-gap: 30px;
 }
 
-.throttleSys .input-box{
-     margin-top: 10px;
-} 
-
-.profitSys .profitdiv1 .conditionDiv{
-     margin-left: 0px;
+.throttleSys .throttlediv {
+     display: flex;
+     flex-direction: column;
+     background-color: #fff;
+     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+     border-radius: 10px;
+     width: max-content;
+     padding: 20px;
 }
 
-.addDiv{
+.throttleSys .throttlediv .titleDiv {
      display: flex;
      flex-direction: row;
      justify-content: space-between;
      align-items: center;
-
 }
 
-.profitSys .addDiv{
+.throttleSys .throttlediv .titleDiv i {
+     cursor: pointer;
+     font-size: 20px;
+}
+
+.throttleSys .throttlediv .titleDiv i:hover {
+     color: #3e6ae1;
+}
+
+.throttleSys h3 {
+     font-size: 18px;
+     font-weight: 400;
+     margin-bottom: 0px;
+}
+
+.throttleSys .input-box {
+     margin-top: 10px;
+}
+
+.profitSys .profitdiv .conditionDiv {
+     margin-left: 0px;
+}
+
+.addDiv {
+     display: flex;
+     flex-direction: row;
+     justify-content: space-between;
+     align-items: center;
+}
+
+.profitSys .addDiv {
      justify-content: end;
 }
 
-.addDiv .addIconDiv{
+.addDiv .addIconDiv {
      height: 45px;
      width: 45px;
      cursor: pointer;
@@ -624,26 +678,25 @@ header ul li a:hover .box {
      justify-content: center;
 }
 
-.addDiv .addIconDiv:hover{
+.addDiv .addIconDiv:hover {
      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
-.addDiv .addIconDiv i{
+.addDiv .addIconDiv i {
      /*width: 20px;
      max-height: 20px;*/
      font-size: 20px;
 }
 
-.damageCostSys{
+.damageCostSys {
      display: flex;
      flex-direction: column;
 }
 
-.damageCostSys .costDiv{
+.damageCostSys .costDiv {
      display: flex;
      flex-direction: row;
 }
-
 
 /************TOAST MESSAGE**********/
 .toastDiv ul {
@@ -765,7 +818,6 @@ header ul li a:hover .box {
      }
 }
 
-
 /*******side bar*******/
 .sideWall {
      position: fixed;
@@ -841,7 +893,6 @@ header ul li a:hover .box {
      color: #393c41;
 }
 
-
 /*========== SCROLL BAR ==========*/
 ::-webkit-scrollbar {
      width: 0.6rem;
@@ -857,4 +908,3 @@ header ul li a:hover .box {
 ::-webkit-scrollbar-thumb:hover {
      background-color: var(--text-color-light);
 }
-

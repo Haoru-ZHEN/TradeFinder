@@ -45,13 +45,19 @@
                </header>
                <ul>
                     <li><a href="../">Home</a></li>
-                    <li><a href="#">Portfolio</a></li>
-                    <li><a href="Watchlist.html">Watchlist</a></li>
+                    <li><a href="Portfolio.html">Portfolio</a></li>
+                    <li><a href="../Watchlist/Watchlist.html">Watchlist</a></li>
                     <li><a href="../System/System.html">Trading System</a></li>
                     <li><a href="../Rule/Rule.html">Rules</a></li>
                </ul>
           </div>
      </div>
+
+     <div class="toastDiv">
+          <ul id="toastUl">
+          </ul>
+     </div>
+
 
      <div class="container">
           <div class="contentDiv">
@@ -60,14 +66,22 @@
                <div class="listDiv">
 
                     <div class="titleTable">
-
+                         <!--
                          <div class="searchDiv" id="searchDiv">
                               <i class="uil uil-search" id="searchIcon"></i>
                               <input type="text" id="searchInput" class="searchInput" onkeyup="tableSearch()"
                                    placeholder="Search Symbol" autocomplete="off">
+                         </div>-->
+                         <h4 id="numPlanH4">Current Plan: 2/5</h4>
+                         <div class="iconDiv">
+                              <i class="uil uil-th"></i>
+                              <i class="uil uil-save" id="saveIcon" onclick="saveData()"></i>
                          </div>
-                    </div>
 
+
+                         <!--<i class="uil uil-list-ul"></i>-->
+                    </div>
+                    <!--
                     <table class="thetable">
                          <tr class="headerTable">
                               <th style="border-top-left-radius: 10px;">Portfolio ID</th>
@@ -75,8 +89,8 @@
                               <th>Amount</th>
                               <th>Damage cost</th>
                               <th>Entry Price</th>
-                              <th>Exit Price</th>
-                              <th>Net Profit</th>
+                              <th>Price Now</th>
+                              <th>Status</th>
                               <th>Memo</th>
                               <th style="border-top-right-radius: 10px;">-</th>
                          </tr>
@@ -99,7 +113,51 @@
                               <td>No. 15, Jalan serdang 4/7, Bukit Serdang</td>
                          </tr>
 
-                    </table>
+                    </table>-->
+
+                    <div class="gridView">
+                         <!--<div class="gridItem">
+                              <div class="titleDiv">
+                                   <div style="display: flex; flex-direction: row; align-items: center;">
+                                        <h3>Plan 1</h3>
+
+                                        <label class="switch">
+                                             <input type="checkbox" checked id="checkbox" onclick="changeStock()" />
+                                             <div class="toggle">
+                                                  <div class="star1"></div>
+                                                  <div class="star2"></div>
+                                             </div>
+                                        </label>
+                                   </div>
+
+                                   <i class="uil uil-ellipsis-h"></i>
+                              </div>
+                              <div class="detailDiv">
+                                   <h4>Pair</h4>
+                                   <h5>XIAOMI1810</h5>
+                              </div>
+                              <div class="detailDiv">
+                                   <h4>Entry Price</h4>
+                                   <h5>10.06</h5>
+                              </div>
+                              <div class="detailDiv">
+                                   <h4>Price Now</h4>
+                                   <h5>10.5</h5>
+                              </div>
+                              <h4>Memo:</h4>
+                              <textarea name="" id="" cols="30" rows="3"></textarea>
+                         </div>-->
+
+                    </div>
+
+                    <div class="moreDiv">
+                         <ul>
+                              <li class="idText">-</li>
+                              <li onclick="goEdit()">Edit</li>
+                              <li>Disabled plan</li>
+                              <li onclick="deleteItem()">Delete plan</li>
+                         </ul>
+                    </div>
                </div>
 
           </div>
