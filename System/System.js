@@ -389,35 +389,6 @@ function calculateCutloss() {
      damageamountInput_cutloss.value = damageAmount.toFixed(2);
      damagepercentInput_cutloss.value = damagePercent.toFixed(2);
 }
-/*
-function calculateThrottle2() {
-     //entry
-     const amountInput = document.getElementById('amountInput'); //amount / price = unit
-     const entrypriceInput = document.getElementById('entrypriceInput');
-     const initialInput = document.getElementById('initialInput');
-     const leverageInput = document.getElementById('leverageInput');
-
-     var existUnit = parseFloat(amountInput.value) / parseFloat(entrypriceInput.value);
-
-     //throttle
-     const percentInput1_throttle = document.getElementById('percentInput1_throttle');
-     const amountInput1_throttle = document.getElementById('amountInput1_throttle');
-     const priceInput1_throttle = document.getElementById('priceInput1_throttle');
-     const avgInput1_throttle = document.getElementById('avgInput1_throttle');
-
-     var throttleUnit =
-          (parseFloat(amountInput1_throttle.value)*parseFloat(leverageInput.value)) / parseFloat(priceInput1_throttle.value);
-
-     var averagePrice =
-          (parseFloat(amountInput.value) + (parseFloat(amountInput1_throttle.value))*parseFloat(leverageInput.value)) /
-          (existUnit + throttleUnit);
-     avgInput1_throttle.value = averagePrice.toFixed(2);
-
-     amountInput1_throttle.value =
-          (parseFloat(initialInput.value) *
-          (parseFloat(percentInput1_throttle.value) / 100) ).toFixed(2);
-          //parseFloat(leverageInput.value);
-}*/
 
 function calculateThrottle() {
      const throttleContainer = document.querySelector('.throttleContainer');
@@ -433,12 +404,6 @@ function calculateThrottle() {
      var existUnit = parseFloat(amountInput.value) / parseFloat(entrypriceInput.value);
 
      //throttle
-     /*const percentInput1_throttle = clicked_throttleDiv.getElementById('percentInput1_throttle');
-     const amountInput1_throttle = clicked_throttleDiv.getElementById('amountInput1_throttle');
-     const priceInput1_throttle = clicked_throttleDiv.getElementById('priceInput1_throttle');
-     const avgInput1_throttle = clicked_throttleDiv.getElementById('avgInput1_throttle');*/
-     //const h3_titleDiv = clicked_throttleDiv.querySelector('.titleDiv h3');
-     //var queueNum = h3_titleDiv.textContent[0]; //2
      var total_unit = 0 + existUnit;
      var total_amount = 0 + parseFloat(amountInput.value);
 
@@ -474,24 +439,6 @@ function calculateThrottle() {
                ((amountInput_throttle.value / parseFloat(initialInput.value)) * 100).toFixed(2) +
                '%';
      });
-     /*
-     const percentInput1_throttle = clicked_throttleDiv.querySelector('.percentInput_throttle');
-     const amountInput1_throttle = clicked_throttleDiv.querySelector('.amountInput_throttle');
-     const priceInput1_throttle = clicked_throttleDiv.querySelector('.priceInput_throttle');
-     const avgInput1_throttle = clicked_throttleDiv.querySelector('.avgInput_throttle');
-
-     var throttleUnit =
-          (parseFloat(amountInput1_throttle.value) * parseFloat(leverageInput.value)) /
-          parseFloat(priceInput1_throttle.value);
-
-     var averagePrice =
-          (parseFloat(amountInput.value) +
-               parseFloat(amountInput1_throttle.value) * parseFloat(leverageInput.value)) /
-          (existUnit + throttleUnit);
-     avgInput1_throttle.value = averagePrice.toFixed(2);
-
-     percentInput1_throttle.value =
-          ((amountInput1_throttle.value / parseFloat(initialInput.value)) * 100).toFixed(2) + '%';*/
 }
 
 function calculateProfit() {
@@ -611,8 +558,11 @@ function loadData() {
                var throttleList_GET = thedata.ThrottleSys.throttleList;
                Object.keys(throttleList_GET).forEach((key) => {
                     const value = throttleList_GET[key];
-                    addThrottleDiv('value=' + value.throttleMargin, 'value=' + value.throttlePrice);
-                    //console.log(key, value);
+                    if(value.isThrottle){
+                         addThrottleDiv('value=' + value.throttleMargin, 'value=' + value.throttlePrice, 'checked');
+                    }else{
+                         addThrottleDiv('value=' + value.throttleMargin, 'value=' + value.throttlePrice);
+                    }
                });
 
                //set cutlossSys data
@@ -724,6 +674,8 @@ function saveData() {
      const throttleSysArray = {}; // Create an empty array to store throttleList objects
 
      all_throttleDiv.forEach((eachDiv) => {
+          const isThrottlecheckbox = eachDiv.querySelector('.isThrottlecheckbox');
+
           var tempList = dbref
                .child('Portfolio')
                .child(idFinder)
@@ -736,6 +688,7 @@ function saveData() {
                     parseFloat(eachDiv.querySelector('.amountInput_throttle').value) || 0,
                throttlePrice: parseFloat(eachDiv.querySelector('.priceInput_throttle').value) || 0,
                throttleId: tempKey,
+               isThrottle:isThrottlecheckbox.checked
           };
 
           //throttleSysArray.push(throttleList);
@@ -825,7 +778,7 @@ function saveData() {
                showToast('error', 'Failed to add data');
                console.error(error);
           });
-     showToast('success', 'Add successful');
+     showToast('success', 'Save successfully');
 }
 function addData() {
      const dbref = firebase.database().ref();
@@ -834,6 +787,7 @@ function addData() {
      //console.log(newKey);
      const timestamp = Date.now(); // Returns the current timestamp in milliseconds
      const apiInput = document.getElementById('apiInput');
+     
 
      const entrySys = {
           SYMBOL: pairInput.value || '-',
@@ -865,6 +819,7 @@ function addData() {
      const throttleSysArray = {}; // Create an empty array to store throttleList objects
 
      all_throttleDiv.forEach((eachDiv) => {
+          const isThrottlecheckbox = eachDiv.querySelector('.isThrottlecheckbox');
           var tempList = dbref
                .child('Portfolio')
                .child(idFinder)
@@ -877,6 +832,7 @@ function addData() {
                     parseFloat(eachDiv.querySelector('.amountInput_throttle').value) || 0,
                throttlePrice: parseFloat(eachDiv.querySelector('.priceInput_throttle').value) || 0,
                throttleId: tempKey,
+               isThrottle:isThrottlecheckbox.checked,
           };
 
           //throttleSysArray.push(throttleList);
@@ -982,7 +938,7 @@ function addPortfolio() {
 }
 
 //add & delete new div
-function addThrottleDiv(marginValue = '', priceValue = '') {
+function addThrottleDiv(marginValue = '', priceValue = '', throttleIsCheck='') {
      var count = document.querySelectorAll('.throttlediv').length;
      console.log(count);
 
@@ -995,9 +951,19 @@ function addThrottleDiv(marginValue = '', priceValue = '') {
           throttleDiv.className = 'throttlediv';
           throttleDiv.innerHTML =
                `<div class="titleDiv">
-          <h3>` +
+          
+               <div style="display: flex; flex-direction: row; align-items: center;">
+               <h3>` +
                (count + 1) +
                `. Throttle</h3>
+                                        <label class="switch">
+                                             <input type="checkbox" `+throttleIsCheck+` class="isThrottlecheckbox" id="checkbox" />
+                                             <div class="toggle">
+                                                  <div class="star1"></div>
+                                                  <div class="star2"></div>
+                                             </div>
+                                        </label>
+                                   </div>
           <i class="uil uil-times-circle" onclick="deleteThrottleDiv(event)"></i>
      </div>
      

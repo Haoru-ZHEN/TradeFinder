@@ -631,6 +631,51 @@ header ul li a:hover .box {
      align-items: center;
 }
 
+.throttleSys .throttlediv .titleDiv  h3{
+     margin-right: 10px;
+}
+
+.throttleSys .throttlediv .titleDiv .switch{
+     display: block;
+}
+.throttleSys .throttlediv .titleDiv #checkbox {
+     display: none;
+}
+.throttleSys .throttlediv .titleDiv .toggle {
+     height: 20px;
+     width: 40px;
+     border-radius: 9999px;
+     background-color: #b4b4b4;
+     background-size: cover;
+     position: absolute;
+     cursor: pointer;
+     transition: all 0.5s ease-in-out;
+     transform: translateY(-10px);
+     /*box-shadow: 6px 6px 10px #0000003d;*/
+}
+   
+.throttleSys .throttlediv .titleDiv #checkbox:checked + .toggle {
+     background-color: #2ebd85;
+     background-size: cover;
+}
+   
+.throttleSys .throttlediv .titleDiv .toggle::before {
+     content: "";
+     height: 15px;
+     width: 15px;
+     position: absolute;
+     border-radius: 50%;
+     background-color: #f4f4f4;
+     transition: all 0.5s ease-in-out;
+     left: 3px;
+     bottom: 2.5px;
+}
+   
+.throttleSys .throttlediv .titleDiv #checkbox:checked + .toggle::before {
+     position: absolute;
+     left: calc(100% - 17px);
+}
+
 .throttleSys .throttlediv .titleDiv i {
      cursor: pointer;
      font-size: 20px;

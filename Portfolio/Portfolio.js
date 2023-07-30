@@ -125,20 +125,43 @@ function loadData() {
                thedata = data.val(); //thedata is the data of the bundle
                var id = data.key; //key is thee key of bundle
                console.log(thedata);
-               addItem(thedata.EntrySys, count);
+               addItem(thedata.EntrySys, count, thedata.ThrottleSys);
                count++;
           });
 
           numPlanH4.textContent = 'Current Plan: ' + (count - 1) + '/5';
           //mobileSetting();
           loader.style.display = 'none';
-          //giveFunction();
-          //loadingBar.style.display = 'none';
-          //loadingBar.classList.add('fade-out');
      });
 }
 
-function addItem(entrySys, count) {
+function calculateAvgPrice(entrySys, throttleSys) {
+     var unit_total = entrySys.ENTRY_MARGIN / entrySys.ENTRY_PRICE;
+     var margin_total = entrySys.ENTRY_MARGIN;
+
+     var throttleList_GET = thedata.ThrottleSys.throttleList;
+     Object.keys(throttleList_GET).forEach((key) => {
+          const value = throttleList_GET[key];
+          if (value.isThrottle) {
+               var eachUnit = value.throttleMargin / value.throttlePrice;
+               unit_total += eachUnit;
+               margin_total += value.throttleMargin;
+          }
+     });
+     /*throttleSys.throttlelist.forEach(eachThrottle => {
+          if(eachThrottle.isThrottle){
+             var eachUnit = eachThrottle.throttleMargin /eachThrottle.throttlePrice
+               unit_total += eachUnit  
+               margin_total += eachThrottle.throttleMargin  
+          }
+          
+     });*/
+
+     var avgPrice = (margin_total / unit_total).toFixed(2);
+     return avgPrice;
+}
+
+function addItem(entrySys, count, throttleSys) {
      const gridView = document.querySelector('.gridView');
      var isChecked = '';
 
@@ -147,6 +170,7 @@ function addItem(entrySys, count) {
      }
      const finalID = "'" + entrySys.IDKEY + "'";
 
+     var averagePrice = calculateAvgPrice(entrySys, throttleSys);
      const profitdiv = document.createElement('div');
      profitdiv.className = 'gridItem';
      profitdiv.innerHTML =
@@ -179,9 +203,9 @@ function addItem(entrySys, count) {
           `</h5>
      </div>
      <div class="detailDiv">
-          <h4>Entry Price</h4>
+          <h4>Average Price</h4>
           <h5>` +
-          entrySys.ENTRY_PRICE +
+          averagePrice +
           `</h5>
      </div>
      <div class="detailDiv apiDiv">
@@ -390,5 +414,6 @@ function showToast(whichtoast, thetext) {
 //main
 var idFinder_get = localStorage.getItem('Finder');
 let idFinder = idFinder_get.replace(/"/g, '');
+const loader = document.querySelector('.loaderContainer');
 loadData();
 mobileSetting();

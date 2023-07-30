@@ -51,7 +51,7 @@
                     <div class="div1">
                          <div class="input-box">
                               <label for="pairInput">Pair Name</label>
-                              <input id="pairInput" oninput="calculateEntry()" autocomplete="off" />
+                              <input id="pairInput"autocomplete="off" />
                          </div>
                          <div class="input-box">
                               <label for="entrypriceInput">Entry Price</label>
@@ -63,7 +63,12 @@
                          </div>
                          <div class="input-box">
                               <label for="apiInput">Price API</label>
-                              <input id="apiInput" oninput="calculateEntry()" autocomplete="off" />
+                              <input id="apiInput"list="apiList" />
+                              <datalist id="apiList">
+                                   <option value="https://twelve-data1.p.rapidapi.com/price?symbol=TSLA">
+                                   <option value="Banana">
+                                        </datalist>
+
                          </div>
                     </div>
 
@@ -143,38 +148,53 @@
                     </div>
 
                     <div class="input-box disableInput">
-                         <label for="entryPInput_throttle" >Entry (%)</label>
-                         <input id="entryPInput_throttle" autocomplete="off" disabled/>
+                         <label for="entryPInput_throttle">Entry (%)</label>
+                         <input id="entryPInput_throttle" autocomplete="off" disabled />
                     </div>
                     <div class="throttleContainer">
 
-                         
+
                          <div class="throttlediv">
                               <div class="titleDiv">
-                                   <h3>1. Throttle</h3>
+                                   <div style="display: flex; flex-direction: row; align-items: center;">
+                                        <h3>1. Throttle</h3>
+                                        <label class="switch">
+                                             <input type="checkbox" class="isThrottlecheckbox" id="checkbox" />
+                                             <div class="toggle">
+                                                  <div class="star1"></div>
+                                                  <div class="star2"></div>
+                                             </div>
+                                        </label>
+                                   </div>
+
                                    <i class="uil uil-times-circle" onclick="deleteThrottleDiv(event)"></i>
                               </div>
-                              
-                              
+
+
                               <div class="input-box ">
-                                   <label for="amountInput1_throttle" class="amountLabel_throttle">Throttle Margin</label>
-                                   <input id="amountInput1_throttle" class="amountInput_throttle" autocomplete="off" oninput="calculateThrottle()"/>
+                                   <label for="amountInput1_throttle" class="amountLabel_throttle">Throttle
+                                        Margin</label>
+                                   <input id="amountInput1_throttle" class="amountInput_throttle" autocomplete="off"
+                                        oninput="calculateThrottle()" />
                               </div>
                               <div class="input-box">
                                    <label for="priceInput1_throttle">Throttle Price</label>
-                                   <input id="priceInput1_throttle" class="priceInput_throttle" autocomplete="off" oninput="calculateThrottle()"/>
+                                   <input id="priceInput1_throttle" class="priceInput_throttle" autocomplete="off"
+                                        oninput="calculateThrottle()" />
                               </div>
                               <div class="input-box disableInput">
                                    <label for="percentInput1_throttle">Throttle (%)</label>
-                                   <input id="percentInput1_throttle" class="percentInput_throttle" required autocomplete="off" disabled/>
+                                   <input id="percentInput1_throttle" class="percentInput_throttle" required
+                                        autocomplete="off" disabled />
                               </div>
                               <div class="input-box disableInput">
                                    <label for="avgInput1_throttle">Average Price</label>
-                                   <input id="avgInput1_throttle" class="avgInput_throttle" autocomplete="off" disabled/>
+                                   <input id="avgInput1_throttle" class="avgInput_throttle" autocomplete="off"
+                                        disabled />
                               </div>
                          </div>
 
-                         
+
                     </div>
                     <!--
                     <h3>2. Throttle</h3>
@@ -202,12 +222,13 @@
                <div class="cutSys">
                     <div class="input-box">
                          <label for="entryInput_cutloss">Entry Price</label>
-                         <input id="entryInput_cutloss" type="text" autocomplete="off"  oninput="twoFunction2(event)"/>
+                         <input id="entryInput_cutloss" type="text" autocomplete="off" oninput="twoFunction2(event)" />
                     </div>
                     <div class="cutDiv1">
                          <div class="input-box">
                               <label for="cutpriceInput_cutloss">Cutloss Price</label>
-                              <input id="cutpriceInput_cutloss" type="text" autocomplete="off" oninput="calculateCutloss()"/>
+                              <input id="cutpriceInput_cutloss" type="text" autocomplete="off"
+                                   oninput="calculateCutloss()" />
                          </div>
                          <div class="input-box disableInput">
                               <label for="cutpercentInput_cutloss">Cutloss (%)</label>
@@ -241,24 +262,28 @@
                                    <h3>1. Take Profit</h3>
                                    <i class="uil uil-times-circle" onclick="deleteProfitDiv(event)"></i>
                               </div>
-                              
+
                               <div class="input-box">
                                    <label for="takePInput1_profit">Take Profit (%)</label>
-                                   <input id="takePInput1_profit" class="percentInput_profit" type="text" autocomplete="off" />
+                                   <input id="takePInput1_profit" class="percentInput_profit" type="text"
+                                        autocomplete="off" />
                               </div>
                               <div class="input-box">
                                    <label for="priceInput1_profit">Profit Price</label>
-                                   <input id=priceInput1_profit" class="priceInput_profit" type="text" autocomplete="off" />
+                                   <input id=priceInput1_profit" class="priceInput_profit" type="text"
+                                        autocomplete="off" />
                               </div>
                               <div class="input-box">
                                    <label for="conditionInput1_profit">Profit Condition</label>
-                                   <input id="conditionInput1_profit" class="conditionInput_profit" type="text" autocomplete="off"/>
+                                   <input id="conditionInput1_profit" class="conditionInput_profit" type="text"
+                                        autocomplete="off" />
                               </div>
                               <div class="input-box disableInput">
                                    <label for="amountInput1_profit">Profit Amount</label>
-                                   <input id="amountInput1_profit" class="amountInput_profit" type="text" autocomplete="off" disabled/>
+                                   <input id="amountInput1_profit" class="amountInput_profit" type="text"
+                                        autocomplete="off" disabled />
                               </div>
-                              
+
                               <!--
                               <div class="conditionDiv">
                                    <div class="titleDiv">
@@ -286,32 +311,37 @@
                </div>
                <div class="damageCostSys">
                     <div class="costDiv">
-                        <div class="input-box">
+                         <div class="input-box">
                               <label for="cutlossInput_damage">Cutloss (%)</label>
-                              <input id="cutlossInput_damage" type="text" autocomplete="off"  oninput="calculateDamageCost()"/>
+                              <input id="cutlossInput_damage" type="text" autocomplete="off"
+                                   oninput="calculateDamageCost()" />
                          </div>
                          <div class="input-box">
                               <label for="maxlossInput_damage">Max Loss (Margin)</label>
-                              <input id="maxlossInput_damage" type="text" autocomplete="off"  oninput="calculateDamageCost()"/>
+                              <input id="maxlossInput_damage" type="text" autocomplete="off"
+                                   oninput="calculateDamageCost()" />
                          </div>
                          <div class="input-box">
                               <label for="leverageInput_damage">Leverage</label>
-                              <input id="leverageInput_damage" type="text" autocomplete="off"  oninput="calculateDamageCost()"/>
-                         </div> 
+                              <input id="leverageInput_damage" type="text" autocomplete="off"
+                                   oninput="calculateDamageCost()" />
+                         </div>
                     </div>
 
                     <div class="costDiv">
-                        <div class="input-box disableInput">
+                         <div class="input-box disableInput">
                               <label for="damageCostPInput_damage">Damage Cost (%)</label>
-                              <input id="damageCostPInput_damage" type="text" autocomplete="off"  oninput="calculateDamageCost()" disabled/>
+                              <input id="damageCostPInput_damage" type="text" autocomplete="off"
+                                   oninput="calculateDamageCost()" disabled />
                          </div>
                          <div class="input-box disableInput">
                               <label for="damageCostAInput_damage">Damage Cost (Margin)</label>
-                              <input id="damageCostAInput_damage" type="text" autocomplete="off"  oninput="calculateDamageCost()" disabled/>
-                         </div> 
+                              <input id="damageCostAInput_damage" type="text" autocomplete="off"
+                                   oninput="calculateDamageCost()" disabled />
+                         </div>
                     </div>
-                    
-                    
+
+
                </div>
           </div>
 
