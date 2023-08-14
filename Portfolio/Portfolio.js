@@ -108,7 +108,7 @@ function mobileSetting() {
 }
 
 //data
-function loadData() {
+function loadData(isShowHistory = false) {
      const dbref = firebase.database().ref();
      const thelist = dbref.child('Portfolio').child(idFinder);
      loader.style.display = 'flex';
@@ -117,7 +117,8 @@ function loadData() {
      thelist.once('value', function (snapshot) {
           //snapshot contain many bundles
           console.log(snapshot.val());
-          var count = 1;
+          var count = 0;
+          var activeCount = 0;
 
           snapshot.forEach(function (data) {
                //console.log('HERE');
@@ -125,11 +126,30 @@ function loadData() {
                thedata = data.val(); //thedata is the data of the bundle
                var id = data.key; //key is thee key of bundle
                console.log(thedata);
-               addItem(thedata.EntrySys, count, thedata.ThrottleSys);
-               count++;
+
+               if (isShowHistory) {
+                    //only delete
+                    if (thedata.EntrySys.isDelete) {
+                         addItem(thedata.EntrySys, count, thedata.ThrottleSys, isShowHistory);
+                    }
+               } else {
+                    //deletePlan is excepted
+                    if (!thedata.EntrySys.isDelete) {
+                         addItem(thedata.EntrySys, count, thedata.ThrottleSys, isShowHistory);
+                    }
+               }
+
+               //addItem(thedata.EntrySys, count, thedata.ThrottleSys,isShowHistory);
+               if (!thedata.EntrySys.isDelete) {
+                    count++;
+               }
+
+               if (thedata.EntrySys.STATUS == '2' && !thedata.EntrySys.isDelete) {
+                    activeCount++;
+               }
           });
 
-          numPlanH4.textContent = 'Current Plan: ' + (count - 1) + '/5';
+          numPlanH4.textContent = 'Current Plan: ' + activeCount + '/' + count;
           //mobileSetting();
           loader.style.display = 'none';
      });
@@ -142,7 +162,7 @@ function calculateAvgPrice(entrySys, throttleSys) {
      var throttleList_GET = thedata.ThrottleSys.throttleList;
      Object.keys(throttleList_GET).forEach((key) => {
           const value = throttleList_GET[key];
-          if (value.isThrottle) {
+          if (value.isThrottle && !value.isHistory) {
                var eachUnit = value.throttleMargin / value.throttlePrice;
                unit_total += eachUnit;
                margin_total += value.throttleMargin;
@@ -161,19 +181,27 @@ function calculateAvgPrice(entrySys, throttleSys) {
      return avgPrice;
 }
 
-function addItem(entrySys, count, throttleSys) {
+function addItem(entrySys, count, throttleSys, isShowHistory) {
+     /*if (entrySys.isDelete) {
+          return;
+     }*/
      const gridView = document.querySelector('.gridView');
      var isChecked = '';
+     var isCutloss = 'rgb(255,255,255)';
 
      if (entrySys.STATUS == '2') {
           isChecked = 'checked';
      }
+     if (entrySys.STATUS == '3') {
+          isCutloss = 'rgb(255, 110, 102)';
+     }
      const finalID = "'" + entrySys.IDKEY + "'";
 
      var averagePrice = calculateAvgPrice(entrySys, throttleSys);
-     const profitdiv = document.createElement('div');
-     profitdiv.className = 'gridItem';
-     profitdiv.innerHTML =
+     const planDiv = document.createElement('div');
+     planDiv.style.backgroundColor = isCutloss;
+     planDiv.className = 'gridItem';
+     planDiv.innerHTML =
           `<div class="titleDiv">
           <div style="display: flex; flex-direction: row; align-items: center;">
                <h3>Plan ` +
@@ -216,9 +244,16 @@ function addItem(entrySys, count, throttleSys) {
      <textarea name="" class="memoTextarea" cols="30" rows="3">` +
           entrySys.MEMO +
           `</textarea>`;
-     const apiText = profitdiv.querySelector('.apiDiv h5');
+     const apiText = planDiv.querySelector('.apiDiv h5');
+     if (isCutloss == 'rgb(255, 110, 102)') {
+          const allh4 = planDiv.querySelectorAll('h4');
+          allh4.forEach((h4Element) => {
+               h4Element.style.color = 'black';
+          });
+     }
+
      getPrice_API(apiText, entrySys.API);
-     gridView.appendChild(profitdiv);
+     gridView.appendChild(planDiv);
 }
 
 function getTextBetweenSingleQuotes(str) {
@@ -231,6 +266,7 @@ function saveData() {
      const gridItem = document.querySelectorAll('.gridItem');
      const dbref = firebase.database().ref();
      const thelist = dbref.child('Portfolio').child(idFinder);
+     var isSave = 0;
 
      gridItem.forEach((eachGridItem) => {
           const checkbox = eachGridItem.querySelector('.switch input');
@@ -254,7 +290,12 @@ function saveData() {
                .child('EntrySys')
                .update(entrySys)
                .then(() => {
-                    showToast('success', 'Save data successfully');
+                    console.log('save data successfully');
+                    isSave += 1;
+
+                    if (isSave == 1) {
+                         showToast('success', 'Save data successfully');
+                    }
                })
                .catch((error) => {
                     showToast('error', 'Failed to add data');
@@ -263,13 +304,18 @@ function saveData() {
      });
 }
 
-function deleteItem() {
+function archiveItem() {
      const idText = document.querySelector('.moreDiv .idText');
      const dbref = firebase.database().ref();
-     const thelist = dbref.child('Portfolio').child(idFinder).child(idText.textContent);
-
+     //const thelist = dbref.child('Portfolio').child(idFinder).child(idText.textContent);
+     const thelist = dbref
+          .child('Portfolio')
+          .child(idFinder)
+          .child(idText.textContent)
+          .child('EntrySys')
+          .child('isDelete');
      // Call the remove() method on the reference to delete the node
-     thelist
+     /*thelist
           .remove()
           .then(() => {
                const gridView = document.querySelector('.gridView');
@@ -280,7 +326,84 @@ function deleteItem() {
           .catch((error) => {
                console.error('Error deleting node:', error);
                showToast('error', 'Failed to delete');
+          });*/
+
+     thelist
+          .set(true)
+          .then(() => {
+               const gridView = document.querySelector('.gridView');
+               gridView.innerHTML = '';
+               loadData();
+               showToast('success', 'Archive successfully');
+          })
+          .catch((error) => {
+               console.error('Error deleting node:', error);
+               showToast('error', 'Failed to archive');
           });
+}
+
+function unarchiveItem() {
+     const idText = document.querySelector('.moreDiv .idText');
+     const dbref = firebase.database().ref();
+     //const thelist = dbref.child('Portfolio').child(idFinder).child(idText.textContent);
+     const thelist = dbref
+          .child('Portfolio')
+          .child(idFinder)
+          .child(idText.textContent)
+          .child('EntrySys')
+          .child('isDelete');
+     // Call the remove() method on the reference to delete the node
+     /*thelist
+          .remove()
+          .then(() => {
+               const gridView = document.querySelector('.gridView');
+               gridView.innerHTML = '';
+               loadData();
+               showToast('success', 'Delete successfully');
+          })
+          .catch((error) => {
+               console.error('Error deleting node:', error);
+               showToast('error', 'Failed to delete');
+          });*/
+
+     thelist
+          .set(false)
+          .then(() => {
+               const gridView = document.querySelector('.gridView');
+               gridView.innerHTML = '';
+               showHistory();
+               //loadData();
+               showToast('success', 'Unarchive successfully');
+          })
+          .catch((error) => {
+               console.error('Error deleting node:', error);
+               showToast('error', 'Failed to unarchive');
+          });
+}
+
+function deleteItem() {
+     const idText = document.querySelector('.moreDiv .idText');
+     const dbref = firebase.database().ref();
+     //const thelist = dbref.child('Portfolio').child(idFinder).child(idText.textContent);
+     const thelist = dbref.child('Portfolio').child(idFinder).child(idText.textContent);
+     // Call the remove() method on the reference to delete the node
+
+     var c = confirm('Delete this plan permanently?');
+
+     if (c === true) {
+          thelist
+               .remove()
+               .then(() => {
+                    const gridView = document.querySelector('.gridView');
+                    gridView.innerHTML = '';
+                    loadData();
+                    showToast('success', 'Delete successfully');
+               })
+               .catch((error) => {
+                    console.error('Error deleting node:', error);
+                    showToast('error', 'Failed to delete');
+               });
+     }
 }
 
 //moreDiv
@@ -288,6 +411,10 @@ function deleteItem() {
 function showMorediv(event, theID) {
      const moreDiv = document.querySelector('.moreDiv');
      const idText = document.querySelector('.moreDiv .idText');
+     const archiveText = document.getElementById('archiveText');
+     const unarchiveText = document.getElementById('unarchiveText');
+     const dltPlanText = document.getElementById('dltplanText');
+
      const clickedDiv = event.currentTarget;
      var topPosition = clickedDiv.offsetTop;
      var rightPosition = clickedDiv.getBoundingClientRect().left;
@@ -296,6 +423,19 @@ function showMorediv(event, theID) {
      moreDiv.style.top = topPosition + 30 + 'px';
      moreDiv.style.left = rightPosition - 140 + 'px';
      //moreDiv.style.display = 'flex'
+
+     //default
+     archiveText.style.display = 'flex';
+     dltPlanText.style.display = 'flex';
+     unarchiveText.style.display = 'flex';
+
+     //check isArchive plan
+     if (isShowArchive) {
+          archiveText.style.display = 'none';
+     } else {
+          dltPlanText.style.display = 'none';
+          unarchiveText.style.display = 'none';
+     }
 
      if (moreDiv.style.display == 'none' || moreDiv.style.display == '') {
           moreDiv.style.display = 'flex';
@@ -378,6 +518,25 @@ function sendSecondRequest(theelement, URL_GET) {
      xhr.send();
 }
 
+//show portfolio history
+function showHistory() {
+     const gridView = document.querySelector('.gridView');
+     gridView.innerHTML = '';
+     console.log(showHistoryIcon.style.color);
+
+     if (showHistoryIcon.style.color == 'rgb(52, 72, 84)' || showHistoryIcon.style.color == '') {
+          showHistoryIcon.style.color = '#2ebd85';
+          var isShowHistory = true;
+          loadData(isShowHistory);
+          isShowArchive = true;
+     } else {
+          showHistoryIcon.style.color = '#344854';
+          var isShowHistory = false;
+          loadData(isShowHistory);
+          isShowArchive = false;
+     }
+}
+
 // TOAST FUNCTION
 const toastUl = document.getElementById('toastUl');
 const toastDetails = {
@@ -415,5 +574,6 @@ function showToast(whichtoast, thetext) {
 var idFinder_get = localStorage.getItem('Finder');
 let idFinder = idFinder_get.replace(/"/g, '');
 const loader = document.querySelector('.loaderContainer');
+var isShowArchive = false;
 loadData();
 mobileSetting();

@@ -215,6 +215,8 @@ function closeMenu() {
 }
 
 function mobileSetting() {
+     const throttlehistoryIcon = document.getElementById('throttlehistoryIcon');
+     const cutlossPlanBut = document.getElementById('cutlossPlanBut');
      const midUl = document.querySelector('.midUl');
      var screenWidth = window.innerWidth;
 
@@ -222,6 +224,15 @@ function mobileSetting() {
           midUl.style.display = 'flex';
      } else {
           midUl.style.display = 'none';
+     }
+
+     if (planID == '' || planID == null) {
+          throttlehistoryIcon.style.display = 'none';
+          cutlossPlanBut.style.display = 'none';
+     } else {
+          throttlehistoryIcon.style.display = 'flex';
+          cutlossPlanBut.style.display = 'block';
+
      }
 }
 
@@ -386,8 +397,22 @@ function calculateCutloss() {
      var damageAmount = (cutlossPercent / 100) * parseFloat(amountInput.value);
      var damagePercent = (damageAmount / parseFloat(initialInput.value)) * 100;
 
-     damageamountInput_cutloss.value = damageAmount.toFixed(2);
-     damagepercentInput_cutloss.value = damagePercent.toFixed(2);
+     damageamountInput_cutloss.value = Math.abs(damageAmount.toFixed(2));
+     damagepercentInput_cutloss.value = Math.abs(damagePercent.toFixed(2));
+     if (damageAmount >= 0) {
+          damageamountInput_cutloss.style.color = 'rgb(255, 110, 102)';
+          damagepercentInput_cutloss.style.color = 'rgb(255, 110, 102)';
+          cutpercentInput_cutloss.style.color = 'rgb(255, 110, 102)';
+          cutpercentInput_cutloss.value = '-' + cutpercentInput_cutloss.value;
+          damageamountInput_cutloss.value = '-' + damageamountInput_cutloss.value;
+          damagepercentInput_cutloss.value = '-' + damagepercentInput_cutloss.value;
+          //loss
+     } else {
+          damageamountInput_cutloss.style.color = 'rgb(84, 202, 175)'; //5c5e62
+          damagepercentInput_cutloss.style.color = 'rgb(84, 202, 175)'; //5c5e62
+          cutpercentInput_cutloss.style.color = 'rgb(84, 202, 175)'; //5c5e62
+          //profit
+     }
 }
 
 function calculateThrottle() {
@@ -545,6 +570,12 @@ function loadData() {
                apiInput.value = thedata.EntrySys.API;
                damageInput.value = thedata.EntrySys.DAMAGE_COST;
                leverageInput.value = thedata.EntrySys.LEVERAGE;
+               
+               if(thedata.EntrySys.STATUS == '3'){
+                    isCutloss = true;
+                    const cutlossPlanBut = document.getElementById('cutlossPlanBut');
+                    cutlossPlanBut.textContent = 'Plan uncutloss'
+               }
 
                refreshCondition(thedata.EntrySys.ENTRY_CONDITION);
                refreshLongshort(thedata.EntrySys.LONGSHORT);
@@ -558,10 +589,25 @@ function loadData() {
                var throttleList_GET = thedata.ThrottleSys.throttleList;
                Object.keys(throttleList_GET).forEach((key) => {
                     const value = throttleList_GET[key];
-                    if(value.isThrottle){
-                         addThrottleDiv('value=' + value.throttleMargin, 'value=' + value.throttlePrice, 'checked');
-                    }else{
-                         addThrottleDiv('value=' + value.throttleMargin, 'value=' + value.throttlePrice);
+
+                    if (value.isHistory) {
+                         displayThrottleHistory(value);
+                    } else {
+                         if (value.isThrottle) {
+                              addThrottleDiv(
+                                   'value=' + value.throttleMargin,
+                                   'value=' + value.throttlePrice,
+                                   'checked',
+                                   value.throttleId
+                              );
+                         } else {
+                              addThrottleDiv(
+                                   'value=' + value.throttleMargin,
+                                   'value=' + value.throttlePrice,
+                                   '',
+                                   value.throttleId
+                              );
+                         }
                     }
                });
 
@@ -584,10 +630,10 @@ function loadData() {
                });
 
                //call calculate function
-               calculateCutloss()
-               calculateEntry()
-               calculateThrottle()
-               calculateProfit()
+               calculateCutloss();
+               calculateEntry();
+               calculateThrottle();
+               calculateProfit();
           });
      }
 }
@@ -663,7 +709,6 @@ function saveData() {
           ENTRY_AMOUNT: parseFloat(amountInput.value) || 0,
           ENTRY_CONDITION: resultCondition,
           API: apiInput.value || '-',
-          STATUS: '1',
      };
 
      const throttleSys = {
@@ -671,6 +716,9 @@ function saveData() {
      };
 
      const all_throttleDiv = document.querySelectorAll('.throttlediv');
+     const child_Table = document.getElementById('child_Table');
+     const trAll = child_Table.querySelectorAll('tr');
+
      const throttleSysArray = {}; // Create an empty array to store throttleList objects
 
      all_throttleDiv.forEach((eachDiv) => {
@@ -688,7 +736,39 @@ function saveData() {
                     parseFloat(eachDiv.querySelector('.amountInput_throttle').value) || 0,
                throttlePrice: parseFloat(eachDiv.querySelector('.priceInput_throttle').value) || 0,
                throttleId: tempKey,
-               isThrottle:isThrottlecheckbox.checked
+               isThrottle: isThrottlecheckbox.checked,
+               isHistory: false,
+          };
+
+          //throttleSysArray.push(throttleList);
+          throttleSysArray[tempKey] = throttleList; // Add the throttleList object to the array
+     });
+
+     trAll.forEach((eachTR) => {
+          var tempList = dbref
+               .child('Portfolio')
+               .child(idFinder)
+               .child(planID)
+               .child('ThrottleSys');
+          var tempKey = tempList.push().key;
+
+          // Date string in the format "dd/mm/yyyy"
+          const dateString = eachTR.children[5].textContent;
+          // Split the date string into components
+          const [day, month, year] = dateString.split('/').map(Number);
+          // Create a Date object
+          const dateObject = new Date(year, month - 1, day); // Month is zero-based
+          // Get the timestamp in milliseconds
+          const timestamp = dateObject.getTime();
+
+          var throttleList = {
+               throttleMargin: parseFloat(eachTR.children[1].textContent) || 0,
+               throttlePrice: parseFloat(eachTR.children[2].textContent) || 0,
+               throttleId: tempKey,
+               isHistory: true,
+               isThrottle: true,
+               throttleClosePrice: parseFloat(eachTR.children[3].querySelector('input').value),
+               closeDate:timestamp,
           };
 
           //throttleSysArray.push(throttleList);
@@ -711,7 +791,7 @@ function saveData() {
      all_profitDiv.forEach((eachDiv) => {
           var tempList = dbref.child('Portfolio').child(idFinder).child(planID).child('ProfitSys');
           var tempKey = tempList.push().key;
-          console.log( eachDiv.querySelector('.conditionInput_profit').value)
+          console.log(eachDiv.querySelector('.conditionInput_profit').value);
 
           var profitList = {
                profitPercent: parseFloat(eachDiv.querySelector('.percentInput_profit').value) || 0,
@@ -787,7 +867,6 @@ function addData() {
      //console.log(newKey);
      const timestamp = Date.now(); // Returns the current timestamp in milliseconds
      const apiInput = document.getElementById('apiInput');
-     
 
      const entrySys = {
           SYMBOL: pairInput.value || '-',
@@ -805,14 +884,11 @@ function addData() {
           entryTime: '0',
           MEMO: '-',
           STATUS: '1',
+          isDelete: false,
      };
 
      const throttleSys = {
           target_position: totalPositionInput_throttle.value || 0,
-          /*ENTRY_MARGIN: parseFloat(percentInput1_throttle.value),
-          DAMAGE_COST: parseFloat(amountInput1_throttle.value),
-          LEVERAGE: parseFloat(priceInput1_throttle.value),
-          ENTRY_AMOUNT: parseFloat(avgInput1_throttle.value),*/
      };
 
      const all_throttleDiv = document.querySelectorAll('.throttlediv');
@@ -832,7 +908,8 @@ function addData() {
                     parseFloat(eachDiv.querySelector('.amountInput_throttle').value) || 0,
                throttlePrice: parseFloat(eachDiv.querySelector('.priceInput_throttle').value) || 0,
                throttleId: tempKey,
-               isThrottle:isThrottlecheckbox.checked,
+               isThrottle: isThrottlecheckbox.checked,
+               isHistory: false,
           };
 
           //throttleSysArray.push(throttleList);
@@ -938,9 +1015,12 @@ function addPortfolio() {
 }
 
 //add & delete new div
-function addThrottleDiv(marginValue = '', priceValue = '', throttleIsCheck='') {
+function addThrottleDiv(marginValue = '', priceValue = '', throttleIsCheck = '', idValue = '') {
      var count = document.querySelectorAll('.throttlediv').length;
-     console.log(count);
+     var isDefault = ' display:none;';
+     if (idValue != '') {
+          isDefault = '';
+     }
 
      if (count < 5) {
           const throttleContainer = document.querySelector('.throttleContainer');
@@ -951,20 +1031,31 @@ function addThrottleDiv(marginValue = '', priceValue = '', throttleIsCheck='') {
           throttleDiv.className = 'throttlediv';
           throttleDiv.innerHTML =
                `<div class="titleDiv">
+               <h3 style="display:none;" class="idText_throttleEach">` +
+               idValue +
+               `</h3>
           
                <div style="display: flex; flex-direction: row; align-items: center;">
                <h3>` +
                (count + 1) +
                `. Throttle</h3>
                                         <label class="switch">
-                                             <input type="checkbox" `+throttleIsCheck+` class="isThrottlecheckbox" id="checkbox" />
+                                             <input type="checkbox" ` +
+               throttleIsCheck +
+               ` class="isThrottlecheckbox" id="checkbox" />
                                              <div class="toggle">
                                                   <div class="star1"></div>
                                                   <div class="star2"></div>
                                              </div>
                                         </label>
                                    </div>
-          <i class="uil uil-times-circle" onclick="deleteThrottleDiv(event)"></i>
+                              <div style="display: flex; flex-direction: row; align-items: center;">
+                                   <i class="uil uil-history-alt" style="margin-right: 5px;` +
+               isDefault +
+               `" onclick="addThrottleHistory(event)"></i>
+                                   <i class="uil uil-times-circle" onclick="deleteThrottleDiv(event)"></i>
+
+                              </div>
      </div>
      
      
@@ -996,7 +1087,7 @@ function addThrottleDiv(marginValue = '', priceValue = '', throttleIsCheck='') {
 }
 
 function deleteThrottleDiv(event) {
-     const clicked_throttleDiv = event.currentTarget.parentNode.parentNode;
+     const clicked_throttleDiv = event.currentTarget.parentNode.parentNode.parentNode;
      const throttleContainer = document.querySelector('.throttleContainer');
 
      clicked_throttleDiv.remove();
@@ -1006,9 +1097,7 @@ function deleteThrottleDiv(event) {
           const h3_titleDiv = eachDiv.querySelector('.titleDiv h3');
           h3_titleDiv.textContent = count + '. Throttle';
           count++;
-          console.log('here');
      });
-     console.log('heer');
      calculateThrottle();
 }
 
@@ -1074,6 +1163,183 @@ function deleteProfitDiv(event) {
      //calculateThrottle();
 }
 
+//throttle history
+function viewThrottleHistory() {
+     const detailContainer = document.querySelector('.detailContainer');
+
+     if (detailContainer.style.display === 'none' || detailContainer.style.display == '') {
+          detailContainer.style.display = 'flex';
+          document.body.style.overflowY = 'hidden';
+
+          // Scroll to the top of the page
+          document.documentElement.scrollTop = 0; // For modern browsers
+          document.body.scrollTop = 0; // For older browsers
+     } else {
+          detailContainer.style.display = 'none';
+          document.body.style.overflowY = 'auto';
+     }
+}
+
+function displayThrottleHistory(THROTTLEList_GET) {
+     const child_Table = document.getElementById('child_Table');
+     const leverageInput = document.getElementById('leverageInput');
+
+     // Convert the timestamp to a Date object
+     const date = new Date(THROTTLEList_GET.closeDate);
+
+     // Extract day, month, and year components
+     const day = date.getDate();
+     const month = date.getMonth() + 1; // Adding 1 since months are zero-indexed
+     const year = date.getFullYear();
+
+     // Create the formatted date string
+     const formattedDate = `${day}/${month}/${year}`;
+
+     //calculate profit
+     var netProfit = 0;
+     var netProfit_percent = 0;
+     if (longorshort == 'long') {
+          netProfit =
+               (parseFloat(THROTTLEList_GET.throttleClosePrice) -
+                    parseFloat(THROTTLEList_GET.throttlePrice)) /
+               parseFloat(THROTTLEList_GET.throttlePrice);
+          netProfit_percent = netProfit * 100*parseInt(leverageInput.value);
+     } else {
+          netProfit =
+               (parseFloat(THROTTLEList_GET.throttlePrice) -
+                    parseFloat(THROTTLEList_GET.throttleClosePrice)) /
+               parseFloat(THROTTLEList_GET.throttlePrice);
+
+          netProfit_percent = netProfit * 100*parseInt(leverageInput.value);
+     }
+
+     var netProfit_percent_final = ' (' + netProfit_percent.toFixed(1) + '%)';
+     console.log(netProfit);
+
+     //newrow html
+     var newRow = document.createElement('tr');
+     newRow.classList.add('childTable');
+     newRow.innerHTML =
+          `
+     <td class="idChildTable">` +
+          THROTTLEList_GET.throttleId +
+          `</td>
+     <td>` +
+          THROTTLEList_GET.throttleMargin +
+          `</td>
+     <td>` +
+          THROTTLEList_GET.throttlePrice +
+          `</td>
+     <td><input type="text" placeholder="Close price" value=` +
+          THROTTLEList_GET.throttleClosePrice +
+          `></td>
+     <td class="profitTd">$` +
+          (netProfit * THROTTLEList_GET.throttleMargin *parseInt(leverageInput.value)).toFixed(1) +
+          netProfit_percent_final +
+          `</td>
+     <td>` +
+          formattedDate +
+          `</td>`;
+
+     const profitTd = newRow.querySelector('.profitTd');
+     if (netProfit >= 0) {
+          profitTd.style.color = 'rgb(84, 202, 175)';
+          //profit
+     } else {
+          profitTd.style.color = 'rgb(255, 110, 102)';
+          //loss
+     }
+
+     child_Table.appendChild(newRow);
+}
+
+function addThrottleHistory(event) {
+     const clicked_throttleDiv = event.currentTarget.parentNode.parentNode;
+     const idText_throttleEach = clicked_throttleDiv.querySelector('.idText_throttleEach');
+     console.log(clicked_throttleDiv);
+
+     const dbref = firebase.database().ref();
+     const thelist = dbref
+          .child('Portfolio')
+          .child(idFinder)
+          .child(planID)
+          .child('ThrottleSys')
+          .child('throttleList')
+          .child(idText_throttleEach.textContent);
+
+     const timestamp = Date.now();
+     const willList = { isHistory: true, closeDate: timestamp };
+     thelist.update(willList);
+
+     loadData();
+}
+
+function saveThrottleHistory() {
+     var isSave = 0;
+     const child_Table = document.getElementById('child_Table');
+     const trAll = child_Table.querySelectorAll('tr');
+
+     const dbref = firebase.database().ref();
+     const thelist = dbref
+          .child('Portfolio')
+          .child(idFinder)
+          .child(planID)
+          .child('ThrottleSys')
+          .child('throttleList');
+
+     trAll.forEach((eachTR) => {
+          console.log(eachTR.children[2].textContent);
+          const trId = eachTR.querySelector('.idChildTable');
+          var closePrice = parseFloat(eachTR.querySelector('input').value).toFixed(2);
+
+          var updateObject = {
+               throttleClosePrice: parseFloat(closePrice),
+          };
+          console.log(updateObject);
+          thelist
+               .child(trId.textContent)
+               .update(updateObject)
+               .then(() => {
+                    if (isSave ==0) {
+                         showToast('success', 'Save data successfully');
+                    }
+                    isSave++;
+               })
+               .catch((error) => {
+                    showToast('error', 'Failed to save data');
+                    console.error(error);
+               });
+     });
+}
+
+//cutloss Plan function
+function cutlossPlan(){
+     const dbref = firebase.database().ref();
+     const thelist = dbref.child('Portfolio').child(idFinder).child(planID);
+
+     var thestatus = '3'
+     if(isCutloss){
+          thestatus = '2'
+     }else{
+          thestatus = '3'
+     }
+     
+     const entrySys = {
+          STATUS: thestatus,
+     };
+
+     thelist
+     .child('EntrySys')
+     .update(entrySys)
+     .then(() => {
+          showToast('success', 'Plan is cutlossed');
+     })
+     .catch((error) => {
+          showToast('error', 'Failed to add data');
+          console.error(error);
+     });
+}
+
 // TOAST FUNCTION
 const toastUl = document.getElementById('toastUl');
 const toastDetails = {
@@ -1116,6 +1382,6 @@ let idFinder = idFinder_get.replace(/"/g, '');
 
 const urlParams = new URLSearchParams(window.location.search);
 const planID = urlParams.get('planID');
-console.log(planID);
+var isCutloss = false; 
 mobileSetting();
 loadData();

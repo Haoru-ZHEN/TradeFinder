@@ -74,8 +74,11 @@
                          </div>-->
                          <h4 id="numPlanH4">Current Plan: 2/5</h4>
                          <div class="iconDiv">
-                              <i class="uil uil-th"></i>
-                              <i class="uil uil-save" id="saveIcon" onclick="saveData()"></i>
+                              
+                              <i class="uil uil-history" id="showHistoryIcon" onclick="showHistory()"></i>
+                              
+                              <i class="uil uil-th leftoverI"></i>
+                              <i class="uil uil-save leftoverI" id="saveIcon" onclick="saveData()"></i>
                          </div>
 
 
@@ -154,8 +157,10 @@
                          <ul>
                               <li class="idText">-</li>
                               <li onclick="goEdit()">Edit</li>
-                              <li>Disabled plan</li>
-                              <li onclick="deleteItem()">Delete plan</li>
+                              <li id="archiveText" onclick="archiveItem()">Archive plan</li>
+                              <li id="unarchiveText" onclick="unarchiveItem()">Unarchive plan</li>
+                              <li id="dltplanText" onclick="deleteItem()">Delete plan</li>
+
                          </ul>
                     </div>
                </div>
@@ -173,6 +178,7 @@
      <script src="https://www.gstatic.com/firebasejs/9.18.0/firebase-app-compat.js"></script>
      <script src="https://www.gstatic.com/firebasejs/9.18.0/firebase-database-compat.js"></script>
      <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+     <script src="https://unicons.iconscout.com/release/v4.0.8/script/monochrome/bundle.js"></script>
      <script src="Portfolio.js"></script>
 </body>
 

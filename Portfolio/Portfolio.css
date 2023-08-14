@@ -467,7 +467,9 @@ table tr:nth-child(even) {
      margin-left: 10px;
 }
 
-.titleTable .iconDiv i:hover{
+
+
+.titleTable .iconDiv .leftoverI:hover{
      color: #2ebd85;
 }
 

@@ -51,7 +51,7 @@
                     <div class="div1">
                          <div class="input-box">
                               <label for="pairInput">Pair Name</label>
-                              <input id="pairInput"autocomplete="off" />
+                              <input id="pairInput" autocomplete="off" />
                          </div>
                          <div class="input-box">
                               <label for="entrypriceInput">Entry Price</label>
@@ -63,11 +63,10 @@
                          </div>
                          <div class="input-box">
                               <label for="apiInput">Price API</label>
-                              <input id="apiInput"list="apiList" />
+                              <input id="apiInput" list="apiList" />
                               <datalist id="apiList">
                                    <option value="https://twelve-data1.p.rapidapi.com/price?symbol=TSLA">
-                                   <option value="Banana">
-                                        </datalist>
+                              </datalist>
 
                          </div>
                     </div>
@@ -142,9 +141,15 @@
                               <label for="totalPositionInput_throttle">Target Position (%)</label>
                               <input id="totalPositionInput_throttle" required autocomplete="off" />
                          </div>
-                         <div class="addIconDiv" onclick="addThrottleDiv()">
-                              <i class="uil uil-plus"></i>
+                         <div style="display: flex;">
+                              <div class="addIconDiv" onclick="addThrottleDiv()" style="margin-right: 20px;">
+                                   <i class="uil uil-plus"></i>
+                              </div>
+                              <div class="addIconDiv" id="throttlehistoryIcon" onclick="viewThrottleHistory()">
+                                   <i class="uil uil-history"></i>
+                              </div>
                          </div>
+
                     </div>
 
                     <div class="input-box disableInput">
@@ -166,8 +171,11 @@
                                              </div>
                                         </label>
                                    </div>
+                                   <div style="display: flex; flex-direction: row; align-items: center;">
+                                        <!--<i class="uil uil-history-alt" style="margin-right: 5px;" onclick="addThrottleHistory(event)"></i>-->
+                                        <i class="uil uil-times-circle" onclick="deleteThrottleDiv(event)"></i>
 
-                                   <i class="uil uil-times-circle" onclick="deleteThrottleDiv(event)"></i>
+                                   </div>
                               </div>
 
 
@@ -192,6 +200,12 @@
                                    <input id="avgInput1_throttle" class="avgInput_throttle" autocomplete="off"
                                         disabled />
                               </div>
+                              <!--<div class="input-box">
+                                   <label for="cutlossInput1_throttle">Cutloss Price</label>
+                                   <input id="cutlossInput1_throttle" class="cutlossInput1_throttle"
+                                        autocomplete="off" />
+                              </div>
+                              <button id="cutlossBut" onclick="" class="cutlossBut">Cutloss</button>-->
                          </div>
 
 
@@ -230,23 +244,24 @@
                               <input id="cutpriceInput_cutloss" type="text" autocomplete="off"
                                    oninput="calculateCutloss()" />
                          </div>
-                         <div class="input-box disableInput">
+                         <div class="input-box disableInput colorInput">
                               <label for="cutpercentInput_cutloss">Cutloss (%)</label>
                               <input id="cutpercentInput_cutloss" type="text" autocomplete="off" disabled />
                          </div>
                     </div>
 
                     <div class="cutDiv1">
-                         <div class="input-box disableInput">
+                         <div class="input-box disableInput colorInput">
                               <label for="damagepercentInput_cutloss">Damage Loss (%)</label>
                               <input id="damagepercentInput_cutloss" type="text" autocomplete="off" disabled />
                          </div>
-                         <div class="input-box disableInput">
+                         <div class="input-box disableInput colorInput">
                               <label for="damageamountInput_cutloss">Damage Amount</label>
                               <input id="damageamountInput_cutloss" type="text" autocomplete="off" disabled />
                          </div>
                     </div>
 
+                    <button id="cutlossPlanBut" onclick="cutlossPlan()">Plan Cutloss</button>
 
                </div>
                <div class="profitSys">
@@ -373,6 +388,48 @@
      <div class="toastDiv">
           <ul id="toastUl">
           </ul>
+     </div>
+
+     <div class="detailContainer">
+          <div class="detailDiv">
+               <div class="titleDetailDiv">
+                    <h2>Throttle History</h2>
+                    <svg onclick="viewThrottleHistory()" class="tds-icon tds-icon-close tds-modal-close-icon"
+                         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                         <path d="M18.53 17.47a.75.75 0 1 1-1.06 1.06L12 13.06l-5.47 5.47a.748.748 0 0 1-1.06 0 .75.75 0 0 1 0-1.06L10.94 12 5.47 6.53a.75.75 0 1 1 1.06-1.06L12 10.94l5.47-5.47a.75.75 0 1 1 1.06 1.06L13.06 12l5.47 5.47z"
+                              fill="#393c41"></path>
+                    </svg>
+               </div>
+
+               <div class="tableHeadDiv">
+                    <table>
+                         <tr class="headerTable">
+                              <th>ID</th>
+                              <th>Throttle Margin</th>
+                              <th>Throttle Price</th>
+                              <th>Close Price</th>
+                              <th>Net Profit (%)</th>
+                              <th>Close Date</th>
+                         </tr>
+                    </table>
+               </div>
+
+               <div class="tableDiv">
+                    <table id="child_Table">
+                         <!--
+                         <tr class="childTable">
+                              <td class="idChildTable">ID</td>
+                              <td>50</td>
+                              <td>20</td>
+                              <td><input type="text" placeholder="Close price"></td>
+                              <td class="profitTd">+50 (10%)</td>
+                              <td>13/8/2023</td>
+                         </tr>-->
+                         
+                    </table>
+               </div>
+               <button onclick="saveThrottleHistory()">Save</button>
+          </div>
      </div>
 
 
