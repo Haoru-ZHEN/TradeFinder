@@ -188,12 +188,21 @@ function addItem(entrySys, count, throttleSys, isShowHistory) {
      const gridView = document.querySelector('.gridView');
      var isChecked = '';
      var isCutloss = 'rgb(255,255,255)';
+     var disableActive = '';
 
+     if(!isShowHistory){
+          disableActive = 'onclick="toActive(event)"';
+          
+     }else{
+          isCutloss = 'rgb(228,228,228)';
+     }
+     
      if (entrySys.STATUS == '2') {
           isChecked = 'checked';
-     }
-     if (entrySys.STATUS == '3') {
+          isCutloss = 'rgb(157, 235, 166)'; 
+     }else if (entrySys.STATUS == '3') {
           isCutloss = 'rgb(255, 110, 102)';
+
      }
      const finalID = "'" + entrySys.IDKEY + "'";
 
@@ -212,7 +221,7 @@ function addItem(entrySys, count, throttleSys, isShowHistory) {
                <label class="switch">
                     <input type="checkbox" ` +
           isChecked +
-          ` id="checkbox" onclick="changeStock()" />
+          ` id="checkbox" `+disableActive+` />
                     <div class="toggle">
                          <div class="star1"></div>
                          <div class="star2"></div>
@@ -256,6 +265,19 @@ function addItem(entrySys, count, throttleSys, isShowHistory) {
      gridView.appendChild(planDiv);
 }
 
+function toActive(event){
+     const clickedPortfolio = event.currentTarget.parentNode.parentNode.parentNode.parentNode;
+
+     if(clickedPortfolio.style.backgroundColor == 'rgb(157, 235, 166)'){
+          clickedPortfolio.style.backgroundColor = 'rgb(255,255,255)'
+     }else{
+          clickedPortfolio.style.backgroundColor = 'rgb(157 235 166)'
+     }
+     
+
+     console.log(clickedPortfolio)
+}
+
 function getTextBetweenSingleQuotes(str) {
      const regex = /'([^']*)'/;
      const match = str.match(regex);
@@ -278,6 +300,8 @@ function saveData() {
           var isChecked = '1';
           if (checkbox.checked) {
                isChecked = '2';
+          }else if (eachGridItem.style.backgroundColor=="rgb(255, 110, 102)"){
+               isChecked = '3';
           }
 
           entrySys = {
@@ -335,6 +359,7 @@ function archiveItem() {
                gridView.innerHTML = '';
                loadData();
                showToast('success', 'Archive successfully');
+               closeMoreDiv();
           })
           .catch((error) => {
                console.error('Error deleting node:', error);
@@ -372,8 +397,8 @@ function unarchiveItem() {
                const gridView = document.querySelector('.gridView');
                gridView.innerHTML = '';
                showHistory();
-               //loadData();
                showToast('success', 'Unarchive successfully');
+               closeMoreDiv();
           })
           .catch((error) => {
                console.error('Error deleting node:', error);
@@ -396,8 +421,9 @@ function deleteItem() {
                .then(() => {
                     const gridView = document.querySelector('.gridView');
                     gridView.innerHTML = '';
-                    loadData();
+                    loadData(true);
                     showToast('success', 'Delete successfully');
+                    closeMoreDiv();
                })
                .catch((error) => {
                     console.error('Error deleting node:', error);
@@ -407,6 +433,10 @@ function deleteItem() {
 }
 
 //moreDiv
+function closeMoreDiv(){
+     const moreDiv = document.querySelector('.moreDiv');
+     moreDiv.style.display = 'none';
+}
 
 function showMorediv(event, theID) {
      const moreDiv = document.querySelector('.moreDiv');
