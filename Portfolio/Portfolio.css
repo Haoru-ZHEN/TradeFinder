@@ -596,6 +596,18 @@ table tr:nth-child(even) {
      cursor: pointer;
 }
 
+.gridView .gridItem .titleDiv .icon_titleDiv{
+     display: flex;
+     flex-direction: row;
+     align-items: center;
+}
+
+.gridView .gridItem .titleDiv .icon_titleDiv .starIcon{
+     color: rgb(236, 208, 76);
+     font-size: 18px;
+     margin-right: 10px;
+}
+
 .gridView .gridItem .detailDiv{
      display: flex;
      flex-direction: row;

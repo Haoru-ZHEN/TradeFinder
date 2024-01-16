@@ -472,7 +472,8 @@ function calculateProfit() {
      //const clicked_throttleDiv = event.currentTarget.parentNode.parentNode;
      //console.log(clickedLi)
      //entry
-     const amountInput = document.getElementById('amountInput'); //amount / price = unit
+     const marginInput = document.getElementById('marginInput');
+     const amountInput = document.getElementById('amountInput'); //amount / price = unit 
      const entrypriceInput = document.getElementById('entrypriceInput');
      const initialInput = document.getElementById('initialInput');
      const leverageInput = document.getElementById('leverageInput');
@@ -486,10 +487,11 @@ function calculateProfit() {
      const avgInput1_throttle = clicked_throttleDiv.getElementById('avgInput1_throttle');*/
      //const h3_titleDiv = clicked_throttleDiv.querySelector('.titleDiv h3');
      //var queueNum = h3_titleDiv.textContent[0]; //2
-     var total_unit = 0 + existUnit;
+
+     /*var total_unit = 0 + existUnit;
      var total_amount = 0 + parseFloat(amountInput.value);
 
-     var count = 1;
+     var count = 1;*/
      all_profitDiv.forEach((eachDiv) => {
           const percentInput_profit = eachDiv.querySelector('.percentInput_profit');
           const amountLabel_profit = eachDiv.querySelector('.amountLabel_profit');
@@ -497,27 +499,56 @@ function calculateProfit() {
           const priceInput_profit = eachDiv.querySelector('.priceInput_profit');
           const avgInput_profit = eachDiv.querySelector('.avgInput_profit');
 
+          var real_profitPercent = 0;
+          if(longorshort=='long'){
+               real_profitPercent = (parseFloat(priceInput_profit.value) - parseFloat(entrypriceInput.value)) / parseFloat(entrypriceInput.value) ; //0.14 not percent
+               //0.14*100 =14%
+               
+          }else{
+               real_profitPercent = (parseFloat(entrypriceInput.value) - parseFloat(priceInput_profit.value)) / parseFloat(entrypriceInput.value) ;//0.14 not percent
+               console.log(real_profitPercent)
+          }
+          
+          var real_profitAmount = parseFloat(marginInput.value)*(parseFloat(percentInput_profit.value)/100)*real_profitPercent * parseInt(leverageInput.value);//profit amount with leverage
+          console.log(real_profitAmount)
+          amountInput_profit.value = real_profitAmount.toFixed(2)
+          
+
+          /*
           //add up unit and amount
           var profitUnit =
                (parseFloat(amountInput_profit.value) * parseFloat(leverageInput.value)) /
                parseFloat(priceInput_profit.value);
 
           var profitAmount = parseFloat(amountInput_profit.value) * parseFloat(leverageInput.value); //leverage include
-
+          */
+         
+          /*
           total_unit += profitUnit;
-          total_amount += profitAmount;
+          total_amount += profitAmount;*/
           amountLabel_profit.textContent =
-               'profit Margin ($' +
-               (total_amount / parseFloat(leverageInput.value)).toFixed(0) +
-               ')';
+               'profit Amount (' +
+               (real_profitPercent*100).toFixed(1) +
+               '%)';
 
+               if (real_profitAmount <= 0) {
+                    amountInput_profit.style.color = 'rgb(255, 110, 102)';
+                    damagepercentInput_cutloss.style.color = 'rgb(255, 110, 102)';
+                    //loss
+               } else {
+                    amountInput_profit.style.color = 'rgb(84, 202, 175)'; //5c5e62
+                    damagepercentInput_cutloss.style.color = 'rgb(84, 202, 175)'; //5c5e62
+                    //profit
+               }
+
+               /*
           //calculate average price
           var average_now = total_amount / total_unit;
           avgInput_profit.value = average_now.toFixed(2);
 
           //calculate percent damage cost
           percentInput_profit.value =
-               ((amountInput_profit.value / parseFloat(initialInput.value)) * 100).toFixed(2) + '%';
+               ((amountInput_profit.value / parseFloat(initialInput.value)) * 100).toFixed(2) + '%';*/
      });
 }
 
@@ -1123,20 +1154,20 @@ function addProfitDiv(percentValue = '', priceValue = '', conditionValue = '') {
                <label for="takePInput1_profit">Take Profit (%)</label>
                <input id="takePInput1_profit" ` +
                percentValue +
-               ` class="percentInput_profit" type="text" autocomplete="off" />
+               ` class="percentInput_profit" type="text" autocomplete="off" oninput="calculateProfit()"/>
           </div>
           <div class="input-box">
                <label for="priceInput1_profit">Profit Price</label>
                <input id=priceInput1_profit" ` +
                priceValue +
-               ` class="priceInput_profit" type="text" autocomplete="off" />
+               ` class="priceInput_profit" type="text" autocomplete="off" oninput="calculateProfit()" />
           </div>
           <div class="input-box">
                <label for="conditionInput1_profit">Profit Condition</label>
                <input id="conditionInput1_profit" class="conditionInput_profit" type="text" autocomplete="off"/>
           </div>
-          <div class="input-box disableInput">
-               <label for="amountInput1_profit">Profit Amount</label>
+          <div class="input-box disableInput colorInput">
+               <label for="amountInput1_profit" class="amountLabel_profit">Profit Amount</label>
                <input id="amountInput1_profit" class="amountInput_profit" type="text" autocomplete="off" disabled/>
           </div>`;
 

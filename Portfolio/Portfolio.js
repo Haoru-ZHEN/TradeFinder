@@ -189,20 +189,23 @@ function addItem(entrySys, count, throttleSys, isShowHistory) {
      var isChecked = '';
      var isCutloss = 'rgb(255,255,255)';
      var disableActive = '';
+     var isBookmarkQuote = 'class="uil uil-star starIcon"'
 
-     if(!isShowHistory){
+     if (!isShowHistory) {
           disableActive = 'onclick="toActive(event)"';
-          
-     }else{
+     } else {
           isCutloss = 'rgb(228,228,228)';
      }
-     
+
+     if(entrySys.isBookmark){
+          isBookmarkQuote = 'class="uis uis-star starIcon"'
+     }
+
      if (entrySys.STATUS == '2') {
           isChecked = 'checked';
-          isCutloss = 'rgb(157, 235, 166)'; 
-     }else if (entrySys.STATUS == '3') {
+          isCutloss = 'rgb(157, 235, 166)';
+     } else if (entrySys.STATUS == '3') {
           isCutloss = 'rgb(255, 110, 102)';
-
      }
      const finalID = "'" + entrySys.IDKEY + "'";
 
@@ -221,7 +224,9 @@ function addItem(entrySys, count, throttleSys, isShowHistory) {
                <label class="switch">
                     <input type="checkbox" ` +
           isChecked +
-          ` id="checkbox" `+disableActive+` />
+          ` id="checkbox" ` +
+          disableActive +
+          ` />
                     <div class="toggle">
                          <div class="star1"></div>
                          <div class="star2"></div>
@@ -229,9 +234,15 @@ function addItem(entrySys, count, throttleSys, isShowHistory) {
                </label>
           </div>
 
-          <i class="uil uil-ellipsis-h moreIcon" onclick="showMorediv(event,` +
+          <div class="icon_titleDiv">
+               <i `+isBookmarkQuote+` onclick="bookmarkItem(event)"></i>
+               
+               
+               <i class="uil uil-ellipsis-h moreIcon" onclick="showMorediv(event,` +
           finalID +
           `)"></i>
+          </div>
+          
      </div>
      <div class="detailDiv">
           <h4>Pair</h4>
@@ -263,19 +274,18 @@ function addItem(entrySys, count, throttleSys, isShowHistory) {
 
      getPrice_API(apiText, entrySys.API);
      gridView.appendChild(planDiv);
-}
+} //<i class="uis uis-star"></i>
 
-function toActive(event){
+function toActive(event) {
      const clickedPortfolio = event.currentTarget.parentNode.parentNode.parentNode.parentNode;
 
-     if(clickedPortfolio.style.backgroundColor == 'rgb(157, 235, 166)'){
-          clickedPortfolio.style.backgroundColor = 'rgb(255,255,255)'
-     }else{
-          clickedPortfolio.style.backgroundColor = 'rgb(157 235 166)'
+     if (clickedPortfolio.style.backgroundColor == 'rgb(157, 235, 166)') {
+          clickedPortfolio.style.backgroundColor = 'rgb(255,255,255)';
+     } else {
+          clickedPortfolio.style.backgroundColor = 'rgb(157 235 166)';
      }
-     
 
-     console.log(clickedPortfolio)
+     console.log(clickedPortfolio);
 }
 
 function getTextBetweenSingleQuotes(str) {
@@ -293,20 +303,32 @@ function saveData() {
      gridItem.forEach((eachGridItem) => {
           const checkbox = eachGridItem.querySelector('.switch input');
           const memoTextarea = eachGridItem.querySelector('.memoTextarea');
+          const starIcon = eachGridItem.querySelector('.starIcon');
           const moreIcon = eachGridItem.querySelector('.moreIcon');
           const onclickAttributeValue = moreIcon.getAttribute('onclick');
           const textBetweenSingleQuotes = getTextBetweenSingleQuotes(onclickAttributeValue);
 
+          var isBookmark = false;
+          if (starIcon.classList[0] == 'uis') {
+               isBookmark = true;
+          } else {
+               isBookmark = false;
+          }
+
+          console.log(starIcon);
+          console.log(isBookmark);
+
           var isChecked = '1';
           if (checkbox.checked) {
                isChecked = '2';
-          }else if (eachGridItem.style.backgroundColor=="rgb(255, 110, 102)"){
+          } else if (eachGridItem.style.backgroundColor == 'rgb(255, 110, 102)') {
                isChecked = '3';
           }
 
           entrySys = {
                STATUS: isChecked,
                MEMO: memoTextarea.value || '-',
+               isBookmark: isBookmark,
           };
 
           thelist
@@ -406,6 +428,16 @@ function unarchiveItem() {
           });
 }
 
+function bookmarkItem(event) {
+     const clickedDiv = event.currentTarget;
+
+     if (clickedDiv.classList[0] == 'uis') {
+          clickedDiv.setAttribute('class', 'uil uil-star starIcon');
+     } else {
+          clickedDiv.setAttribute('class', 'uis uis-star starIcon');
+     }
+}
+
 function deleteItem() {
      const idText = document.querySelector('.moreDiv .idText');
      const dbref = firebase.database().ref();
@@ -433,7 +465,7 @@ function deleteItem() {
 }
 
 //moreDiv
-function closeMoreDiv(){
+function closeMoreDiv() {
      const moreDiv = document.querySelector('.moreDiv');
      moreDiv.style.display = 'none';
 }

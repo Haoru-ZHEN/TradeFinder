@@ -399,6 +399,11 @@ header ul li a:hover .box {
      background-color: #dad9d9;
 }
 
+.profitSys .profitdiv .input-box.colorInput input{
+     background-color: #dad9d9;
+}
+
+
 .entrySys i {
      margin-top: 50px;
      margin-left: 0px;
