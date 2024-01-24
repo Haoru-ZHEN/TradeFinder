@@ -232,7 +232,6 @@ function mobileSetting() {
      } else {
           throttlehistoryIcon.style.display = 'flex';
           cutlossPlanBut.style.display = 'block';
-
      }
 }
 
@@ -251,6 +250,7 @@ function checkStrength() {
      var con2 = '0';
      var con3 = '0';
      var con4 = '0';
+     var con5 = '0';
 
      var checkedCount = 0;
      for (var i = 0; i < checkboxes.length; i++) {
@@ -270,11 +270,14 @@ function checkStrength() {
                     case 3:
                          con4 = '1';
                          break;
+                    case 3:
+                         con5 = '1';
+                         break;
                }
           }
      }
 
-     resultCondition = con1 + ',' + con2 + ',' + con3 + ',' + con4;
+     resultCondition = con1 + ',' + con2 + ',' + con3 + ',' + con4 + ',' + con5;
 
      spanFront.style.borderTopRightRadius = '0px';
      spanFront.style.borderBottomRightRadius = '0px';
@@ -289,23 +292,29 @@ function checkStrength() {
 
                break;
           case 1:
-               spanFront.style.width = '25%';
-               spanTitle.textContent = '25%';
+               spanFront.style.width = '20%';
+               spanTitle.textContent = '20%';
                spanFront.style.backgroundColor = '#f6465d';
                break;
           case 2:
-               spanFront.style.width = '50%';
-               spanTitle.textContent = '50%';
-               spanFront.style.backgroundColor = '#ecd04c';
+               spanFront.style.width = '40%';
+               spanTitle.textContent = '40%';
+               spanFront.style.backgroundColor = 'rgb(235,129,31)';
 
                break;
           case 3:
-               spanFront.style.width = '75%';
-               spanTitle.textContent = '75%';
-               spanFront.style.backgroundColor = '#2ebd85';
+               spanFront.style.width = '60%';
+               spanTitle.textContent = '60%';
+               spanFront.style.backgroundColor = '#ecd04c';
 
                break;
           case 4:
+               spanFront.style.width = '80%';
+               spanTitle.textContent = '80%';
+               spanFront.style.backgroundColor = '#2ebd85';
+
+               break;
+          case 5:
                spanFront.style.width = '100%';
                spanTitle.textContent = '100%';
                spanFront.style.backgroundColor = '#8b5cf6';
@@ -318,6 +327,43 @@ function checkStrength() {
                break;
      }
 }
+
+//update database
+/*
+function updateDB() {
+     const dbref = firebase.database().ref();
+     const thelist = dbref.child('Portfolio').child(idFinder);
+     //const thelist = dbref.child('Portfolio').child(idFinder).child(planID);
+
+     thelist
+          .once('value')
+          .then((snapshot) => {
+               // Process the data
+               const entrySys = {
+                    ENTRY_CONDITION: '0,0,0,0,0',
+               };
+
+               snapshot.forEach((childSnapshot) => {
+                    const childKey = childSnapshot.key;
+                    console.log(childKey);
+                    var childlist = dbref.child('Portfolio').child(idFinder).child(childKey);
+
+                    childlist
+                         .child('EntrySys')
+                         .update(entrySys)
+                         .then(() => {})
+                         .catch((error) => {
+                              showToast('error', 'Failed to add data');
+                              console.error(error);
+                         });
+               });
+          })
+          .catch((error) => {
+               console.error('Error getting data:', error);
+          });
+
+}
+*/
 
 //calculate algo
 function calculateEntry() {
@@ -473,7 +519,7 @@ function calculateProfit() {
      //console.log(clickedLi)
      //entry
      const marginInput = document.getElementById('marginInput');
-     const amountInput = document.getElementById('amountInput'); //amount / price = unit 
+     const amountInput = document.getElementById('amountInput'); //amount / price = unit
      const entrypriceInput = document.getElementById('entrypriceInput');
      const initialInput = document.getElementById('initialInput');
      const leverageInput = document.getElementById('leverageInput');
@@ -500,19 +546,25 @@ function calculateProfit() {
           const avgInput_profit = eachDiv.querySelector('.avgInput_profit');
 
           var real_profitPercent = 0;
-          if(longorshort=='long'){
-               real_profitPercent = (parseFloat(priceInput_profit.value) - parseFloat(entrypriceInput.value)) / parseFloat(entrypriceInput.value) ; //0.14 not percent
+          if (longorshort == 'long') {
+               real_profitPercent =
+                    (parseFloat(priceInput_profit.value) - parseFloat(entrypriceInput.value)) /
+                    parseFloat(entrypriceInput.value); //0.14 not percent
                //0.14*100 =14%
-               
-          }else{
-               real_profitPercent = (parseFloat(entrypriceInput.value) - parseFloat(priceInput_profit.value)) / parseFloat(entrypriceInput.value) ;//0.14 not percent
-               console.log(real_profitPercent)
+          } else {
+               real_profitPercent =
+                    (parseFloat(entrypriceInput.value) - parseFloat(priceInput_profit.value)) /
+                    parseFloat(entrypriceInput.value); //0.14 not percent
+               console.log(real_profitPercent);
           }
-          
-          var real_profitAmount = parseFloat(marginInput.value)*(parseFloat(percentInput_profit.value)/100)*real_profitPercent * parseInt(leverageInput.value);//profit amount with leverage
-          console.log(real_profitAmount)
-          amountInput_profit.value = real_profitAmount.toFixed(2)
-          
+
+          var real_profitAmount =
+               parseFloat(marginInput.value) *
+               (parseFloat(percentInput_profit.value) / 100) *
+               real_profitPercent *
+               parseInt(leverageInput.value); //profit amount with leverage
+          console.log(real_profitAmount);
+          amountInput_profit.value = real_profitAmount.toFixed(2);
 
           /*
           //add up unit and amount
@@ -522,26 +574,24 @@ function calculateProfit() {
 
           var profitAmount = parseFloat(amountInput_profit.value) * parseFloat(leverageInput.value); //leverage include
           */
-         
+
           /*
           total_unit += profitUnit;
           total_amount += profitAmount;*/
           amountLabel_profit.textContent =
-               'profit Amount (' +
-               (real_profitPercent*100).toFixed(1) +
-               '%)';
+               'profit Amount (' + (real_profitPercent * 100).toFixed(1) + '%)';
 
-               if (real_profitAmount <= 0) {
-                    amountInput_profit.style.color = 'rgb(255, 110, 102)';
-                    damagepercentInput_cutloss.style.color = 'rgb(255, 110, 102)';
-                    //loss
-               } else {
-                    amountInput_profit.style.color = 'rgb(84, 202, 175)'; //5c5e62
-                    damagepercentInput_cutloss.style.color = 'rgb(84, 202, 175)'; //5c5e62
-                    //profit
-               }
+          if (real_profitAmount <= 0) {
+               amountInput_profit.style.color = 'rgb(255, 110, 102)';
+               damagepercentInput_cutloss.style.color = 'rgb(255, 110, 102)';
+               //loss
+          } else {
+               amountInput_profit.style.color = 'rgb(84, 202, 175)'; //5c5e62
+               damagepercentInput_cutloss.style.color = 'rgb(84, 202, 175)'; //5c5e62
+               //profit
+          }
 
-               /*
+          /*
           //calculate average price
           var average_now = total_amount / total_unit;
           avgInput_profit.value = average_now.toFixed(2);
@@ -601,11 +651,11 @@ function loadData() {
                apiInput.value = thedata.EntrySys.API;
                damageInput.value = thedata.EntrySys.DAMAGE_COST;
                leverageInput.value = thedata.EntrySys.LEVERAGE;
-               
-               if(thedata.EntrySys.STATUS == '3'){
+
+               if (thedata.EntrySys.STATUS == '3') {
                     isCutloss = true;
                     const cutlossPlanBut = document.getElementById('cutlossPlanBut');
-                    cutlossPlanBut.textContent = 'Plan uncutloss'
+                    cutlossPlanBut.textContent = 'Plan uncutloss';
                }
 
                refreshCondition(thedata.EntrySys.ENTRY_CONDITION);
@@ -799,7 +849,7 @@ function saveData() {
                isHistory: true,
                isThrottle: true,
                throttleClosePrice: parseFloat(eachTR.children[3].querySelector('input').value),
-               closeDate:timestamp,
+               closeDate: timestamp,
           };
 
           //throttleSysArray.push(throttleList);
@@ -1234,14 +1284,14 @@ function displayThrottleHistory(THROTTLEList_GET) {
                (parseFloat(THROTTLEList_GET.throttleClosePrice) -
                     parseFloat(THROTTLEList_GET.throttlePrice)) /
                parseFloat(THROTTLEList_GET.throttlePrice);
-          netProfit_percent = netProfit * 100*parseInt(leverageInput.value);
+          netProfit_percent = netProfit * 100 * parseInt(leverageInput.value);
      } else {
           netProfit =
                (parseFloat(THROTTLEList_GET.throttlePrice) -
                     parseFloat(THROTTLEList_GET.throttleClosePrice)) /
                parseFloat(THROTTLEList_GET.throttlePrice);
 
-          netProfit_percent = netProfit * 100*parseInt(leverageInput.value);
+          netProfit_percent = netProfit * 100 * parseInt(leverageInput.value);
      }
 
      var netProfit_percent_final = ' (' + netProfit_percent.toFixed(1) + '%)';
@@ -1265,7 +1315,7 @@ function displayThrottleHistory(THROTTLEList_GET) {
           THROTTLEList_GET.throttleClosePrice +
           `></td>
      <td class="profitTd">$` +
-          (netProfit * THROTTLEList_GET.throttleMargin *parseInt(leverageInput.value)).toFixed(1) +
+          (netProfit * THROTTLEList_GET.throttleMargin * parseInt(leverageInput.value)).toFixed(1) +
           netProfit_percent_final +
           `</td>
      <td>` +
@@ -1331,7 +1381,7 @@ function saveThrottleHistory() {
                .child(trId.textContent)
                .update(updateObject)
                .then(() => {
-                    if (isSave ==0) {
+                    if (isSave == 0) {
                          showToast('success', 'Save data successfully');
                     }
                     isSave++;
@@ -1344,31 +1394,31 @@ function saveThrottleHistory() {
 }
 
 //cutloss Plan function
-function cutlossPlan(){
+function cutlossPlan() {
      const dbref = firebase.database().ref();
      const thelist = dbref.child('Portfolio').child(idFinder).child(planID);
 
-     var thestatus = '3'
-     if(isCutloss){
-          thestatus = '2'
-     }else{
-          thestatus = '3'
+     var thestatus = '3';
+     if (isCutloss) {
+          thestatus = '2';
+     } else {
+          thestatus = '3';
      }
-     
+
      const entrySys = {
           STATUS: thestatus,
      };
 
      thelist
-     .child('EntrySys')
-     .update(entrySys)
-     .then(() => {
-          showToast('success', 'Plan is cutlossed');
-     })
-     .catch((error) => {
-          showToast('error', 'Failed to add data');
-          console.error(error);
-     });
+          .child('EntrySys')
+          .update(entrySys)
+          .then(() => {
+               showToast('success', 'Plan is cutlossed');
+          })
+          .catch((error) => {
+               showToast('error', 'Failed to add data');
+               console.error(error);
+          });
 }
 
 // TOAST FUNCTION
@@ -1413,6 +1463,6 @@ let idFinder = idFinder_get.replace(/"/g, '');
 
 const urlParams = new URLSearchParams(window.location.search);
 const planID = urlParams.get('planID');
-var isCutloss = false; 
+var isCutloss = false;
 mobileSetting();
 loadData();
